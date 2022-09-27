@@ -1,0 +1,28 @@
+- name: "1.1.7.1 Ensure /home is a separate partition (Automated)"
+  become: yes
+  assert:
+    that: "'/home' in mounts"
+    fail_msg: "Failed! Mountpoint /home is mandatory and must be created during intitial setup"
+    success_msg: "Success!"
+  when:
+    - level2|bool == True
+
+- name: |
+    1.1.7.2 | Ensure nodev option set on /home partition
+    1.1.7.3 | Ensure nosuid option set on /home partition
+  become: yes
+  mount:
+      name: /home
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,nodev,nosuid
+  notify: 
+    - remount home
+  loop: "{{ ansible_mounts }}"
+  loop_control:
+    label: "{{ item.mount }}"
+  when:
+    - item.mount == '/home'
+    - level1|bool == True
+

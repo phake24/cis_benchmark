@@ -17,4 +17,7 @@
   when:
     - item.mount == '/dev/shm'
     - level1|bool == True
-
+  tags:
+    - section1
+    - section1.1
+    - section1.1.8

@@ -1,0 +1,15 @@
+- name: "1.1.9 Disable Automounting (Automated)"
+  become: yes
+  systemd:
+    name: autofs
+    state: stopped
+    enabled: no
+    masked: yes
+
+  when:
+    - level1|bool == True
+
+  tags:
+    - section1
+    - section1.1
+    - section1.1.9

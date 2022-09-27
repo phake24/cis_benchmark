@@ -6,6 +6,10 @@
     success_msg: "Success!"
   when:
     - level2|bool == True
+  tags:
+    - section1
+    - section1.1
+    - section1.1.7
 
 - name: |
     1.1.7.2 | Ensure nodev option set on /home partition
@@ -25,4 +29,7 @@
   when:
     - item.mount == '/home'
     - level1|bool == True
-
+  tags:
+    - section1
+    - section1.1
+    - section1.1.7

@@ -6,6 +6,10 @@
     success_msg: "Success!"
   when:
     - level2|bool == True
+  tags:
+    - section1
+    - section1.1
+    - section1.1.4
 
 - name: |
     1.1.4.2 | Ensure nodev option set on /var/tmp partition
@@ -26,4 +30,8 @@
   when:
     - item.mount == '/var/tmp'
     - level1|bool == True
+  tags:
+    - section1
+    - section1.1
+    - section1.1.4
 

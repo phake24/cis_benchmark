@@ -6,7 +6,11 @@
     success_msg: "Success!"
   when:
     - level2|bool == True
-
+  tags:
+    - section1
+    - section1.1
+    - section1.1.5
+    
 - name: |
     1.1.5.2 | Ensure nodev option set on /var/log partition
     1.1.5.3 | Ensure noexec option set on /var/log partition
@@ -26,4 +30,7 @@
   when:
     - item.mount == '/var/log'
     - level1|bool == True
-
+  tags:
+    - section1
+    - section1.1
+    - section1.1.5

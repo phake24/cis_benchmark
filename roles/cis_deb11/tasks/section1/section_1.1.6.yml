@@ -20,6 +20,10 @@
   when:
     - "'/var/log/audit' not in mounts"
     - level2|bool == True
+  tags:
+    - section1
+    - section1.1
+    - section1.1.6
 
 - name: |
     1.1.6.2 | Ensure nodev option set on /var/log/audit partition
@@ -40,4 +44,7 @@
   when:
     - item.mount == '/var/log/audit'
     - level1|bool == True
-
+  tags:
+    - section1
+    - section1.1
+    - section1.1.6

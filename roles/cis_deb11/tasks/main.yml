@@ -1,3 +1,7 @@
+
+- name: "initial parameters"
+  include_tasks: init.yml
+
 - name: "CIS Section 1"
   include_tasks: section1/main.yml
 

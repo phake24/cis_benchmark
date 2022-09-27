@@ -1,4 +1,5 @@
 - name: "Remount tmp"
+  become: yes
   command: mount -o remount /tmp
   args:
       warn: false

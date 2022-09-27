@@ -3,3 +3,43 @@
   ansible.posix.mount:
     path: /tmp
     state: remounted
+
+- name: remount var
+  become: yes
+  ansible.posix.mount:
+    path: /var
+    state: remounted
+
+- name: remount var_tmp
+  become: yes
+  ansible.posix.mount:
+    path: /var/tmp
+    state: remounted  
+
+- name: remount var_log
+  become: yes
+  ansible.posix.mount:
+    path: /var/log
+    state: remounted  
+
+- name: remount var_log_audit
+  become: yes
+  ansible.posix.mount:
+    path: /var/log/audit
+    state: remounted  
+
+- name: remount home
+  become: yes
+  ansible.posix.mount:
+    path: /home
+    state: remounted  
+
+- name: remount dev_shm
+  become: yes
+  ansible.posix.mount:
+    path: /dev/shm
+    state: remounted  
+
+- name: create var_log_audit
+  become: yes
+  

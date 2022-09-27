@@ -1,13 +1,24 @@
 - name: "1.1.6.1 Ensure /var/log/audit is a separate partition (Automated)"
   become: yes
-  assert:
-    that: "'/var/log/audit' in mounts"
-    fail_msg: "Failed! Mountpoint /var/log/audit is mandatory and must be created during intitial setup"
-    success_msg: "Success!"
-  rescue:
-    - name: "Creating /var/log/audit"
-      notify: create var_log_audit
+  block:
+    - name: "Creating Logical Volume for /var/log/audit"
+      lvol:
+        vg: deb
+        lv: var_log_audit
+        size: 1g
+        force: yes
+    - name: "Formatting /dev/mapper/deb-var_log_audit"
+      filesystem:
+        fstype: xfs
+        dev: /dev/mapper/deb-var_log_audit
+    - name: "mounting /var/log/audit"
+      mount:
+        path: /var/log/audit
+        src: /dev/mapper/deb-var_log_audit
+        fstype: xfs
+        state: mounted
   when:
+    - "'/var/log/audit' not in mounts"
     - level2|bool == True
 
 - name: |

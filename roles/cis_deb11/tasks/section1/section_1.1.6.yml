@@ -4,7 +4,9 @@
     that: "'/var/log/audit' in mounts"
     fail_msg: "Failed! Mountpoint /var/log/audit is mandatory and must be created during intitial setup"
     success_msg: "Success!"
-  notify: create var_log_audit
+  rescue:
+    - name: "Creating /var/log/audit"
+      notify: create var_log_audit
   when:
     - level2|bool == True
 

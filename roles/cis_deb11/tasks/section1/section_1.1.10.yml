@@ -13,7 +13,7 @@
         dest: "{{ usb_storage_config }}"
         content: |
              install usb-storage /bin/true
-             blacklist crausb-storagemfs
+             blacklist usb-storage
  
     - name: "Setting ownership + permissions to {{ usb_storage_config }}"
       file: 

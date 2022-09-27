@@ -1,0 +1,29 @@
+- name: "1.1.5.1 Ensure /var/log is a separate partition (Automated)"
+  become: yes
+  assert:
+    that: "'/var/log' in mounts"
+    fail_msg: "Failed! Mountpoint /var/log is mandatory and must be created during intitial setup"
+    success_msg: "Success!"
+  when:
+    - level2|bool == True
+
+- name: |
+    1.1.5.2 | Ensure nodev option set on /var/log partition
+    1.1.5.3 | Ensure noexec option set on /var/log partition
+    1.1.5.4 | Ensure nosuid option set on /var/log partition
+  become: yes
+  mount:
+      name: /var/log
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,nodev,nosuid,noexec
+  notify: 
+    - remount var_log
+  loop: "{{ ansible_mounts }}"
+  loop_control:
+    label: "{{ item.mount }}"
+  when:
+    - item.mount == '/var/log'
+    - level1|bool == True
+

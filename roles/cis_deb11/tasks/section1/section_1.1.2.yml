@@ -4,6 +4,8 @@
     that: "'/tmp' in mounts"
     fail_msg: "Failed! Mountpoint /tmp is mandatory and must be created during intitial setup"
     success_msg: "Success!"
+  when:
+    - level1|bool == True
 
 - name: |
     1.1.2.2 | Ensure nodev option set on /tmp partition

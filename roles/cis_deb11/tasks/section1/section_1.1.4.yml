@@ -1,0 +1,29 @@
+- name: "1.1.4.1 Ensure /var/tmp is a separate partition (Automated)"
+  become: yes
+  assert:
+    that: "'/var/tmp' in mounts"
+    fail_msg: "Failed! Mountpoint /var/tmp is mandatory and must be created during intitial setup"
+    success_msg: "Success!"
+  when:
+    - level2|bool == True
+
+- name: |
+    1.1.4.2 | Ensure nodev option set on /var/tmp partition
+    1.1.4.3 | Ensure noexec option set on /var/tmp partition
+    1.1.4.4 | Ensure nosuid option set on /var/tmp partition
+  become: yes
+  mount:
+      name: /var/tmp
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,nodev,nosuid,noexec
+  notify: 
+    - remount var_tmp
+  loop: "{{ ansible_mounts }}"
+  loop_control:
+    label: "{{ item.mount }}"
+  when:
+    - item.mount == '/var/tmp'
+    - level1|bool == True
+

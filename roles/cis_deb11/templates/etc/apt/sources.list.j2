@@ -1,0 +1,15 @@
+# /etc/apt/sources.list
+#
+# {{ ansible_managed }}
+#
+# VPP Debian Linux 11 Hardening v1.0 (17.02.2022)
+
+
+deb https://{{ debian_repository_hostname }}:{{ debian_repository_port }}/debian/ bullseye main
+deb-src https://{{ debian_repository_hostname }}:{{ debian_repository_port }}/debian/ bullseye main
+
+deb https://{{ debian_repository_hostname }}:{{ debian_repository_port }}/debian-security bullseye-security main
+deb-src https://{{ debian_repository_hostname }}:{{ debian_repository_port }}/debian-security bullseye-security main
+
+deb https://{{ debian_repository_hostname }}:{{ debian_repository_port }}/debian/ bullseye-updates main contrib non-free
+deb-src https://{{ debian_repository_hostname }}:{{ debian_repository_port }}/debian/ bullseye-updates main contrib non-free

@@ -1,0 +1,4 @@
+- name: "1.2.1 Ensure package manager repositories are configured (Manual)"
+  template:
+    src: etc/apt/sources.list.j2
+    dest: /etc/apt/sources.list

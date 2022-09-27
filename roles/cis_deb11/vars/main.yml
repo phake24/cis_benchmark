@@ -1,8 +1,5 @@
 ---
-ansible_user: povadmin
-ansible_password: deb11_povadmin
-ansible_become_method: su
-ansible_become_password: deb11_root
+# Could be adjusted:
 
 level1: True
 level2: True
@@ -10,3 +7,16 @@ level2: True
 debian_repository_hostname: de-vpc-fravc-spm-001
 debian_repository_port: 8443
 
+
+
+
+--- 
+## DO NOT TOUCH
+
+hardening_version: v2.0
+hardening_date: 28.09.2022
+
+ansible_user: povadmin
+ansible_password: deb11_povadmin
+ansible_become_method: su
+ansible_become_password: deb11_root

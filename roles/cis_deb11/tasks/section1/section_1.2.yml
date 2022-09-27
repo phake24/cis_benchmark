@@ -1,5 +1,20 @@
 - name: "1.2.1 Ensure package manager repositories are configured (Manual)"
   become: yes
-  template:
-    src: etc/apt/sources.list.j2
-    dest: /etc/apt/sources.list
+  block:
+    - name: "Configuring /etc/apt/sources.list"
+        template:
+          src: etc/apt/sources.list.j2
+          dest: /etc/apt/sources.list
+          owner: root
+          group: root
+          mode: 0644
+    - name: "Updating all Packages"
+        apt:
+          name: "*"
+          state: latest
+          update_cache: yes
+          cache_valid_time: 3600
+          autoremove: yes
+          clean: yes
+    
+

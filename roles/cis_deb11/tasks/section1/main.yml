@@ -1,17 +1,11 @@
-- name: "CIS Section 1.1 Filesystem Configuration - Level 1"
-  include_tasks: section_1.1_lvl1.yml
+- name: "CIS Section 1.1 Filesystem Configuration"
+  include_tasks: section_1.1.yml
   tags:
       - section1.1
       - level1
-- name: "CIS Section 1.1 - Level 2"
-  include_tasks: section_1.1_lvl2.yml
-  tags:
-      - section1.1
-      - level2
-
 
 - name: "CIS Section 1.2 Configure Software Updates"
-  include_taks: section_1.2_lvl1.yml
+  include_taks: section_1.2.yml
   tags:
       - section1.2
       - level1

@@ -1,0 +1,27 @@
+- name: "1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Automated)"
+  become: yes
+  vars:
+      cramfs_config: "/etc/modprobe.d/cramfs.conf"
+  block:
+    - name: "Disabling cramfs"
+      modprobe: 
+        name: cramfs
+        state: absent
+  
+    - name: "Writing {{ cramfs_config }}"
+      copy:
+        dest: "{{ cramfs_config }}"
+        content: |
+             install cramfs /bin/true
+             blacklist cramfs
+ 
+    - name: "Setting ownership + permissions to {{ cramfs_config }}"
+      file: 
+        path: "{{ cramfs_config }}"
+        mode: 0644
+        owner: root
+  when: level1|bool = True
+  tags:
+    - level1
+    - level2
+    - section1.1

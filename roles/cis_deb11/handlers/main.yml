@@ -40,6 +40,19 @@
     path: /dev/shm
     state: remounted  
 
-#- name: create var_log_audit
-  #become: yes
+- name: create var_log_audit
+  become: yes
+  lvol:
+    vg: deb
+    lv: var_log_audit
+    size: 1g
+    force: yes
+  filsystem:
+    fstype: xfs
+    dev: /dev/mapper/deb-var_log_audit
+  mount:
+    path: /var/log/audit
+    src: /dev/mapper/deb-var_log_audit
+    fstype: xfs
+    state: mounted
   

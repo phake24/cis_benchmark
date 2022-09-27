@@ -1,23 +1,23 @@
 - name: "1.1.10 Disable USB Storage (Automated)"
   become: yes
   vars:
-      usb-storage_config: "/etc/modprobe.d/usb-storage.conf"
+      usb_storage_config: "/etc/modprobe.d/usb-storage.conf"
   block:
     - name: "Disabling usb-storage"
       modprobe: 
         name: usb-storage
         state: absent
   
-    - name: "Writing {{ usb-storage_config }}"
+    - name: "Writing {{ usb_storage_config }}"
       copy:
-        dest: "{{ usb-storage_config }}"
+        dest: "{{ usb_storage_config }}"
         content: |
              install usb-storage /bin/true
              blacklist crausb-storagemfs
  
-    - name: "Setting ownership + permissions to {{ usb-storage_config }}"
+    - name: "Setting ownership + permissions to {{ usb_storage_config }}"
       file: 
-        path: "{{ usb-storage_config }}"
+        path: "{{ usb_storage_config }}"
         mode: 0644
         owner: root
   when: level1|bool == True

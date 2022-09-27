@@ -1,0 +1,6 @@
+---
+ansible_user: povadmin
+ansible_password: deb11_povadmin
+ansible_become_method: su
+ansible_become_password: deb11_root
+

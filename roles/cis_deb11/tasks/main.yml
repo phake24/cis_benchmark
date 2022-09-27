@@ -1,0 +1,5 @@
+---
+- name: "CIS Section 1"
+  import_tasks: section1/main.yml
+
+

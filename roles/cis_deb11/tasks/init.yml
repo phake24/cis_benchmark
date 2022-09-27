@@ -1,3 +1,7 @@
 - name: "read mounts"
   set_fact:
     mounts: "{{ ansible_mounts | map(attribute='mount') | list }}"
+
+- name: Check if autofs exists
+  shell: "if systemctl | grep -q autofs; then echo true; else echo false; fi;"
+  register: service_autofs_exists

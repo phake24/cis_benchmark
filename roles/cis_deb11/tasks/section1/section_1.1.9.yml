@@ -1,3 +1,4 @@
+
 - name: "1.1.9 Disable Automounting (Automated)"
   become: yes
   systemd:
@@ -5,8 +6,8 @@
     state: stopped
     enabled: no
     masked: yes
-
   when:
+    - service_autofs_exists|bool 
     - level1|bool == True
 
   tags:

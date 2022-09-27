@@ -3,5 +3,10 @@ ansible_user: povadmin
 ansible_password: deb11_povadmin
 ansible_become_method: su
 ansible_become_password: deb11_root
+
 level1: True
 level2: True
+
+debian_repository_hostname: de-vpc-fravc-spm-001
+debian_repository_port: 8443
+

@@ -40,6 +40,6 @@
     path: /dev/shm
     state: remounted  
 
-- name: create var_log_audit
-  become: yes
+#- name: create var_log_audit
+  #become: yes
   

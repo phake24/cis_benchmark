@@ -50,7 +50,7 @@
   notify: format var_log_audit
 
 - name: format var_log_audit
-  filsystem:
+  filesystem:
     fstype: xfs
     dev: /dev/mapper/deb-var_log_audit
   notify: remount var_log_audit

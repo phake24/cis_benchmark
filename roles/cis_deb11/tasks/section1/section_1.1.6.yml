@@ -1,0 +1,30 @@
+- name: "1.1.6.1 Ensure /var/log/audit is a separate partition (Automated)"
+  become: yes
+  assert:
+    that: "'/var/log/audit' in mounts"
+    fail_msg: "Failed! Mountpoint /var/log/audit is mandatory and must be created during intitial setup"
+    success_msg: "Success!"
+  notify: create var_log_audit
+  when:
+    - level2|bool == True
+
+- name: |
+    1.1.6.2 | Ensure nodev option set on /var/log/audit partition
+    1.1.6.3 | Ensure noexec option set on /var/log/audit partition
+    1.1.6.4 | Ensure nosuid option set on /var/log/audit partition
+  become: yes
+  mount:
+      name: /var/log/audit
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,nodev,nosuid,noexec
+  notify: 
+    - remount var_log_audit
+  loop: "{{ ansible_mounts }}"
+  loop_control:
+    label: "{{ item.mount }}"
+  when:
+    - item.mount == '/var/log/audit'
+    - level1|bool == True
+

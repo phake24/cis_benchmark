@@ -1,0 +1,18 @@
+- name: "1.3 Filesystem Integrity Checking"
+  block:
+    - apt:
+        name: aide
+        state: present
+        update_cache: yes
+    - systemd:
+        name: aidecheck.service
+        state: enabled, started
+    - systemd:
+        name: aidecheck.timer
+        state: enabled
+  when: level1|bool
+  tags:
+    - section 1
+    - section 1.3
+    - section 1.3.1
+    - section 1.3.2

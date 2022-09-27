@@ -1,37 +1,65 @@
 - name: "1.1.1 Disable Unused Filesystems"
-  become: yes
   include_tasks: section_1.1.1.yml
   tags:
+    - section1
+    - section1.1
     - section1.1.1
 
 - name: "1.1.2 Configure /tmp"
-  become: yes
   include_tasks: section_1.1.2.yml
+  tags:
+    - section1
+    - section1.1
+    - section1.1.2
 
 - name: "1.1.3 Configure /var"
-  become: yes
   include_tasks: section_1.1.3.yml
+  tags:
+    - section1
+    - section1.1
+    - section1.1.3
 
 - name: "1.1.4 Configure /var/tmp"
-  become: yes
   include_tasks: section_1.1.4.yml
+  tags:
+    - section1
+    - section1.1
+    - section1.1.4
 
 - name: "1.1.5 Configure /var/log"
-  become: yes
   include_tasks: section_1.1.5.yml
+  tags:
+    - section1
+    - section1.1
+    - section1.1.5
 
 - name: "1.1.6 Configure /var/log/audit"
-  become: yes
   include_tasks: section_1.1.6.yml
+  tags:
+    - section1
+    - section1.1
+    - section1.1.6
 
 - name: "1.1.7 Configure /home"
-  become: yes
   include_tasks: section_1.1.7.yml
+  tags:
+    - section1
+    - section1.1
+    - section1.1.7
 
 - name: "1.1.8 Configure /dev/shm"
-  become: yes
   include_tasks: section_1.1.8.yml
+  tags:
+    - section1
+    - section1.1
+    - section1.1.8
 
 - name: "1.1.9 Disable Automounting (Automated)"
-  become: yes
   include_tasks: section_1.1.9.yml
+  tags:
+    - section1
+    - section1.1
+    - section1.1.9
+
+
+

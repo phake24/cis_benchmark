@@ -1,7 +1,9 @@
+---
 - name: "CIS Section 1.1 Filesystem Configuration"
   include_tasks: section_1.1.yml
   tags:
       - section1.1
+
 - name: "CIS Section 1.2 Configure Software Updates"
   include_taks: section_1.2.yml
   tags:

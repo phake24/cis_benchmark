@@ -3,4 +3,4 @@
 #  include_tasks: section_1.1.yml
 
 - name: "CIS Section 1.2 Configure Software Updates"
-  include_taks: section_1.2.yml
+  include_tasks: section_1.2.yml

@@ -60,7 +60,7 @@
 - name: "1.1.1.3 Ensure mounting of udf filesystems is disabled (Automated"
   become: yes
   vars:
-      squashfs_config: "/etc/modprobe.d/udf.conf"
+      udf_config: "/etc/modprobe.d/udf.conf"
   block:
     - name: "Disabling udf"
       modprobe: 

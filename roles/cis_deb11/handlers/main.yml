@@ -47,9 +47,15 @@
     lv: var_log_audit
     size: 1g
     force: yes
+  notify: format var_log_audit
+
+- name: format var_log_audit
   filsystem:
     fstype: xfs
     dev: /dev/mapper/deb-var_log_audit
+  notify: remount var_log_audit
+
+- name: remount var_log_audit
   mount:
     path: /var/log/audit
     src: /dev/mapper/deb-var_log_audit

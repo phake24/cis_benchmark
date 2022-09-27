@@ -1,5 +1,5 @@
-- name: "Remount tmp"
+- name: remount tmp 
   become: yes
-  command: mount -o remount /tmp
-  args:
-      warn: false
+  ansible.posix.mount:
+    path: /tmp
+    state: remounted

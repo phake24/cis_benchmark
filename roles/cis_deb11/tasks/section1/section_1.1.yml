@@ -1,9 +1,9 @@
-- name: "1.1.1 Disable Unused Filesystems"
-  include_tasks: section_1.1.1.yml
-  tags:
-    - section1
-    - section1.1
-    - section1.1.1
+#- name: "1.1.1 Disable Unused Filesystems"
+#  include_tasks: section_1.1.1.yml
+#  tags:
+#    - section1
+#    - section1.1
+#    - section1.1.1
 
 - name: "1.1.2 Configure /tmp"
   include_tasks: section_1.1.2.yml

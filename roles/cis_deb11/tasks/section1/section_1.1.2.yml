@@ -16,7 +16,8 @@
       fstype: "{{ item.fstype }}"
       state: present
       opts: defaults,nodev,noexec,nosuid
-  notify: Remount tmp
+  notify: 
+    - remount tmp 
   loop: "{{ ansible_mounts }}"
   loop_control:
     label: "{{ item.mount }}"

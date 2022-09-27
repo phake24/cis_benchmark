@@ -1,10 +1,12 @@
 ---
 - name: Make sure the folder exists
+  become: yes
   file:
     path: /usr/local/share/ca-certificates
     state: directory
 
 - name: copy VPP-ROOT-CA
+  become: yes
   copy: 
     src: "{{ vpp_root_ca_file }}"
     dest: "/usr/local/share/ca-certificates/{{ vpp_root_ca_file | basename }}.crt"
@@ -14,6 +16,7 @@
   register: result
 
 - name: copy VPP-LAB-ROOT-CA
+  become: yes
   copy: 
     src: "{{ vpp_lab_root_ca_file }}"
     dest: "/usr/local/share/ca-certificates/{{ vpp_lab_root_ca_file | basename }}.crt"
@@ -23,5 +26,6 @@
   register: result
 
 - name: Update CA Trust (Debian, Ubuntu)
+  become: yes
   command: update-ca-certificates
   when: result | changed

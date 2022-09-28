@@ -13,7 +13,6 @@
     owner: root
     group: root
     mode: 0644
-  register: result
 
 - name: copy VPP-LAB-ROOT-CA
   become: yes
@@ -23,9 +22,7 @@
     owner: root
     group: root
     mode: 0644
-  register: result
 
-- name: Update CA Trust (Debian, Ubuntu)
+- name: Update CA Trust
   become: yes
-  command: update-ca-certificates
-  when: result | changed
+  command: /usr/sbin/update-ca-certificates

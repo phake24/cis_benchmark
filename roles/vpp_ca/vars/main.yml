@@ -1,6 +1,8 @@
 ---
 # Could be adjusted:
 
+labor: yes # loads VPP-LAB ROOT CA if set to 'yes'
+
 vpp_root_ca_file: files/vpp-root-ca.pem
 vpp_lab_root_ca_file: files/vpp-lab-root-ca.pem
 

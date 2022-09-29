@@ -1,0 +1,34 @@
+- name: "1.5 Additional Process Hardening"
+  become: yes
+  block:
+    - name: "1.5.1 Ensure address space layout randomization (ASLR) is enabled (Automated)"
+      sysctl:
+        name: kernel.randomize_va_space
+        value: '2'
+        state: present
+        reload: true
+        sysctl_set: true
+        ignoreerrors: true
+   
+    - name: "1.5.2 Ensure prelink is not installed (Automated)"
+
+    - name: "1.5.3 Ensure Automatic Error Reporting is not enabled (Automated)"
+
+    - name: "1.5.4 Ensure core dumps are restricted (Automated)"
+      block:
+        - name: ""
+        lineinfile:
+          path: /etc/systemd/coredump.conf
+          regexp: 'Storage='
+          line: 'Storage=none'
+        notify: "Systemd Deamon Reload"
+        lineinfile:
+          path: /etc/systemd/coredump.conf
+          regexp: 'ProcessSizeMax='
+          line: 'ProcessSizeMax=0'
+          notify: "Systemd Deamon Reload"
+  when:
+    - systemd_coredump.stat.exists
+
+      when:
+        - systemd_coredump.stat.exists

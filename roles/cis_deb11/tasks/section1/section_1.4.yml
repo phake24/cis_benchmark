@@ -1,0 +1,13 @@
+- name: "1.4 Secure Boot Settings"
+  become: yes
+  vars: 
+    grub_custom_config: "/etc/grub.d/40_custom"
+    
+  block:
+    - name: "1.4.1 Ensure bootloader password is set (Automated)"
+      copy:
+        dest: "{{ grub_custom_config }}"
+        content: |
+          set superusers="root"
+          password_pbkdf2 root grub.pbkdf2.sha512.10000.8EE661910D134F5D80D5D70436FED675910B4062A9751D54E7FF12D42DC76EAEA4B3C14DAD2C9D7354EF5C3EF8F977C73F803EBC4FD449F8253F183B26F485F8.86BC05AD8D5110D21742068364924C4EB23F64B801C31BA8E69FE3EBDDC568B3A886F20CA83941E27156DA3E43E6D88DD62E043BBAA2F8F8E095DC251F2904F2
+        

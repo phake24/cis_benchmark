@@ -4,6 +4,7 @@
   file:
     path: /usr/local/share/ca-certificates
     state: directory
+  register: result
 
 - name: copy VPP-ROOT-CA
   become: yes
@@ -13,6 +14,7 @@
     owner: root
     group: root
     mode: 0644
+  register: result
 
 - name: copy VPP-LAB-ROOT-CA
   become: yes
@@ -23,14 +25,17 @@
     group: root
     mode: 0644
   when: labor|bool
+  register: result
 
 - name: delete VPP-LAB-ROOT-CA
   become: yes
   file: 
     path: "/usr/local/share/ca-certificates/{{ vpp_lab_root_ca_file | basename }}.crt" 
     state: absent
+  register: result
   when: labor|bool == False
 
 - name: Update CA Trust
   become: yes
   command: /usr/sbin/update-ca-certificates
+  when: result | changed

@@ -38,4 +38,4 @@
 - name: Update CA Trust
   become: yes
   command: /usr/sbin/update-ca-certificates
-  when: result | changed
+  when: result.changed

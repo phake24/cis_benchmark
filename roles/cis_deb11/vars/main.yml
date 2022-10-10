@@ -7,7 +7,6 @@ level2: True
 debian_repository_hostname: de-vpc-fravc-spm-001
 debian_repository_port: 8443
 
-
 ## DO NOT TOUCH
 
 hardening_version: v2.0
@@ -17,3 +16,16 @@ ansible_user: povadmin
 ansible_password: deb11_povadmin
 ansible_become_method: su
 ansible_become_password: deb11_root
+
+grub_v2_user: root
+grub_v2_password: blubb
+grub_password_v2_unrestricted: True
+
+
+## Debian specific
+
+debian_grub_file_user_config: "/etc/grub.d/50_user"
+
+## Oracle specific
+
+

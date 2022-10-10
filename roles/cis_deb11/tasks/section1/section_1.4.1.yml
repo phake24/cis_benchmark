@@ -1,6 +1,32 @@
-- name: "1.4 Secure Boot Settings"
-  include_tasks: section_1.4.1.yml
-  tags:
-    - section1
-    - section1.4
-    - section1.4.1
+- name: "1.4.1 Ensure bootloader password is set (Automated)"
+  vars: 
+  become: yes
+  block:
+    lineinfile: 
+      dest: "{{ debian_grub_file_user_config }}"
+      regexp: "^set superusers=" 
+      state: present
+      insertafter: EOF
+      line: 'set superusers="{{ grub_user }}"'
+    command: echo -n "{{ grub_v2_password }}\n{{ grub_v2_password }}" | grub-mkpasswd-pbkdf2 | awk '/hash of / { print $NF }'
+    register: grub_v2_password_vault
+    msg: grub_v2_password_vault
+    lineinfile:
+      dest: "{{ debian_grub_file_user_config }}"
+      regexp: "^password_pbkdf2"
+      state: present
+      insertafter: EOF
+      line: 'password_pbkdf2 {{ grub_user }} {{ grub_v2_password_vault }}'
+  when: ansible_os_family == "Debian"
+
+
+#- name: "grub v2 | add --unrestricted"
+#  replace: dest={{ item }} regexp='^CLASS="(((?!--unrestricted).)*)"$' replace='CLASS="\1 --unrestricted"'
+#  with_items: "{{ grub_password_unrestricted_files }}"
+#  when: grub_password_v2_unrestricted|bool
+#  tags:
+#    - grub-password
+
+
+- name: "1.4.1 Ensure bootloader password is set (Automated)"
+  when: ansible_os_family == "RedHat"

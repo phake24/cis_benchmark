@@ -1,0 +1,6 @@
+- name: "1.4 Secure Boot Settings"
+  include_tasks: section_1.4.1.yml
+  tags:
+    - section1
+    - section1.4
+    - section1.4.1

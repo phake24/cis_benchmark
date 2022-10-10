@@ -17,6 +17,7 @@
     - name: "Creating AIDE Database"
       command: mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
   when: level1|bool
+  when: ansible_os_family = "Debian"
   tags:
     - section 1
     - section 1.3

@@ -1,29 +1,36 @@
 - name: | 
     "1.3 Filesystem Integrity Checking"
     "1.3.1 Ensure AIDE is installed (Automated)"
+  become: yes
   block:
     - name: "Installing aide"
       apt:
         name: aide
         state: present
         update_cache: yes
+      register: result
     - name: "Installing aide-common"
       apt:
         name: aide-common
         state: present
         update_cache: yes
+      register: result
     - name: "Initializing AIDE"
-      command: aideinit
+      command: /usr/sbin/aideinit
+      when: result.changed
     - name: "Creating AIDE Database"
       command: mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
-  when: level1|bool
-  when: ansible_os_family = "Debian"
+      when: result.changed
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags:
     - section 1
     - section 1.3
     - section 1.3.1
 
 - name: "1.3.2 Ensure filesystem integrity is regularly checked (Automated)"
+  become: yes
   vars: 
     aidecheck_service_file: /etc/systemd/system/aidecheck.service
     aidecheck_timer_file: /etc/systemd/system/aidecheck.timer
@@ -60,10 +67,12 @@
       notify: reload systemd
     - systemd:
         name: aidecheck.service
-        state: enabled, started
+        state: started
+        enabled: yes
     - systemd:
         name: aidecheck.timer
-        state: enabled
+        state: started
+        enabled: yes
   when: level1|bool
   tags:
     - section 1

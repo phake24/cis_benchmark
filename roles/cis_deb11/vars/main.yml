@@ -16,7 +16,11 @@ ansible_user: povadmin
 ansible_password: deb11_povadmin
 ansible_become_method: su
 ansible_become_password: deb11_root
-
+hardening_header: |
+  # {{ ansible_os_family }}-Linux Hardening {{ hardening_version }}
+  #
+  # Date {{ hardening_date }}
+  
 grub_v2_user: root
 grub_v2_password: blubb
 grub_password_v2_unrestricted: True

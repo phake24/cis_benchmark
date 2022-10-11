@@ -10,17 +10,20 @@
         path: "{{ debian_grub_file_user_config }}"
         state: touch
       when: not debian_grub_file_user_config_exists.stat.exists
-    - name: "check if grub user is configured"
+    - name: "1.4.1 | configure grubv2 user {{ grub_v2_user }} to {{ debian_grub_file_user_config }}"
       lineinfile: 
         dest: "{{ debian_grub_file_user_config }}"
         regexp: "^set superusers=" 
         state: present
         insertafter: EOF
         line: 'set superusers="{{ grub_v2_user }}"'
+        owner: root
+        group: root
+        mode: 0644
 
-    - name: "generate vault of grub password" 
+    - name: "1.4.1 | generate vault of grub password" 
       block:
-          - name: "copy"
+          - name: "1.4.1 | create grubv2 password generation script"
             copy:
               dest: "{{ grub_v2_password_script }}"
               content: |
@@ -30,31 +33,30 @@
               owner: root
               group: root
             no_log: true
-          - name: "run" 
+          - name: "1.4.1 | run grubv2 password generation script" 
             command: "/bin/sh {{ grub_v2_password_script }}"
             register: grub_v2_password_vault
             no_log: true
-          - name:
+          - name: "1.4.1 | remove grubv2 password generation script"
             file:
                 path: "{{ grub_v2_password_script }}"
                 state: absent
 
-    - name: "check if grub password is configured"
+    - name: "1.4.1 | set grubv2 password to {{ debian_grub_file_user_config }}"
       lineinfile:
         dest: "{{ debian_grub_file_user_config }}"
         regexp: "^password_pbkdf2"
         state: present
         insertafter: EOF
         line: 'password_pbkdf2 {{ grub_v2_user }} {{ grub_v2_password_vault.stdout }}'
+        owner: root
+        group: root
+        mode: 0644
+    - name: "1.4.1 | set mode unrestricted ({{ grub_password_unrestricted_files }})"
+      replace: dest={{ item }} regexp='^CLASS="(((?!--unrestricted).)*)"$' replace='CLASS="\1 --unrestricted"'
+      with_items: "{{ grub_password_unrestricted_files }}"
+      when: grub_password_v2_unrestricted|bool
   when: ansible_os_family == "Debian"
-
-
-#- name: "grub v2 | add --unrestricted"
-#  replace: dest={{ item }} regexp='^CLASS="(((?!--unrestricted).)*)"$' replace='CLASS="\1 --unrestricted"'
-#  with_items: "{{ grub_password_unrestricted_files }}"
-#  when: grub_password_v2_unrestricted|bool
-#  tags:
-#    - grub-password
 
 
   #- name: "1.4.1 Ensure bootloader password is set (Automated)"

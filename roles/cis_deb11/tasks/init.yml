@@ -6,3 +6,4 @@
   shell: "if systemctl | grep -q autofs; then echo true; else echo false; fi;"
   register: service_autofs_exists
 
+

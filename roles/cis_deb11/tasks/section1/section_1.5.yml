@@ -1,43 +1,54 @@
 - name: "1.5 Additional Process Hardening"
   become: yes
   block:
-    - name: "1.5.1 Ensure address space layout randomization (ASLR) is enabled (Automated)"
-      sysctl:
-        name: kernel.randomize_va_space
-        value: '2'
-        state: present
-        reload: true
-        sysctl_set: true
-        ignoreerrors: true
-      when: level1|bool
+      - name: "1.5.1 Ensure address space layout randomization (ASLR) is enabled (Automated)"
+        sysctl:
+          name: kernel.randomize_va_space
+          value: '2'
+          state: present
+          reload: true
+          sysctl_set: true
+          ignoreerrors: true
+        when: level1|bool
    
-    - name: "1.5.2 Ensure prelink is not installed (Automated)"
-      apt:
-        name: prelink
-        state: absent
-        update_cache: yes
-      when: level1|bool
+      - name: "1.5.2 Ensure prelink is not installed (Automated)"
+        apt:
+          name: prelink
+          state: absent
+          update_cache: yes
+        when: level1|bool
 
-    - name: "1.5.3 Ensure Automatic Error Reporting is not enabled (Automated)"
-      apt:
-        name: apport
-        state: absent
-        update_cache: yes
-      when: level1|bool
+      - name: "1.5.3 Ensure Automatic Error Reporting is not enabled (Automated)"
+        apt:
+          name: apport
+          state: absent
+          update_cache: yes
+        when: level1|bool
 
-    - name: "1.5.4 Ensure core dumps are restricted (Automated)"
-      block:
-        - name: "1.5.4 | write core dump parameter to {{ systemd_coredump_config_file }}"
-          lineinfile:
-            path: "{{ systemd_coredump_config_file }}"
-            regexp: 'Storage='
-            line: 'Storage=none'
-          notify: "reload systemd"
-          lineinfile:
-            path: "{{ systemd_coredump_config_file }}"
-            regexp: 'ProcessSizeMax='
-            line: 'ProcessSizeMax=0'
+      - name: "1.5.4 Ensure core dumps are restricted (Automated)"
+        block:
+          - name: "1.5.4 | check if {{ systemd_coredump_config_file }} exists"
+            stat: 
+              path: "{{ systemd_coredump_config_file }}"
+            register: systemd_coredump_config_file_exists
+          - name: "1.5.4 | create {{ systemd_coredump_config_file }} if not exists"
+            copy:
+              dest: "{{ systemd_coredump_config_file }}"
+              content: |
+                  Storage=none
+                  ProcessSizeMax=0
             notify: "reload systemd"
-      when: level1|bool
-  when:
-    - systemd_coredump.stat.exists
+            when: systemd_coredump_config_file_exists.stat.exists == False
+          - name: "1.5.4 | write core dump parameter to {{ systemd_coredump_config_file }}"
+            lineinfile:
+              path: "{{ systemd_coredump_config_file }}"
+              regexp: 'Storage='
+              line: 'Storage=none'
+            notify: "reload systemd"
+            lineinfile:
+              path: "{{ systemd_coredump_config_file }}"
+              regexp: 'ProcessSizeMax='
+              line: 'ProcessSizeMax=0'
+              notify: "reload systemd"
+            when: systemd_coredump_config_file_exists.stat.exists
+  when: level1|bool

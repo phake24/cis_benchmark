@@ -56,8 +56,8 @@
       replace: dest={{ item }} regexp='^CLASS="(((?!--unrestricted).)*)"$' replace='CLASS="\1 --unrestricted"'
       with_items: "{{ grub_password_unrestricted_files }}"
       when: grub_password_v2_unrestricted|bool
-    - name: "1.4.1 | run update-grub2"
-      command: update-grub2
+    - name: "1.4.1 | generate new grub configuration"
+      command: /usr/sbin/grub-mkconfig -o /boot/grub/grub.cfg
   when: ansible_os_family == "Debian"
 
 

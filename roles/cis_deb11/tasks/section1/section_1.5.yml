@@ -31,6 +31,11 @@
             apt:
               name: systemd-coredump
               state: absent
+
+          - name: "1.5.4 | removing coredump configuration"
+            file:
+              path: {{ systemd_coredump_config_file }}
+              state: absent
             when: enable_coredumps == False
 
           - name: "1.5.4 | installing coredump"
@@ -89,7 +94,24 @@
                 notify: "reload systemd"
             when: systemd_coredump_config_file_exists.stat.exists
 
-          #- name: "1.5.4 | set up hard limits for core dumps per default"
+          - name: "1.5.4 | set up hard limits for core dumps per default"
+            lineinfile:
+              path: "/etc/security/limits.conf"
+              regexp: '* hard core'
+              line: '* hard core 0'
+              owner: root
+              group: root
+              mode: 0644
+
+          - name: "1.5.4 | prevent setuid programs from dumping"
+            sysctl:
+              name: kernel.randomize_va_space
+              value: '2'
+              state: present
+              reload: true
+              sysctl_set: true
+              ignoreerrors: true
+            when: level1|bool
 
 
   when: level1|bool

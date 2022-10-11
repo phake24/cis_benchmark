@@ -1,0 +1,7 @@
+- name: "1.4.3 Ensure authentication required for single user mode (Automated)"
+  command: 
+  when: level1|bool
+  tags:
+    - section1
+    - section1.4
+    - section1.4.3

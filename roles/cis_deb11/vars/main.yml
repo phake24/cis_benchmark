@@ -24,6 +24,11 @@ grub_password_unrestricted_files:
   - /etc/grub.d/10_linux
 grub_v2_password_script: "/tmp/grub_v2_passwd.sh"
 
+systemd_coredump_config_file: /etc/systemd/coredump.conf
+
+
+
+
 ## Debian specific
 
 debian_grub_file_user_config: "/etc/grub.d/40_custom"

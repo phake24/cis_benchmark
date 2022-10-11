@@ -26,7 +26,7 @@ grub_v2_password_script: "/tmp/grub_v2_passwd.sh"
 
 ## Debian specific
 
-debian_grub_file_user_config: "/etc/grub.d/41_custom"
+debian_grub_file_user_config: "/etc/grub.d/40_user"
 
 ## Oracle specific
 

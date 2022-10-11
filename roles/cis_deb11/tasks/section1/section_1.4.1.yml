@@ -19,7 +19,7 @@
         line: 'set superusers="{{ grub_v2_user }}"'
         owner: root
         group: root
-        mode: 0644
+        mode: 0755
 
     - name: "1.4.1 | generate vault of grub password" 
       block:
@@ -51,11 +51,13 @@
         line: 'password_pbkdf2 {{ grub_v2_user }} {{ grub_v2_password_vault.stdout }}'
         owner: root
         group: root
-        mode: 0644
+        mode: 0755
     - name: "1.4.1 | set mode unrestricted ({{ grub_password_unrestricted_files }})"
       replace: dest={{ item }} regexp='^CLASS="(((?!--unrestricted).)*)"$' replace='CLASS="\1 --unrestricted"'
       with_items: "{{ grub_password_unrestricted_files }}"
       when: grub_password_v2_unrestricted|bool
+    - name: "1.4.1 | run update-grub2"
+      command: update-grub2
   when: ansible_os_family == "Debian"
 
 

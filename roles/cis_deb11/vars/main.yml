@@ -20,7 +20,7 @@ ansible_become_password: deb11_root
 grub_v2_user: root
 grub_v2_password: blubb
 grub_password_v2_unrestricted: True
-
+grub_v2_password_script: "/tmp/grub_v2_passwd.sh"
 
 ## Debian specific
 

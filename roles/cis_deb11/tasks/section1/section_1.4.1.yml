@@ -1,22 +1,51 @@
 - name: "1.4.1 Ensure bootloader password is set (Automated)"
-  vars: 
   become: yes
   block:
-    lineinfile: 
-      dest: "{{ debian_grub_file_user_config }}"
-      regexp: "^set superusers=" 
-      state: present
-      insertafter: EOF
-      line: 'set superusers="{{ grub_user }}"'
-    command: echo -n "{{ grub_v2_password }}\n{{ grub_v2_password }}" | grub-mkpasswd-pbkdf2 | awk '/hash of / { print $NF }'
-    register: grub_v2_password_vault
-    msg: grub_v2_password_vault
-    lineinfile:
-      dest: "{{ debian_grub_file_user_config }}"
-      regexp: "^password_pbkdf2"
-      state: present
-      insertafter: EOF
-      line: 'password_pbkdf2 {{ grub_user }} {{ grub_v2_password_vault }}'
+    - name: "check if {{ debian_grub_file_user_config }} exists"
+      stat: 
+        path: "{{ debian_grub_file_user_config }}"
+      register: debian_grub_file_user_config_exists
+    - name: "Create {{ debian_grub_file_user_config }} if not exist"
+      file:
+        path: "{{ debian_grub_file_user_config }}"
+        state: touch
+      when: not debian_grub_file_user_config_exists.stat.exists
+    - name: "check if grub user is configured"
+      lineinfile: 
+        dest: "{{ debian_grub_file_user_config }}"
+        regexp: "^set superusers=" 
+        state: present
+        insertafter: EOF
+        line: 'set superusers="{{ grub_v2_user }}"'
+
+    - name: "generate vault of grub password" 
+      block:
+          - name: "copy"
+            copy:
+              dest: "{{ grub_v2_password_script }}"
+              content: |
+                  #!/bin/bash
+                  echo "{{ grub_v2_password }}\n{{ grub_v2_password }}" | grub-mkpasswd-pbkdf2 | awk '/hash of / { print $NF }'
+              mode: 0755
+              owner: root
+              group: root
+            no_log: true
+          - name: "run" 
+            command: "/bin/sh {{ grub_v2_password_script }}"
+            register: grub_v2_password_vault
+            no_log: true
+          - name:
+            file:
+                path: "{{ grub_v2_password_script }}"
+                state: absent
+
+    - name: "check if grub password is configured"
+      lineinfile:
+        dest: "{{ debian_grub_file_user_config }}"
+        regexp: "^password_pbkdf2"
+        state: present
+        insertafter: EOF
+        line: 'password_pbkdf2 {{ grub_v2_user }} {{ grub_v2_password_vault.stdout }}'
   when: ansible_os_family == "Debian"
 
 
@@ -28,5 +57,5 @@
 #    - grub-password
 
 
-- name: "1.4.1 Ensure bootloader password is set (Automated)"
-  when: ansible_os_family == "RedHat"
+  #- name: "1.4.1 Ensure bootloader password is set (Automated)"
+  #when: ansible_os_family == "RedHat"

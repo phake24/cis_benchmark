@@ -2,8 +2,12 @@
 #- name: "CIS Section 1.1 Filesystem Configuration"
 #  include_tasks: section_1.1.yml
 
-- name: "CIS Section 1.2 Configure Software Updates"
-  include_tasks: section_1.2.yml
+#- name: "CIS Section 1.2 Configure Software Updates"
+#
+#include_tasks: section_1.2.yml
 
-- name: "CIS Section 1.3 Configure AIDE"
-  include_tasks: section_1.3.yml
+#- name: "CIS Section 1.3 Configure AIDE"
+#  include_tasks: section_1.3.yml
+#
+- name: "CIS Section 1.4 GRUB"
+  include_tasks: section_1.4.yml

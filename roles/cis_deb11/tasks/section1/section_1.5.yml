@@ -27,15 +27,43 @@
 
       - name: "1.5.4 Ensure core dumps are restricted (Automated)"
         block:
+          - name: "1.5.4 | removing coredump"
+            apt:
+              name: systemd-coredump
+              state: absent
+            when: enable_coredumps == False
+
+          - name: "1.5.4 | installing coredump"
+            apt:
+              name: systemd-coredump
+              state: present
+              update_cache: yes
+            when: enable_coredumps|bool
+
+          - name: "1.5.4 | enable coredump "
+            systemd:
+              name: coredump
+              state: enabled
+            when: enable_coredumps == True and "'systemd-coredump' in ansible_facts.packages"
+
+          - name: "1.5.4 | start coredump "
+            systemd:
+              name: coredump
+              state: started
+            when: enable_coredumps == True and "'systemd-coredump' in ansible_facts.packages"
+
           - name: "1.5.4 | check if {{ systemd_coredump_config_file }} exists"
             stat: 
               path: "{{ systemd_coredump_config_file }}"
             register: systemd_coredump_config_file_exists
+            when: enable_coredumps == True and "'systemd-coredump' in ansible_facts.packages"
+
           - name: "1.5.4 | create {{ systemd_coredump_config_file }} if not exists"
             copy:
               dest: "{{ systemd_coredump_config_file }}"
               content: |
                   # {{ systemd_coredump_config_file }}
+                  # 
                   {{ hardening_header }}
                   Storage=none
                   ProcessSizeMax=0
@@ -43,22 +71,30 @@
               group: root
               mode: 0644
             notify: "reload systemd"
-            when: systemd_coredump_config_file_exists.stat.exists == False
+            when: systemd_coredump_config_file_exists.stat.exists == False and enable_coredumps == True and "'systemd-coredump' in ansible_facts.packages"
+
           - name: "1.5.4 | write core dump parameter to {{ systemd_coredump_config_file }}"
-            lineinfile:
-              path: "{{ systemd_coredump_config_file }}"
-              regexp: '^Storage='
-              line: 'Storage=none'
-              owner: root
-              group: root
-              mode: 0644
-            lineinfile:
-              path: "{{ systemd_coredump_config_file }}"
-              regexp: '^ProcessSizeMax='
-              line: 'ProcessSizeMax=0'
-            owner: root
-            group: root
-            mode: 0644
+            block:
+              - name: "1.5.4 | set Storage parameter"
+                lineinfile:
+                  path: "{{ systemd_coredump_config_file }}"
+                  regexp: '^Storage='
+                  line: 'Storage=none'
+                  owner: root
+                  group: root
+                  mode: 0644
+              - name: "1.5.4 | set ProcessSize parameter"
+                lineinfile:
+                  path: "{{ systemd_coredump_config_file }}"
+                  regexp: '^ProcessSizeMax='
+                  line: 'ProcessSizeMax=0'
+                  owner: root
+                  group: root
+                  mode: 0644
             notify: "reload systemd"
             when: systemd_coredump_config_file_exists.stat.exists
+
+          #- name: "1.5.4 | set up hard limits for core dumps per default"
+
+
   when: level1|bool

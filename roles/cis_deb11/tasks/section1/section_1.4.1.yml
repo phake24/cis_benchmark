@@ -19,7 +19,7 @@
         line: 'set superusers="{{ grub_v2_user }}"'
         owner: root
         group: root
-        mode: 0755
+        mode: 0400
 
     - name: "1.4.1 | generate vault of grub password" 
       block:
@@ -51,7 +51,7 @@
         line: 'password_pbkdf2 {{ grub_v2_user }} {{ grub_v2_password_vault.stdout }}'
         owner: root
         group: root
-        mode: 0755
+        mode: 0400
     - name: "1.4.1 | set mode unrestricted ({{ grub_password_unrestricted_files }})"
       replace: dest={{ item }} regexp='^CLASS="(((?!--unrestricted).)*)"$' replace='CLASS="\1 --unrestricted"'
       with_items: "{{ grub_password_unrestricted_files }}"

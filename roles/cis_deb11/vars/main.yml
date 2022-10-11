@@ -7,7 +7,7 @@ level2: True
 debian_repository_hostname: de-vpc-fravc-spm-001
 debian_repository_port: 8443
 
-enable_coredumps: False
+enable_coredumps: True
 
 
 ## DO NOT TOUCH

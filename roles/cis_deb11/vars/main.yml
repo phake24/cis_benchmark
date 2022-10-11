@@ -7,6 +7,9 @@ level2: True
 debian_repository_hostname: de-vpc-fravc-spm-001
 debian_repository_port: 8443
 
+enable_coredumps: False
+
+
 ## DO NOT TOUCH
 
 hardening_version: v2.0
@@ -20,7 +23,7 @@ hardening_header: |
   # {{ ansible_os_family }}-Linux Hardening {{ hardening_version }}
   #
   # Date {{ hardening_date }}
-  
+
 grub_v2_user: root
 grub_v2_password: blubb
 grub_password_v2_unrestricted: True

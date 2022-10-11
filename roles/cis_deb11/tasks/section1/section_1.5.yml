@@ -35,6 +35,7 @@
             copy:
               dest: "{{ systemd_coredump_config_file }}"
               content: |
+                  # {{ systemd_coredump_config_file }}
                   {{ hardening_header }}
                   Storage=none
                   ProcessSizeMax=0
@@ -43,12 +44,12 @@
           - name: "1.5.4 | write core dump parameter to {{ systemd_coredump_config_file }}"
             lineinfile:
               path: "{{ systemd_coredump_config_file }}"
-              regexp: 'Storage='
+              regexp: '^Storage='
               line: 'Storage=none'
             notify: "reload systemd"
             lineinfile:
               path: "{{ systemd_coredump_config_file }}"
-              regexp: 'ProcessSizeMax='
+              regexp: '^ProcessSizeMax='
               line: 'ProcessSizeMax=0'
               notify: "reload systemd"
             when: systemd_coredump_config_file_exists.stat.exists

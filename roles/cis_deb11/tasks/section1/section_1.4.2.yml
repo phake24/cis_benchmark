@@ -1,0 +1,12 @@
+- name: "1.4.2 Ensure permissions on bootloader config are configured (Automated)"
+  become: yes
+  file:
+    path: "/boot/grub/grub.cfg"
+    owner: root
+    group: root
+    mode: 0400
+  when: level1|bool
+  tags:
+    - section1
+    - section1.4
+    - section1.4.2

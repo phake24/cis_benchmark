@@ -39,6 +39,9 @@
                   {{ hardening_header }}
                   Storage=none
                   ProcessSizeMax=0
+              owner: root
+              group: root
+              mode: 0644
             notify: "reload systemd"
             when: systemd_coredump_config_file_exists.stat.exists == False
           - name: "1.5.4 | write core dump parameter to {{ systemd_coredump_config_file }}"
@@ -46,11 +49,16 @@
               path: "{{ systemd_coredump_config_file }}"
               regexp: '^Storage='
               line: 'Storage=none'
-            notify: "reload systemd"
+              owner: root
+              group: root
+              mode: 0644
             lineinfile:
               path: "{{ systemd_coredump_config_file }}"
               regexp: '^ProcessSizeMax='
               line: 'ProcessSizeMax=0'
-              notify: "reload systemd"
+            owner: root
+            group: root
+            mode: 0644
+            notify: "reload systemd"
             when: systemd_coredump_config_file_exists.stat.exists
   when: level1|bool

@@ -50,7 +50,7 @@
               name: systemd-coredump.socket
               state: started
               enabled: yes
-            when: enable_coredumps == True and "'systemd-coredump' in ansible_facts.packages"
+            when: enable_coredumps == True and 'systemd-coredump' in ansible_facts.packages
 
           - name: "1.5.4 | check if {{ systemd_coredump_config_file }} exists"
             stat: 

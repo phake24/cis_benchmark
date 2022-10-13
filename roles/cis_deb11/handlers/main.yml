@@ -51,3 +51,12 @@
   become: yes
   systemd:
       daemon_reload: yes
+
+- name: "update grub"
+  become: yes
+  command: /usr/sbin/grub-mkconfig -o /boot/grub/grub.cfg
+
+- name: reboot
+  become: yes
+  reboot:
+      reboot_timeout: 3600

@@ -2,3 +2,12 @@
 - name: "CIS Section 3.1 Disable unused network protocols and devices"
   include_tasks: section_3.1.yml
 
+- name: "CIS Section 3.2 Network Parameters (Host Only)"
+  include_tasks: section_3.2.yml
+
+- name: "CIS Section 3.3 Network Parameters (Host and Router)"
+  include_tasks: section_3.3.yml
+
+- name: "CIS Section 3.5 Firewall Configuration"
+  include_tasks: section_3.5.yml 
+

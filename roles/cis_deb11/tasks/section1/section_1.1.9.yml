@@ -7,9 +7,8 @@
     enabled: no
     masked: yes
   when:
-    - service_autofs_exists|bool 
+#    - service_autofs_exists|bool 
     - level1|bool == True
-
   tags:
     - section1
     - section1.1

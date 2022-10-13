@@ -94,12 +94,10 @@
                 notify: "reload systemd"
             when: systemd_coredump_config_file_exists.stat.exists
 
-
-###
           - name: "1.5.4 | check if {{ security_hardlimits_config_file }} exists"
             stat: 
               path: "{{ security_hardlimits_config_file }}"
-            register: security_hardlimits_config_file
+            register: security_hardlimits_config_file_exists
 
           - name: "1.5.4 | create {{ security_hardlimits_config_file }} if not exists"
             copy:
@@ -112,8 +110,8 @@
               owner: root
               group: root
               mode: 0644
-            notify: "reload systemd"
-            when: security_hardlimits_config_file.stat.exists == False
+            when: security_hardlimits_config_file_exists.stat.exists == False
+
           - name: "1.5.4 | set up hard limits"
             lineinfile:
               path: "{{ security_hardlimits_config_file }}"
@@ -122,13 +120,7 @@
               owner: root
               group: root
               mode: 0644
-            when: security_hardlimits_config_file.stat.exists
-
-
-
-###
-
-
+            when: security_hardlimits_config_file_exists.stat.exists
 
           - name: "1.5.4 | prevent setuid programs from dumping"
             sysctl:

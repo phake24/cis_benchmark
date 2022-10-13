@@ -13,6 +13,22 @@ enable_apparmor: True
 enable_apparmor_complain: False   # only possible for Level 1
 enable_apparmor_enforce: True     # forced for Level 2
 
+content_login_banner: |
+  ############################>>>>>#############################
+  ###            This system is private property of          ###
+  ###        Deutsche Telekom Buisness Solutions GmbH.       ###
+  ###                                                        ###
+  ### Only authorized access to this system is allowed. All  ###
+  ### activities on this system are monitored. By continuing ###
+  ### activities on this system, you accept this rules.      ###
+  ###                                                        ###
+  ### WARNING!                                               ###
+  ### Any unauthorized access to this system is strictly     ###
+  ### prohibited and will be prosecuted to the full extend   ###
+  ### of applicable local and international law.             ###
+  ###########################<<<<<##############################
+
+
 ## DO NOT TOUCH
 
 hardening_version: v2.0

@@ -12,5 +12,8 @@
 #- name: "CIS Section 1.4 GRUB"
 #  include_tasks: section_1.4.yml
 
-- name: "CIS Section 1.5 Additional Process Hardening"
-  include_tasks: section_1.5.yml
+#- name: "CIS Section 1.5 Additional Process Hardening"
+#  include_tasks: section_1.5.yml
+
+- name: "CIS Section 1.6 Mandatory Access Control"
+  include_tasks: section_1.6.yml

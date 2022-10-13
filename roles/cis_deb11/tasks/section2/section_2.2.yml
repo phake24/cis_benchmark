@@ -13,9 +13,10 @@
     "2.2.12 Ensure HTTP Proxy Server is not installed (Automated)"
     "2.2.13 Ensure SNMP Server is not installed (Automated)"
     "2.2.14 Ensure NIS Server is not installed (Automated)"
+    "2.2.16 Ensure rsync service is either not installed or masked (Automated)"
   become: yes
   apt:
-    name: ["xserver-xorg*", "avahi-daaemon", "cups", "isc-dhcp-server", "slapd", "nfs-kernel-server", "bind9", "vsftpd", "nginx", "apache", "httpd", "dovecot-imapd", "dovecot-pop3d", "samba", "squid", "snmp", "nis"]
+    name: ["xserver-xorg*", "avahi-daaemon", "cups", "isc-dhcp-server", "slapd", "nfs-kernel-server", "bind9", "vsftpd", "nginx", "apache", "httpd", "dovecot-imapd", "dovecot-pop3d", "samba", "squid", "snmp", "nis", "rsync"]
     state: absent
     update_cache: yes
     autoremove: yes
@@ -37,6 +38,7 @@
     - section2.2.12
     - section2.2.13
     - section2.2.14
+    - section2.2.16
 
 - name: "2.2.15 Ensure mail transfer agent is configured for local-only mode (Automated)"
   become: yes

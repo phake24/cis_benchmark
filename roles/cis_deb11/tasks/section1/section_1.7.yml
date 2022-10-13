@@ -1,9 +1,10 @@
 - name: |
     "1.7.1 Ensure message of the day is configured properly (Automated)"
     "1.7.4 Ensure permissions on /etc/motd are configured (Automated)"
+  become: yes
   copy:
     dest: /etc/motd
-    content: 
+    content: "" 
     owner: root
     group: root
     mode: 0644
@@ -19,12 +20,16 @@
     "1.7.3 Ensure remote login warning banner is configured properly (Automated"
     "1.7.5 Ensure permissions on /etc/issue are configured (Automated)"
     "1.7.6 Ensure permissions on /etc/issue.net are configured (Automated)"
+  become: yes
   copy:
-    dest: ["/etc/issue", "/etc/issue.net"]
-    content: {{ content_login_banner }}
+    dest: "{{ item }}"
+    content: "{{ content_login_banner }}"
     owner: root
     group: root
     mode: 0644
+  with_items:
+      - /etc/issue
+      - /etc/issue.net
   when: level1|bool
   tags:
     - section1

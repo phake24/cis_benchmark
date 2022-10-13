@@ -1,0 +1,39 @@
+- name: "1.6.1.1 Ensure AppArmor is installed (Automated)"
+    block:
+      - name: "1.6.1.1.1 | install apparmor"
+          apt:
+            name: apparmor
+            state: present
+            update_cache: yes
+      - name: "1.6.1.1.2 | install apparmor-utils"
+          apt:
+            name: apparmor-utils
+            state: present
+            update_cache: yes
+    when: level1|bool
+
+- name: "1.6.1.2 Ensure AppArmor is enabled in the bootloader configuration (Automated)"
+    block:
+      - name: "1.6.1.2.1 | enable apparmor in GRUB configuration"
+        replace: dest="/etc/default/grub" regexp='^GRUB_CMDLINE_LINUX="(((?!apparmor=).)*)"$' replace='GRUB_CMDLINE_LINUX="\1 apparmor=1"'
+        when: grub_password_v2_unrestricted|bool
+      - name: "1.6.1.2.2 | choose apparmor as MAC provider "
+        replace: dest="/etc/default/grub" regexp='^GRUB_CMDLINE_LINUX="(((?!security=).)*)"$' replace='GRUB_CMDLINE_LINUX="\1 security=apparmor"'
+      - name: "1.6.1.2.3 | generate new grub configuration"
+        command: /usr/sbin/grub-mkconfig -o /boot/grub/grub.cfg
+    when: level1|bool
+
+- name: "1.6.1.3 Ensure all AppArmor Profiles are in enforce or complain mode (Automated)"
+    block:
+      - name: "1.6.1.3.1 | enable complain mode"
+        command: aa-complain /etc/apparmor.d/*
+        when: enable_apparmor_complain|bool and level2 == False
+      - name: "1.6.1.3.2 | enable enforce mode"
+        command: aa-enforce /etc/apparmor.d/*
+        when: enable_apparmor_enforce|bool
+  when: level1|bool
+
+- name: "1.6.1.4 Ensure all AppArmor Profiles are enforcing (Automated)"
+  command: aa-enforce /etc/apparmor.d/*
+  when: level2|bool
+

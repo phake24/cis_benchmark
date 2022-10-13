@@ -1,4 +1,9 @@
 ---
+# need to be adjusted:
+
+ntp_server_list: 1.11.5.37 1.11.5.36 # seperated by spaces
+ntp_fallback_server_list: 1.50.1.68 1.50.1.69 # seperated by spaces
+
 # Could be adjusted:
 
 level1: True
@@ -27,6 +32,7 @@ content_login_banner: |
   ### prohibited and will be prosecuted to the full extend   ###
   ### of applicable local and international law.             ###
   ###########################<<<<<##############################
+
 
 
 ## DO NOT TOUCH

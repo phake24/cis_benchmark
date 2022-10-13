@@ -24,6 +24,6 @@
 #- name: "CIS Section 1.8 GNOME Display Manager"
 #  include_tasks: section_1.8.yml
 
-- name: "CIS Section "
+- name: "CIS Section 1.9 Ensure updates, patches, and additional security software are installed (Manual)"
   include_tasks: section_1.9.yml
 

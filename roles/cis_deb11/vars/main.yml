@@ -9,6 +9,9 @@ debian_repository_port: 8443
 
 enable_coredumps: False
 
+enable_apparmor: True
+enable_apparmor_complain: False   # only possible for Level 1
+enable_apparmor_enforce: True     # forced for Level 2
 
 ## DO NOT TOUCH
 

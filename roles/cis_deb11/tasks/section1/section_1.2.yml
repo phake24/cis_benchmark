@@ -8,13 +8,6 @@
         owner: root
         group: root
         mode: 0644
-    - name: "Updating all Packages"
-      apt:
-        name: "*"
-        state: latest
-        update_cache: yes
-        cache_valid_time: 3600
-        autoremove: yes
   when: level1|bool
     
 

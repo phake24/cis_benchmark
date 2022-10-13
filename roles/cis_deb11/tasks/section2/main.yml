@@ -1,0 +1,3 @@
+---
+- name: "CIS Section 2.1 Configure Time Synchronization"
+  include_tasks: section_2.1.yml

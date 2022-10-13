@@ -2,7 +2,8 @@
 - name: "initial parameters"
   include_tasks: init.yml
 
-- name: "CIS Section 1"
-  include_tasks: section1/main.yml
+#- name: "CIS Section 1"
+#  include_tasks: section1/main.yml
 
-
+- name: "CIS Section 2"
+  include_tasks: section2/main.yml

@@ -34,7 +34,7 @@
 
           - name: "1.5.4 | removing coredump configuration"
             file:
-              path: {{ systemd_coredump_config_file }}
+              path: "{{ systemd_coredump_config_file }}"
               state: absent
             when: enable_coredumps == False
 
@@ -97,7 +97,7 @@
           - name: "1.5.4 | set up hard limits for core dumps per default"
             lineinfile:
               path: "/etc/security/limits.conf"
-              regexp: '* hard core'
+              regexp: 'hard core'
               line: '* hard core 0'
               owner: root
               group: root
@@ -105,8 +105,8 @@
 
           - name: "1.5.4 | prevent setuid programs from dumping"
             sysctl:
-              name: kernel.randomize_va_space
-              value: '2'
+              name: fs.suid_dumpable
+              value: '0'
               state: present
               reload: true
               sysctl_set: true

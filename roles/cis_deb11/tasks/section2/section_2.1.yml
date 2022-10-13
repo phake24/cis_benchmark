@@ -1,15 +1,16 @@
 - name: |
     "2.1.1 Ensure time synchronization is in use"
     "2.1.1.1 Ensure a single time synchronization daemon is in use (Automated)"
+  become: yes
   block:
     - name: "2.1.1.1 | remove chrony & ntp daemon"
-        apt:
+      apt:
         name: ["chrony", "ntp"]
         state: absent
         update_cache: yes
         autoremove: yes
     - name: "2.1.1.1 | install systemd-timesyncd"
-        apt:
+      apt:
         name: systemd-timesyncd
         state: present
         update_cache: yes

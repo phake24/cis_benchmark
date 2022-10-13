@@ -94,14 +94,41 @@
                 notify: "reload systemd"
             when: systemd_coredump_config_file_exists.stat.exists
 
-          - name: "1.5.4 | set up hard limits for core dumps per default"
+
+###
+          - name: "1.5.4 | check if {{ security_hardlimits_config_file }} exists"
+            stat: 
+              path: "{{ security_hardlimits_config_file }}"
+            register: security_hardlimits_config_file
+
+          - name: "1.5.4 | create {{ security_hardlimits_config_file }} if not exists"
+            copy:
+              dest: "{{ security_hardlimits_config_file }}"
+              content: |
+                  # {{ security_hardlimits_config_file }}
+                  # 
+                  {{ hardening_header }}
+                  * hard core 0
+              owner: root
+              group: root
+              mode: 0644
+            notify: "reload systemd"
+            when: security_hardlimits_config_file.stat.exists == False
+          - name: "1.5.4 | set up hard limits"
             lineinfile:
-              path: "/etc/security/limits.conf"
+              path: "{{ security_hardlimits_config_file }}"
               regexp: 'hard core'
               line: '* hard core 0'
               owner: root
               group: root
               mode: 0644
+            when: security_hardlimits_config_file.stat.exists
+
+
+
+###
+
+
 
           - name: "1.5.4 | prevent setuid programs from dumping"
             sysctl:

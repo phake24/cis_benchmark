@@ -1,0 +1,74 @@
+- name: |
+    "2.2.1 Ensure X Window System is not installed (Automated)"
+    "2.2.2 Ensure Avahi Server is not installed (Automated)"
+    "2.2.3 Ensure CUPS is not installed (Automated)"
+    "2.2.4 Ensure DHCP Server is not installed (Automated)"
+    "2.2.5 Ensure LDAP server is not installed (Automated)"
+    "2.2.6 Ensure NFS is not installed (Automated)"
+    "2.2.7 Ensure DNS Server is not installed (Automated)"
+    "2.2.8 Ensure FTP Server is not installed (Automated)"
+    "2.2.9 Ensure HTTP server is not installed (Automated)"
+    "2.2.10 Ensure IMAP and POP3 server are not installed (Automated)"
+    "2.2.11 Ensure Samba is not installed (Automated)"
+    "2.2.12 Ensure HTTP Proxy Server is not installed (Automated)"
+    "2.2.13 Ensure SNMP Server is not installed (Automated)"
+    "2.2.14 Ensure NIS Server is not installed (Automated)"
+  become: yes
+  apt:
+    name: ["xserver-xorg*", "avahi-daaemon", "cups", "isc-dhcp-server", "slapd", "nfs-kernel-server", "bind9", "vsftpd", "nginx", "apache", "httpd", "dovecot-imapd", "dovecot-pop3d", "samba", "squid", "snmp", "nis"]
+    state: absent
+    update_cache: yes
+    autoremove: yes
+    cache_valid_time: 3600
+  when: level1|bool
+  tags:
+    - section2
+    - section2.2
+    - section2.2.2
+    - section2.2.3
+    - section2.2.4
+    - section2.2.5
+    - section2.2.6
+    - section2.2.7
+    - section2.2.8
+    - section2.2.9
+    - section2.2.10
+    - section2.2.11
+    - section2.2.12
+    - section2.2.13
+    - section2.2.14
+
+- name: "2.2.15 Ensure mail transfer agent is configured for local-only mode (Automated)"
+  become: yes
+  block:
+    - name: "2.2.15 | remove exim4"
+      apt:
+        name: exim4
+        state: absent
+        update_cache: yes
+        autoremove: yes
+    - name: "2.2.15 | install postfix"
+      apt: 
+        name: postfix
+        state: present
+    - name: "2.2.15 | configure postfix"
+      lineinfile:
+        path: "/etc/postfix/main.cf"
+        regexp: "^inet_interfaces"
+        line: "inet_interfaces=loopback-only"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "2.2.15 | restart postfix"
+      systemd:
+        name: postfix
+        state: restarted
+        enabled: yes
+  when: level1|bool
+  tags: 
+    - section2
+    - section2.2
+    - section2.2.15
+
+
+  

@@ -1,3 +1,6 @@
 ---
 - name: "CIS Section 2.1 Configure Time Synchronization"
   include_tasks: section_2.1.yml
+
+- name: "CIS Section 2.2 Special Purpose Services"
+  include_tasks: section_2.2.yml

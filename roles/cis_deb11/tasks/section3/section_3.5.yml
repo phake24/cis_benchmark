@@ -1,0 +1,73 @@
+- name: "3.5.2 Configure nftables"
+  copy:
+    dest: /etc/nftables.rules
+    src: nftables.rules
+    owner: root
+    group: root
+    mode: 0640
+  when: level1|bool
+  tags:
+    - section3
+    - section3.5
+    - secvtion3.5.2
+
+- name: "3.5.2.1 Ensure nftables is installed (Automated)"
+  become: yes
+  apt:
+    name: nftables
+    state: present
+    update_cache: yes
+  when: level1|bool
+  tags:
+    - section3
+    - section3.5
+    - section3.5.2
+    - section3.5.2.1
+
+- name: "3.5.2.2 Ensure ufw is uninstalled or disabled with nftables"
+  become: yes
+  apt: 
+    name: "ufw"
+    state: absent
+    autoremove: yes
+  when: level1|bool
+  tags:
+    - section3
+    - section3.5
+    - section3.5.2
+    - section3.5.2.2
+
+- name: "3.5.2.3 Ensure iptables are flushed with nftables (Manual)"
+  become: yes
+  command: "iptables -F"
+  when: level1 == True and 'iptables' in ansible_facts.packages
+
+- name: "3.5.2.9 Ensure nftables service is enabled (Automated)"
+  systemd:
+    name: nftables
+    state: started
+    enabled: yes
+  when: level1|bool
+  tags:
+    - section3
+    - section3.5
+    - section3.5.2
+    - section 3.5.2.3
+
+
+- name: "3.5.2.10 Ensure nftables rules are permanent (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/nftables.conf
+    regexp: "^include*nftables.rules"
+    line: 'include "/etc/nftables.rules"'
+    owner: root
+    group: root
+    mode: 0640
+  when: level1|bool
+  tags:
+    - section 3.5
+    - section 3.5.2
+    - section 3.5.10
+
+    

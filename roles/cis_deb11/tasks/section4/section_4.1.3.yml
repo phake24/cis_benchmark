@@ -1,9 +1,9 @@
 - name: "4.1.3.1 Ensure changes to system administration scope (sudoers) is collected (Automated)"
   become: yes
   vars:
-    audit_rulesd_suderos_config: /etc/audit/rules.d/sudoers_config.rules
+    audit_rulesd_suderos_config: "/etc/audit/rules.d/sudoers_config.rules"
   copy:
-    dest: {{ audit_rulesd_suderos_config }}
+    dest: "{{ audit_rulesd_suderos_config }}"
     content: |
         # {{ audit_rulesd_suderos_config }}
         {{ hardening_header }}
@@ -19,7 +19,7 @@
   vars:
     audit_rulesd_suderos_logging: /etc/audit/rules.d/sudoers_logging.rules
   copy:
-    dest: {{ audit_rulesd_suderos_logging }}
+    dest: "{{ audit_rulesd_suderos_logging }}"
     content: |
         # {{ audit_rulesd_suderos_logging }}
         {{ hardening_header }}
@@ -35,7 +35,7 @@
   vars:
     audit_rulesd_suderos_logs: /etc/audit/rules.d/modify_sudoers_logs.rules
   copy:
-    dest: {{ audit_rulesd_suderos_logs }}
+    dest: "{{ audit_rulesd_suderos_logs }}"
     content: |
         # {{ audit_rulesd_suderos_logs }}
         {{ hardening_header }}
@@ -50,7 +50,7 @@
   vars:
     audit_rulesd_modify_datetime: /etc/audit/rules.d/modify_datetime.rules
   copy:
-    dest: {{ audit_rulesd_modify_datetime }}
+    dest: "{{ audit_rulesd_modify_datetime }}"
     content: |
         # {{ audit_rulesd_modify_datetime }}
         {{ hardening_header }}
@@ -67,7 +67,7 @@
   vars:
     audit_rulesd_modify_networks: /etc/audit/rules.d/modify_network-env.rules
   copy:
-    dest: {{ audit_rulesd_modify_networks }}
+    dest: "{{ audit_rulesd_modify_networks }}"
     content: |
         # {{ audit_rulesd_modify_networks }}
         {{ hardening_header }}
@@ -91,7 +91,7 @@
   block:
     - name: "4.1.3.6 | create temporary script"
       copy:
-        dest: {{ audit_rulesd_use_of_priv_commands }}
+        dest: "{{ audit_rulesd_use_of_priv_commands }}"
         content: |
             {
             UID_MIN=$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)
@@ -119,7 +119,7 @@
   vars:
     audit_rulesd_failed_file_access: /etc/audit/rules.d/failed_file_access.rules
   copy:
-    dest: {{ audit_rulesd_failed_file_access }}
+    dest: "{{ audit_rulesd_failed_file_access }}"
     content: |
         # {{ audit_rulesd_failed_file_access }}
         {{ hardening_header }}
@@ -137,7 +137,7 @@
   vars:
     audit_rulesd_modify_user_groups: /etc/audit/rules.d/modify_user-groups.rules
   copy:
-    dest: {{ audit_rulesd_modify_user_groups }}
+    dest: "{{ audit_rulesd_modify_user_groups }}"
     content: |
         # {{ audit_rulesd_modify_user_groups }}
         {{ hardening_header }}
@@ -156,7 +156,7 @@
   vars:
     audit_rulesd_modify_access_control: /etc/audit/rules.d/modify_access_control.rules
   copy:
-    dest: {{ audit_rulesd_modify_access_control }}
+    dest: "{{ audit_rulesd_modify_access_control }}"
     content: |
         # {{ audit_rulesd_modify_access_control }}
         {{ hardening_header }}
@@ -176,7 +176,7 @@
   vars:
     audit_rulesd_modify_access_control: /etc/audit/rules.d/modify_access_control.rules
   copy:
-    dest: {{ audit_rulesd_modify_access_control }}
+    dest: "{{ audit_rulesd_modify_access_control }}"
     content: |
         # {{ audit_rulesd_modify_access_control }}
         {{ hardening_header }}
@@ -192,7 +192,7 @@
   vars:
     audit_rulesd_session_initiation: /etc/audit/rules.d/session_initiation.rules
   copy:
-    dest: {{ audit_rulesd_session_initiation }}
+    dest: "{{ audit_rulesd_session_initiation }}"
     content: |
         # {{ audit_rulesd_session_initiation }}
         {{ hardening_header }}
@@ -209,7 +209,7 @@
   vars:
     audit_rulesd_login_events: /etc/audit/rules.d/login_events.rules
   copy:
-    dest: {{ audit_rulesd_login_events }}
+    dest: "{{ audit_rulesd_login_events }}"
     content: |
         # {{ audit_rulesd_login_events }}
         {{ hardening_header }}
@@ -225,7 +225,7 @@
   vars:
     audit_rulesd_file_deletion: /etc/audit/rules.d/file_deletion.rules
   copy:
-    dest: {{ audit_rulesd_file_deletion }}
+    dest: "{{ audit_rulesd_file_deletion }}"
     content: |
         # {{ audit_rulesd_file_deletion }}
         {{ hardening_header }}
@@ -241,7 +241,7 @@
   vars:
     audit_rulesd_modify_apparmor: /etc/audit/rules.d/modify_apparmor.rules
   copy:
-    dest: {{ audit_rulesd_modify_apparmor }}
+    dest: "{{ audit_rulesd_modify_apparmor }}"
     content: |
         # {{ audit_rulesd_modify_apparmor }}
         {{ hardening_header }}
@@ -257,7 +257,7 @@
   vars:
     audit_rulesd_modify_chcon: /etc/audit/rules.d/modify_chcon.rules
   copy:
-    dest: {{ audit_rulesd_modify_chcon }}
+    dest: "{{ audit_rulesd_modify_chcon }}"
     content: |
         # {{ audit_rulesd_modify_chcon }}
         {{ hardening_header }}
@@ -272,7 +272,7 @@
   vars:
     audit_rulesd_modify_setfacl: /etc/audit/rules.d/modify_setfacl.rules
   copy:
-    dest: {{ audit_rulesd_modify_setfacl }}
+    dest: "{{ audit_rulesd_modify_setfacl }}"
     content: |
         # {{ audit_rulesd_modify_setfacl }}
         {{ hardening_header }}
@@ -287,7 +287,7 @@
   vars:
     audit_rulesd_modify_chacl: /etc/audit/rules.d/modify_chacl.rules
   copy:
-    dest: {{ audit_rulesd_modify_chacl }}
+    dest: "{{ audit_rulesd_modify_chacl }}"
     content: |
         # {{ audit_rulesd_modify_chacl }}
         {{ hardening_header }}
@@ -302,7 +302,7 @@
   vars:
     audit_rulesd_modify_usermod: /etc/audit/rules.d/modify_usermod.rules
   copy:
-    dest: {{ audit_rulesd_modify_usermod }}
+    dest: "{{ audit_rulesd_modify_usermod }}"
     content: |
         # {{ audit_rulesd_modify_usermod }}
         {{ hardening_header }}
@@ -317,7 +317,7 @@
   vars:
     audit_rulesd_modify_kernelmodules: /etc/audit/rules.d/modify_kernelmodules.rules
   copy:
-    dest: {{ audit_rulesd_modify_kernelmodules }}
+    dest: "{{ audit_rulesd_modify_kernelmodules }}"
     content: |
         # {{ audit_rulesd_modify_kernelmodules }}
         {{ hardening_header }}
@@ -333,7 +333,7 @@
   vars:
     audit_rulesd_audit_config: /etc/audit/rules.d/audit_config.rules
   copy:
-    dest: {{ audit_rulesd_audit_config }}
+    dest: "{{ audit_rulesd_audit_config }}"
     content: |
         # {{ audit_rulesd_audit_config }}
         {{ hardening_header }}

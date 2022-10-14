@@ -5,8 +5,8 @@
     "4.1.2.3 Ensure system is disabled when audit logs are full (Automated"
   become: yes
   template:
-    src: etc/audit/auditd.conf.j2
-    dest: /etc/audit/auditd.conf
+    src: "etc/audit/auditd.conf.j2"
+    dest: "/etc/audit/auditd.conf"
     owner: root
     group: root
     mode: 0644

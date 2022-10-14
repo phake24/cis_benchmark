@@ -1,7 +1,7 @@
 - name: "4.1.1.1 Ensure auditd is installed (Automated)"
   become: yes
   apt: 
-    name: ["audispd", "audispd-plugins"]
+    name: ["auditd", "audispd-plugins"]
     state: present
     update_cache: yes
   tags:

@@ -1,0 +1,35 @@
+# /etc/audit/auditd.conf
+#
+# {{ hardening_header }}
+
+local_events = yes
+write_logs = yes
+log_file = {{ auditd_log_file }}
+log_group = adm
+log_format = ENRICHED
+flush = INCREMENTAL_ASYNC
+freq = 50
+max_log_file = {{ auditd_max_log_file }}
+num_logs = {{ auditd_num_logs }}
+priority_boost = 4
+name_format = NONE
+max_log_file_action = keep_logs
+space_left = {{ auditd_space_left }}
+space_left_action = {{ auditd_space_left_action }}
+verify_email = yes
+action_mail_acct = root
+admin_space_left = {{ auditd_admin_space_left }}
+admin_space_left_action = {{ auditd_admin_space_left_action }}
+disk_full_action = {{ auditd_disk_full_action }}
+disk_error_action = SUSPEND
+use_libwrap = yes
+tcp_listen_queue = 5
+tcp_max_per_addr = 1
+tcp_client_max_idle = 0
+enable_krb5 = no
+krb5_principal = auditd
+distribute_network = no
+q_depth = 400
+overflow_action = SYSLOG
+max_restarts = 10
+plugin_dir = /etc/audit/plugins.d

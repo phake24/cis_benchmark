@@ -1,0 +1,56 @@
+- name: "4.1.4.1 Ensure audit log files are mode 0640 or less permissive (Automated)"
+  become: yes
+  command: [ -f /etc/audit/auditd.conf ] && find "$(dirname $(awk -F "=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs))" -type f \( ! -perm 600 -a ! -perm 0400 -a ! -perm 0200 -a ! -perm 0000 -a ! -perm 0640 -a ! -perm 0440 -a ! -perm 0040 \) -exec chmod u-x,g-wx,o-rwx {} +
+  when: level2|bool
+
+- name: "4.1.4.2 Ensure only authorized users own audit log files (Automated)"
+  become: yes
+  command:  [ -f /etc/audit/auditd.conf ] && find "$(dirname $(awk -F "=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs))" -type f ! -user root -exec chown root {} +
+  when: level2|bool
+
+- name: "4.1.4.3 Ensure only authorized groups are assigned ownership of audit log files (Automated)"
+  become: yes
+  command: find $(dirname $(awk -F"=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs)) -type f \( ! -group adm -a ! -group root \) -exec chgrp adm {} +
+  when: level2|bool
+
+- name: "4.1.4.4 Ensure the audit log directory is 0750 or more restrictive (Automated)"
+  become: yes
+  command: chmod g-w,o-rwx "$(dirname $(awk -F"=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf))"
+  when: level2|bool
+  
+- name: "4.1.4.5 Ensure audit configuration files are 640 or more restrictive (Automated)"
+  become: yes
+  command: find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) -exec chmod u-x,g-wx,o-rwx {} +
+  when: level2|bool
+
+- name: "4.1.4.6 Ensure audit configuration files are owned by root (Automated)"
+  become: yes
+  command: find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) ! -user root -exec chown root {} +
+  when: level2|bool
+
+- name: "4.1.4.7 Ensure audit configuration files belong to group root (Automated)"
+  become: yes
+  command: find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) ! -group root -exec chgrp root {} +
+  when: level2|bool
+
+- name: "4.1.4.8 Ensure audit tools are 755 or more restrictive (Automated)"
+  become: yes
+  command: chmod go-w /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+  when: level2|bool
+
+- name: "4.1.4.9 Ensure audit tools are owned by root (Automated)"
+  become: yes
+  command: chown root /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+  when: level2|bool
+
+- name: "4.1.4.10 Ensure audit tools belong to group root (Automated)"
+  become: yes
+  block:
+    - name: "4.1.4.10 | remove more permissive mode from audit tools"
+      command:  chmod go-w /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+    - name: "4.1.4.10 | change owner and group to root"
+      command: chown root:root /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+  when: level2|bool
+
+#- name: "4.1.4.11 Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)"
+#  become: yes

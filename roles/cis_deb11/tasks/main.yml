@@ -8,8 +8,8 @@
 #- name: "CIS Section 2"
 #  include_tasks: section2/main.yml
 
-- name: "CIS Section 3 Network Configuration"
-  include_tasks: section3/main.yml
+#- name: "CIS Section 3 Network Configuration"
+#  include_tasks: section3/main.yml
 
 - name: "CIS Section 4 Logging and Auditing"
   include_tasks: section4/main.yml

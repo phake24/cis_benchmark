@@ -86,7 +86,7 @@
         state: absent
     - name: "3.1.4 | writing {{ rds_config }}"
       copy:
-        dest: {{ rds_config }}
+        dest: "{{ rds_config }}"
         content: |
             install rds /bin/true
             blacklist rds
@@ -110,7 +110,7 @@
         state: absent
     - name: "3.1.6 | writing {{ tipc_config }}"
       copy:
-        dest: {{ tipc_config }}
+        dest: "{{ tipc_config }}"
         content: |
             install tipc /bin/true
             blacklist tipc

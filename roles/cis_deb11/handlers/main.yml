@@ -60,3 +60,9 @@
   become: yes
   reboot:
       reboot_timeout: 3600
+
+- name: restart auditd
+  become: yes
+  command: service restart auditd
+
+

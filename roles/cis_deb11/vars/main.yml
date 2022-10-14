@@ -36,7 +36,7 @@ content_login_banner: |
   ###########################<<<<<##############################
 
 
-## DO NOT TOUCH
+## be carefull with following parameters
 
 hardening_version: v2.0
 hardening_date: 28.09.2022
@@ -58,6 +58,15 @@ grub_password_unrestricted_files:
 grub_v2_password_script: "/tmp/grub_v2_passwd.sh"
 systemd_coredump_config_file: /etc/systemd/coredump.conf
 security_hardlimits_config_file: /etc/security/limits.d/hardlimits.conf
+
+auditd_log_file: /var/log/audit/audit.log
+auditd_max_log_file: 10 # default 8MB
+auditd_num_logs: 20
+auditd_space_left: 75
+auditd_space_left_action: SYSLOG
+auditd_admin_space_left: 50
+auditd_admin_space_left_action: halt # halt or single are allowed
+auditd_disk_full_action: SUSPEND
 
 
 ## Debian specific

@@ -4,15 +4,17 @@
 ntp_server_list: 1.11.5.37 1.11.5.36 # seperated by spaces
 ntp_fallback_server_list: 1.50.1.68 1.50.1.69 # seperated by spaces
 
-# Could be adjusted:
-
 level1: True
 level2: True
 
 debian_repository_hostname: de-vpc-fravc-spm-001
 debian_repository_port: 8443
 
+configure_nagios: True # or False
+nagios_host_ip1: 1.11.0.133
+
 enable_coredumps: False
+enable_firewall: False # True or False  
 
 enable_apparmor: True
 enable_apparmor_complain: False   # only possible for Level 1
@@ -32,7 +34,6 @@ content_login_banner: |
   ### prohibited and will be prosecuted to the full extend   ###
   ### of applicable local and international law.             ###
   ###########################<<<<<##############################
-
 
 
 ## DO NOT TOUCH
@@ -55,9 +56,7 @@ grub_password_v2_unrestricted: True
 grub_password_unrestricted_files: 
   - /etc/grub.d/10_linux
 grub_v2_password_script: "/tmp/grub_v2_passwd.sh"
-
 systemd_coredump_config_file: /etc/systemd/coredump.conf
-
 security_hardlimits_config_file: /etc/security/limits.d/hardlimits.conf
 
 
@@ -66,5 +65,4 @@ security_hardlimits_config_file: /etc/security/limits.d/hardlimits.conf
 debian_grub_file_user_config: "/etc/grub.d/40_custom"
 
 ## Oracle specific
-
 

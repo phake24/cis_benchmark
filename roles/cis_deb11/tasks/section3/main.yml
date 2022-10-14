@@ -10,4 +10,5 @@
 
 - name: "CIS Section 3.5 Firewall Configuration"
   include_tasks: section_3.5.yml 
+  when: enable_firewall|bool 
 

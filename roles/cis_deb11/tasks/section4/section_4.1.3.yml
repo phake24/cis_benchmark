@@ -1,0 +1,325 @@
+- name: "4.1.3.1 Ensure changes to system administration scope (sudoers) is collected (Automated)"
+  vars:
+    audit_rulesd_suderos_config: /etc/audit/rules.d/sudoers_config.rules
+  copy:
+    dest: {{ audit_rulesd_suderos_config }}
+    content: |
+        # {{ audit_rulesd_suderos_config }}
+        {{ hardening_header }}
+        -w /etc/sudoers -p wa -k scope
+        -w /etc/sudoers.d/ -p wa -k scope
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+  
+- name: "4.1.3.2 Ensure actions as another user are always logged (Automated)"
+  vars:
+    audit_rulesd_suderos_logging: /etc/audit/rules.d/sudoers_logging.rules
+  copy:
+    dest: {{ audit_rulesd_suderos_logging }}
+    content: |
+        # {{ audit_rulesd_suderos_logging }}
+        {{ hardening_header }}
+        -a always,exit -F arch=b64 -C euid!=uid -F auid!=unset -S execve -k user_emulation 
+        -a always,exit -F arch=b32 -C euid!=uid -F auid!=unset -S execve -k user_emulation
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.3 Ensure events that modify the sudo log file are collected (Automated)"
+  vars:
+    audit_rulesd_suderos_logs: /etc/audit/rules.d/modify_sudoers_logs.rules
+  copy:
+    dest: {{ audit_rulesd_suderos_logs }}
+    content: |
+        # {{ audit_rulesd_suderos_logs }}
+        {{ hardening_header }}
+        -w /var/log/sudo.log -p wa -k sudo_log_file
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.4 Ensure events that modify date and time information are collected (Automated)"
+  vars:
+    audit_rulesd_modify_datetime: /etc/audit/rules.d/modify_datetime.rules
+  copy:
+    dest: {{ audit_rulesd_modify_datetime }}
+    content: |
+        # {{ audit_rulesd_modify_datetime }}
+        {{ hardening_header }}
+        -a always,exit -F arch=b64 -S adjtimex,settimeofday,clock_settime -k timechange
+        -a always,exit -F arch=b32 -S adjtimex,settimeofday,clock_settime -k timechange
+        -w /etc/localtime -p wa -k time-change
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.5 Ensure events that modify the system's network environment are collected (Automated)"
+  vars:
+    audit_rulesd_modify_networks: /etc/audit/rules.d/modify_network-env.rules
+  copy:
+    dest: {{ audit_rulesd_modify_networks }}
+    content: |
+        # {{ audit_rulesd_modify_networks }}
+        {{ hardening_header }}
+        -a always,exit -F arch=b64 -S sethostname,setdomainname -k system-locale
+        -a always,exit -F arch=b32 -S sethostname,setdomainname -k system-locale
+        -w /etc/issue -p wa -k system-locale
+        -w /etc/issue.net -p wa -k system-locale
+        -w /etc/hosts -p wa -k system-locale
+        -w /etc/networks -p wa -k system-locale
+        -w /etc/network/ -p wa -k system-locale
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.6 Ensure use of privileged commands are collected (Automated)"
+  vars:
+    audit_rulesd_use_of_priv_commands: /etc/audit/rules.d/privileged-commands.rules
+    audit_rulesd_use_of_priv_commands_script: /tmp/collect_priv_commands.sh
+  block:
+    - name: "4.1.3.6 | create temporary script"
+      copy:
+        dest: {{ audit_rulesd_use_of_priv_commands }}
+        content: |
+            {
+            UID_MIN=$(awk '/^\s*UID_MIN/{print $2}' /etc/login.defs)
+            AUDIT_RULE_FILE="{{ audit_rulesd_use_of_priv_commands }}"
+            NEW_DATA=()
+            for PARTITION in $(findmnt -n -l -k -it $(awk '/nodev/ { print $2 }' /proc/filesystems | paste -sd,) | grep -Pv "noexec|nosuid" | awk '{print  $1}'); do
+            readarray -t DATA < <(find "${PARTITION}" -xdev -perm /6000 -type f | awk -v UID_MIN=${UID_MIN} '{print "-a always,exit -F path=" $1 " -F perm=x -F auid>="UID_MIN" -F auid!=unset -k privileged" }')
+            for ENTRY in "${DATA[@]}"; do
+            NEW_DATA+=("${ENTRY}")
+            done
+            done
+            readarray &> /dev/null -t OLD_DATA < "${AUDIT_RULE_FILE}"
+            COMBINED_DATA=( "${OLD_DATA[@]}" "${NEW_DATA[@]}" )
+            printf '%s\n' "${COMBINED_DATA[@]}" | sort -u > "${AUDIT_RULE_FILE}"
+            }
+        owner: root
+        group: root
+        mode: 0640
+    - name: "4.1.3.6 | run script"
+      command: "/bin/sh {{ audit_rulesd_use_of_priv_commands_script }}"
+      notify: reboot
+
+- name: "4.1.3.7 Ensure unsuccessful file access attempts are collected (Automated)"
+  vars:
+    audit_rulesd_failed_file_access: /etc/audit/rules.d/failed_file_access.rules
+  copy:
+    dest: {{ audit_rulesd_failed_file_access }}
+    content: |
+        # {{ audit_rulesd_failed_file_access }}
+        {{ hardening_header }}
+        -a always,exit -F arch=b64 -S creat,open,openat,truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -k access
+        -a always,exit -F arch=b64 -S creat,open,openat,truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -k access
+        -a always,exit -F arch=b32 -S creat,open,openat,truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -k access
+        -a always,exit -F arch=b32 -S creat,open,openat,truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -k access
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.8 Ensure events that modify user/group information are collected (Automated)"
+  vars:
+    audit_rulesd_modify_user_groups: /etc/audit/rules.d/modify_user-groups.rules
+  copy:
+    dest: {{ audit_rulesd_modify_user_groups }}
+    content: |
+        # {{ audit_rulesd_modify_user_groups }}
+        {{ hardening_header }}
+        -w /etc/group -p wa -k identity
+        -w /etc/passwd -p wa -k identity
+        -w /etc/gshadow -p wa -k identity
+        -w /etc/shadow -p wa -k identity
+        -w /etc/security/opasswd -p wa -k identity
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.9 Ensure discretionary access control permission modification events are collected (Automated)"
+  vars:
+    audit_rulesd_modify_access_control: /etc/audit/rules.d/modify_access_control.rules
+  copy:
+    dest: {{ audit_rulesd_modify_access_control }}
+    content: |
+        # {{ audit_rulesd_modify_access_control }}
+        {{ hardening_header }}
+        -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b64 -S chown,fchown,lchown,fchownat -F auid>=1000 -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F auid>=1000 -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=1000 -F auid!=unset -F key=perm_mod
+        -a always,exit -F arch=b32 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=1000 -F auid!=unset -F key=perm_mod
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.10 Ensure successful file system mounts are collected (Automated)"
+  vars:
+    audit_rulesd_modify_access_control: /etc/audit/rules.d/modify_access_control.rules
+  copy:
+    dest: {{ audit_rulesd_modify_access_control }}
+    content: |
+        # {{ audit_rulesd_modify_access_control }}
+        {{ hardening_header }}
+        -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=unset -k mounts
+        -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=unset -k mounts
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.11 Ensure session initiation information is collected (Automated)"
+  vars:
+    audit_rulesd_session_initiation: /etc/audit/rules.d/session_initiation.rules
+  copy:
+    dest: {{ audit_rulesd_session_initiation }}
+    content: |
+        # {{ audit_rulesd_session_initiation }}
+        {{ hardening_header }}
+        -w /var/run/utmp -p wa -k session
+        -w /var/log/wtmp -p wa -k session
+        -w /var/log/btmp -p wa -k session
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.12 Ensure login and logout events are collected (Automated)"
+  vars:
+    audit_rulesd_login_events: /etc/audit/rules.d/login_events.rules
+  copy:
+    dest: {{ audit_rulesd_login_events }}
+    content: |
+        # {{ audit_rulesd_login_events }}
+        {{ hardening_header }}
+        -w /var/log/lastlog -p wa -k logins
+        -w /var/run/faillock -p wa -k logins
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.13 Ensure file deletion events by users are collected (Automated)"
+  vars:
+    audit_rulesd_file_deletion: /etc/audit/rules.d/file_deletion.rules
+  copy:
+    dest: {{ audit_rulesd_file_deletion }}
+    content: |
+        # {{ audit_rulesd_file_deletion }}
+        {{ hardening_header }}
+        -a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F auid>=1000 -F auid!=unset -k delete
+        -a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat -F auid>=1000 -F auid!=unset -k delete
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.14 Ensure events that modify the system's Mandatory Access Controls are collected (Automated)"
+  vars:
+    audit_rulesd_modify_apparmor: /etc/audit/rules.d/modify_apparmor.rules
+  copy:
+    dest: {{ audit_rulesd_modify_apparmor }}
+    content: |
+        # {{ audit_rulesd_modify_apparmor }}
+        {{ hardening_header }}
+        -w /etc/apparmor/ -p wa -k MAC-policy
+        -w /etc/apparmor.d/ -p wa -k MAC-policy
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.15 Ensure successful and unsuccessful attempts to use the chcon command are recorded (Automated)"
+  vars:
+    audit_rulesd_modify_chcon: /etc/audit/rules.d/modify_chcon.rules
+  copy:
+    dest: {{ audit_rulesd_modify_chcon }}
+    content: |
+        # {{ audit_rulesd_modify_chcon }}
+        {{ hardening_header }}
+        -a always,exit -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.16 Ensure successful and unsuccessful attempts to use the setfacl command are recorded (Automated)"
+  vars:
+    audit_rulesd_modify_setfacl: /etc/audit/rules.d/modify_setfacl.rules
+  copy:
+    dest: {{ audit_rulesd_modify_setfacl }}
+    content: |
+        # {{ audit_rulesd_modify_setfacl }}
+        {{ hardening_header }}
+        -a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.17 Ensure successful and unsuccessful attempts to use the chacl command are recorded (Automated)"
+  vars:
+    audit_rulesd_modify_chacl: /etc/audit/rules.d/modify_chacl.rules
+  copy:
+    dest: {{ audit_rulesd_modify_chacl }}
+    content: |
+        # {{ audit_rulesd_modify_chacl }}
+        {{ hardening_header }}
+        -a always,exit -F path=/usr/bin/chacl -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.18 Ensure successful and unsuccessful attempts to use the usermod command are recorded (Automated)"
+  vars:
+    audit_rulesd_modify_usermod: /etc/audit/rules.d/modify_usermod.rules
+  copy:
+    dest: {{ audit_rulesd_modify_usermod }}
+    content: |
+        # {{ audit_rulesd_modify_usermod }}
+        {{ hardening_header }}
+        -a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid>=1000 -F auid!=unset -k usermod
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.19 Ensure kernel module loading unloading and modification is collected (Automated)"
+  vars:
+    audit_rulesd_modify_kernelmodules: /etc/audit/rules.d/modify_kernelmodules.rules
+  copy:
+    dest: {{ audit_rulesd_modify_kernelmodules }}
+    content: |
+        # {{ audit_rulesd_modify_kernelmodules }}
+        {{ hardening_header }}
+        -a always,exit -F arch=b64 -S init_module,finit_module,delete_module,create_module,query_module -F auid>=1000 -F auid!=unset -k kernel_modules
+        -a always,exit -F path=/usr/bin/kmod -F perm=x -F auid>=1000 -F auid!=unset -k kernel_modules
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+
+- name: "4.1.3.20 Ensure the audit configuration is immutable (Automated)"
+  vars:
+    audit_rulesd_audit_config: /etc/audit/rules.d/audit_config.rules
+  copy:
+    dest: {{ audit_rulesd_audit_config }}
+    content: |
+        # {{ audit_rulesd_audit_config }}
+        {{ hardening_header }}
+        -e 2
+    owner: root
+    group: root
+    mode: 0640
+  notify: reboot
+

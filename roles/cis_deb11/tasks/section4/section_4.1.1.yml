@@ -1,0 +1,46 @@
+- name: "4.1.1.1 Ensure auditd is installed (Automated)"
+  become: yes
+  apt: 
+    name: ["audispd", "audispd-plugins"]
+    state: present
+    update_cache: yes
+  tags:
+    - section4
+    - section4.1
+    - section4.1.1
+    - section4.1.1.1
+  
+- name: "4.1.1.2 Ensure auditd service is enabled and active (Automated)"
+  become: yes
+  systemd:
+    name: auditd
+    state: started
+    enabled: yes
+  tags:
+    - section4
+    - section4.1
+    - section4.1.1
+    - section4.1.1.2 
+
+- name: "4.1.1.3 Ensure auditing for processes that start prior to auditd is enabled (Automated)"
+  become: yes
+  replace: dest="/etc/default/grub" regexp='^GRUB_CMDLINE_LINUX="(((?!audit=).)*)"$' replace='GRUB_CMDLINE_LINUX="\1 audit=1"'
+  notify: "update grub"
+  notify: "reboot"
+  tags:
+    - section4
+    - section4.1
+    - section4.1.1
+    - section4.1.1.3
+
+- name: "4.1.1.4 Ensure audit_backlog_limit is sufficient (Automated)"
+  become: yes
+  replace: dest="/etc/default/grub" regexp='^GRUB_CMDLINE_LINUX="(((?!audit_backlog_limit=).)*)"$' replace='GRUB_CMDLINE_LINUX="\1 audit_backlog_limit=16384"'
+  notify: "update grub"
+  notify: "reboot"
+  tags:
+    - section4
+    - section4.1
+    - section4.1.1
+    - section4.1.1.4
+

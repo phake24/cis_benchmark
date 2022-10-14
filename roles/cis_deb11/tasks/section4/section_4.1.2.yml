@@ -3,6 +3,7 @@
     "4.1.2.1 Ensure audit log storage size is configured (Automated)"
     "4.1.2.2 Ensure audit logs are not automatically deleted (Automated)"
     "4.1.2.3 Ensure system is disabled when audit logs are full (Automated"
+  become: yes
   template:
     src: etc/audit/auditd.conf.j2
     dest: /etc/audit/auditd.conf

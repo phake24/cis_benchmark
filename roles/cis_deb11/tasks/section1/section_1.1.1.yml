@@ -14,10 +14,6 @@
         content: |
              install cramfs /bin/true
              blacklist cramfs
- 
-    - name: "Setting ownership + permissions to {{ cramfs_config }}"
-      file: 
-        path: "{{ cramfs_config }}"
         mode: 0644
         owner: root
         group: root
@@ -45,10 +41,6 @@
         content: |
              install squashfs /bin/true
              blacklist squashfs
- 
-    - name: "Setting ownership + permissions to {{ squashfs_config }}"
-      file: 
-        path: "{{ squashfs_config }}"
         mode: 0644
         owner: root
         group: root
@@ -75,10 +67,6 @@
         content: |
              install udf /bin/true
              blacklist udf
- 
-    - name: "Setting ownership + permissions to {{ udf_config }}"
-      file: 
-        path: "{{ udf_config }}"
         mode: 0644
         owner: root
         group: root

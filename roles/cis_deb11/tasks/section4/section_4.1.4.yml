@@ -1,11 +1,37 @@
 - name: "4.1.4.1 Ensure audit log files are mode 0640 or less permissive (Automated)"
   become: yes
-  command: [ -f /etc/audit/auditd.conf ] && find "$(dirname $(awk -F "=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs))" -type f \( ! -perm 600 -a ! -perm 0400 -a ! -perm 0200 -a ! -perm 0000 -a ! -perm 0640 -a ! -perm 0440 -a ! -perm 0040 \) -exec chmod u-x,g-wx,o-rwx {} +
+  vars:
+    temp_script4141: "/tmp/4.1.4.1.sh"
+  block:
+    - name: "4.1.4.1 | create script"
+      copy: 
+        dest: "{{ temp_script4141 }}"
+        content: |
+            #!/bin/bash
+            [ -f /etc/audit/auditd.conf ] && find "$(dirname $(awk -F "=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs))" -type f \( ! -perm 600 -a ! -perm 0400 -a ! -perm 0200 -a ! -perm 0000 -a ! -perm 0640 -a ! -perm 0440 -a ! -perm 0040 \) -exec chmod u-x,g-wx,o-rwx {} +
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.1 | run script"
+      command: "/bin/bash {{ temp_script4141 }}"
   when: level2|bool
 
 - name: "4.1.4.2 Ensure only authorized users own audit log files (Automated)"
   become: yes
-  command:  [ -f /etc/audit/auditd.conf ] && find "$(dirname $(awk -F "=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs))" -type f ! -user root -exec chown root {} +
+  vars:
+    temp_script4142: "/tmp/4.1.4.2.sh"
+  block:
+    - name: "4.1.4.2 | create script"
+      copy:
+        dest: "{{ temp_script4142 }}"
+        content: |
+            #!/bin/bash
+            [ -f /etc/audit/auditd.conf ] && find "$(dirname $(awk -F "=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs))" -type f ! -user root -exec chown root {} +
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.2 | run script"
+      command: "/bin/bash {{ temp_script4142 }}"
   when: level2|bool
 
 - name: "4.1.4.3 Ensure only authorized groups are assigned ownership of audit log files (Automated)"

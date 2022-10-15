@@ -4,6 +4,7 @@
     name: ["auditd", "audispd-plugins"]
     state: present
     update_cache: yes
+  when: level2|bool
   tags:
     - section4
     - section4.1
@@ -16,6 +17,7 @@
     name: auditd
     state: started
     enabled: yes
+  when: level2|bool
   tags:
     - section4
     - section4.1
@@ -27,6 +29,7 @@
   replace: dest="/etc/default/grub" regexp='^GRUB_CMDLINE_LINUX="(((?!audit=).)*)"$' replace='GRUB_CMDLINE_LINUX="\1 audit=1"'
   notify: "update grub"
   notify: "reboot"
+  when: level2|bool
   tags:
     - section4
     - section4.1
@@ -38,6 +41,7 @@
   replace: dest="/etc/default/grub" regexp='^GRUB_CMDLINE_LINUX="(((?!audit_backlog_limit=).)*)"$' replace='GRUB_CMDLINE_LINUX="\1 audit_backlog_limit=16384"'
   notify: "update grub"
   notify: "reboot"
+  when: level2|bool
   tags:
     - section4
     - section4.1

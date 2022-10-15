@@ -11,3 +11,4 @@
     group: root
     mode: 0644
   notify: restart auditd
+  when: level2|bool

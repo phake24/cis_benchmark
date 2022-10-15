@@ -1,2 +1,5 @@
 - name: "4.1 Configure System Accounting (auditd)"
   include_tasks: section_4.1.yml
+
+- name: "4.2 Configure Logging"
+  include_tasks: section_4.2.yml

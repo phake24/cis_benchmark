@@ -63,6 +63,6 @@
 
 - name: restart auditd
   become: yes
-  command: service restart auditd
+  command: service auditd restart
 
 

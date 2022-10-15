@@ -12,3 +12,10 @@
     mode: 0644
   notify: restart auditd
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.2
+    - section4.1.2.1
+    - section4.1.2.2
+    - section4.1.2.3

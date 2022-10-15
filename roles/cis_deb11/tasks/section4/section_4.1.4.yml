@@ -15,6 +15,11 @@
     - name: "4.1.4.1 | run script"
       command: "/bin/bash {{ temp_script4141 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.1
 
 - name: "4.1.4.2 Ensure only authorized users own audit log files (Automated)"
   become: yes
@@ -33,6 +38,11 @@
     - name: "4.1.4.2 | run script"
       command: "/bin/bash {{ temp_script4142 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.2
 
 - name: "4.1.4.3 Ensure only authorized groups are assigned ownership of audit log files (Automated)"
   become: yes
@@ -51,6 +61,11 @@
     - name: "4.1.4.3 | run script"
       command: "/bin/bash {{ temp_script4143 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.3
 
 - name: "4.1.4.4 Ensure the audit log directory is 0750 or more restrictive (Automated)"
   become: yes
@@ -69,6 +84,11 @@
     - name: "4.1.4.4 | run script"
       command: "/bin/bash {{ temp_script4144 }}"    
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.4
   
 - name: "4.1.4.5 Ensure audit configuration files are 640 or more restrictive (Automated)"
   become: yes
@@ -87,6 +107,11 @@
     - name: "4.1.4.5 | run script"
       command: "/bin/bash {{ temp_script4145 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.5
 
 - name: "4.1.4.6 Ensure audit configuration files are owned by root (Automated)"
   become: yes
@@ -105,6 +130,11 @@
     - name: "4.1.4.6 | run script"
       command: "/bin/bash {{ temp_script4146 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.6
 
 - name: "4.1.4.7 Ensure audit configuration files belong to group root (Automated)"
   become: yes
@@ -123,6 +153,11 @@
     - name: "4.1.4.7 | run script"
       command: "/bin/bash {{ temp_script4147 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.7
 
 - name: "4.1.4.8 Ensure audit tools are 755 or more restrictive (Automated)"
   become: yes
@@ -141,6 +176,11 @@
     - name: "4.1.4.8 | run script"
       command: "/bin/bash {{ temp_script4148 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.8
 
 - name: "4.1.4.9 Ensure audit tools are owned by root (Automated)"
   become: yes
@@ -159,6 +199,11 @@
     - name: "4.1.4.9 | run script"
       command: "/bin/bash {{ temp_script4149 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.9
 
 - name: "4.1.4.10 Ensure audit tools belong to group root (Automated)"
   become: yes
@@ -178,6 +223,32 @@
     - name: "4.1.4.10 | run script"
       command: "/bin/bash {{ temp_script41410 }}"
   when: level2|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.10
 
-#- name: "4.1.4.11 Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)"
-#  become: yes
+- name: "4.1.4.11 Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)"
+  become: yes
+  copy:
+    dest: "/etc/aide/aide.conf.d/99_aide_audit"
+    content: |
+        # Audit Tools 
+        /sbin/auditctl p+i+n+u+g+s+b+acl+xattrs+sha512 
+        /sbin/auditd p+i+n+u+g+s+b+acl+xattrs+sha512 
+        /sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha512 
+        /sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha512 
+        /sbin/autrace p+i+n+u+g+s+b+acl+xattrs+sha512 
+        /sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512
+    owner: root
+    group: root
+    mode: 0644
+  when: level1|bool
+  tags:
+    - section4
+    - section4.1
+    - section4.1.4
+    - section4.1.4.11
+
+

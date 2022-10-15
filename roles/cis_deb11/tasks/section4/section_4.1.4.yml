@@ -36,46 +36,147 @@
 
 - name: "4.1.4.3 Ensure only authorized groups are assigned ownership of audit log files (Automated)"
   become: yes
-  command: find $(dirname $(awk -F"=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs)) -type f \( ! -group adm -a ! -group root \) -exec chgrp adm {} +
+  vars: 
+    temp_script4143: "/tmp/4.1.4.3.sh"
+  block:
+    - name: "4.1.4.3 | create script"
+      copy:
+        dest: "{{ temp_script4143 }}"
+        content: |
+            #!/bin/bash
+            find $(dirname $(awk -F"=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf | xargs)) -type f \( ! -group adm -a ! -group root \) -exec chgrp adm {} +
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.3 | run script"
+      command: "/bin/bash {{ temp_script4143 }}"
   when: level2|bool
 
 - name: "4.1.4.4 Ensure the audit log directory is 0750 or more restrictive (Automated)"
   become: yes
-  command: chmod g-w,o-rwx "$(dirname $(awk -F"=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf))"
+    vars: 
+    temp_script4144: "/tmp/4.1.4.4.sh"
+  block:
+    - name: "4.1.4.4 | create script"
+      copy:
+        dest: "{{ temp_script4144 }}"
+        content: |
+            #!/bin/bash
+            command: chmod g-w,o-rwx "$(dirname $(awk -F"=" '/^\s*log_file/ {print $2}' /etc/audit/auditd.conf))"
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.4 | run script"
+      command: "/bin/bash {{ temp_script4144 }}"    
   when: level2|bool
   
 - name: "4.1.4.5 Ensure audit configuration files are 640 or more restrictive (Automated)"
   become: yes
-  command: find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) -exec chmod u-x,g-wx,o-rwx {} +
+  vars: 
+    temp_script4145: "/tmp/4.1.4.5.sh"
+  block:
+    - name: "4.1.4.5 | create script"
+      copy:
+        dest: "{{ temp_script4145 }}"
+        content: |
+            #!/bin/bash
+            find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) -exec chmod u-x,g-wx,o-rwx {} +
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.5 | run script"
+      command: "/bin/bash {{ temp_script4145 }}"
   when: level2|bool
 
 - name: "4.1.4.6 Ensure audit configuration files are owned by root (Automated)"
   become: yes
-  command: find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) ! -user root -exec chown root {} +
+  vars: 
+    temp_script4146: "/tmp/4.1.4.6.sh"
+  block:
+    - name: "4.1.4.6 | create script"
+      copy:
+        dest: "{{ temp_script4146 }}"
+        content: |
+            #!/bin/bash
+            find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) ! -user root -exec chown root {} +
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.6 | run script"
+      command: "/bin/bash {{ temp_script4146 }}"
   when: level2|bool
 
 - name: "4.1.4.7 Ensure audit configuration files belong to group root (Automated)"
   become: yes
-  command: find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) ! -group root -exec chgrp root {} +
+  vars: 
+    temp_script4147: "/tmp/4.1.4.7.sh"
+  block:
+    - name: "4.1.4.7 | create script"
+      copy:
+        dest: "{{ temp_script4147 }}"
+        content: |
+            #!/bin/bash
+            find /etc/audit/ -type f \( -name '*.conf' -o -name '*.rules' \) ! -group root -exec chgrp root {} +
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.7 | run script"
+      command: "/bin/bash {{ temp_script4147 }}"
   when: level2|bool
 
 - name: "4.1.4.8 Ensure audit tools are 755 or more restrictive (Automated)"
   become: yes
-  command: chmod go-w /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+  vars: 
+    temp_script4148: "/tmp/4.1.4.8.sh"
+  block:
+    - name: "4.1.4.8 | create script"
+      copy:
+        dest: "{{ temp_script4148 }}"
+        content: |
+            #!/bin/bash
+            chmod go-w /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.8 | run script"
+      command: "/bin/bash {{ temp_script4148 }}"
   when: level2|bool
 
 - name: "4.1.4.9 Ensure audit tools are owned by root (Automated)"
   become: yes
-  command: chown root /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+  vars: 
+    temp_script4149: "/tmp/4.1.4.9.sh"
+  block:
+    - name: "4.1.4.9 | create script"
+      copy:
+        dest: "{{ temp_script4149 }}"
+        content: |
+            #!/bin/bash
+            chown root /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.9 | run script"
+      command: "/bin/bash {{ temp_script4149 }}"
   when: level2|bool
 
 - name: "4.1.4.10 Ensure audit tools belong to group root (Automated)"
   become: yes
+  vars: 
+    temp_script41410: "/tmp/4.1.4.10.sh"
   block:
-    - name: "4.1.4.10 | remove more permissive mode from audit tools"
-      command:  chmod go-w /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
-    - name: "4.1.4.10 | change owner and group to root"
-      command: chown root:root /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+    - name: "4.1.4.10 | create script"
+      copy:
+        dest: "{{ temp_script41410 }}"
+        content: |
+            #!/bin/bash
+            chmod go-w /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+            chown root:root /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+        owner: root
+        group: root
+        mode: 0750
+    - name: "4.1.4.10 | run script"
+      command: "/bin/bash {{ temp_script41410 }}"
   when: level2|bool
 
 #- name: "4.1.4.11 Ensure cryptographic mechanisms are used to protect the integrity of audit tools (Automated)"

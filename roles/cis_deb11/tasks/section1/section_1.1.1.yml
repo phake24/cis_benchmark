@@ -12,6 +12,9 @@
       copy:
         dest: "{{ cramfs_config }}"
         content: |
+             # {{ cramfs_config }}
+             #
+             # {{ hardening_header }}
              install cramfs /bin/true
              blacklist cramfs
         mode: 0644
@@ -39,6 +42,9 @@
       copy:
         dest: "{{ squashfs_config }}"
         content: |
+             # {{ squashfs_config }}
+             #
+             # {{ hardening_header }}
              install squashfs /bin/true
              blacklist squashfs
         mode: 0644
@@ -66,8 +72,6 @@
         dest: "{{ udf_config }}"
         content: |
              # {{ udf_config }}
-             #
-             # {{ ansible_managed }}
              #
              # {{ hardening_header }}
              install udf /bin/true

@@ -14,8 +14,6 @@
         content: |
              # {{ usb_storage_config }}
              #
-             # {{ ansible_managed }}
-             #
              # {{ hardening_header }}
              install usb-storage /bin/true
              blacklist usb-storage

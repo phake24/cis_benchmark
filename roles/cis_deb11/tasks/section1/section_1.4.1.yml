@@ -29,8 +29,6 @@
               content: |
                   # {{ grub_v2_password_script }}
                   #
-                  # {{ ansible_managed }}
-                  #
                   # {{ hardening_header }}
                   #!/bin/bash
                   echo "{{ grub_v2_password }}\n{{ grub_v2_password }}" | grub-mkpasswd-pbkdf2 | awk '/hash of / { print $NF }'

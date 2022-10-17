@@ -3,7 +3,7 @@
   vars:
     temp_script4141: "/tmp/4.1.4.1.sh"
   block:
-    - name: "4.1.4.1 | create script"
+    - name: "4.1.4.1 |-> create script"
       copy: 
         dest: "{{ temp_script4141 }}"
         content: |
@@ -12,7 +12,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.1 | run script"
+    - name: "4.1.4.1 |-> run script"
       command: "/bin/bash {{ temp_script4141 }}"
   when: level2|bool
   tags:
@@ -26,7 +26,7 @@
   vars:
     temp_script4142: "/tmp/4.1.4.2.sh"
   block:
-    - name: "4.1.4.2 | create script"
+    - name: "4.1.4.2 |-> create script"
       copy:
         dest: "{{ temp_script4142 }}"
         content: |
@@ -35,7 +35,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.2 | run script"
+    - name: "4.1.4.2 |-> run script"
       command: "/bin/bash {{ temp_script4142 }}"
   when: level2|bool
   tags:
@@ -49,7 +49,7 @@
   vars: 
     temp_script4143: "/tmp/4.1.4.3.sh"
   block:
-    - name: "4.1.4.3 | create script"
+    - name: "4.1.4.3 |-> create script"
       copy:
         dest: "{{ temp_script4143 }}"
         content: |
@@ -58,7 +58,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.3 | run script"
+    - name: "4.1.4.3 |-> run script"
       command: "/bin/bash {{ temp_script4143 }}"
   when: level2|bool
   tags:
@@ -72,7 +72,7 @@
   vars: 
     temp_script4144: "/tmp/4.1.4.4.sh"
   block:
-    - name: "4.1.4.4 | create script"
+    - name: "4.1.4.4 |-> create script"
       copy:
         dest: "{{ temp_script4144 }}"
         content: |
@@ -81,7 +81,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.4 | run script"
+    - name: "4.1.4.4 |-> run script"
       command: "/bin/bash {{ temp_script4144 }}"    
   when: level2|bool
   tags:
@@ -95,7 +95,7 @@
   vars: 
     temp_script4145: "/tmp/4.1.4.5.sh"
   block:
-    - name: "4.1.4.5 | create script"
+    - name: "4.1.4.5 |-> create script"
       copy:
         dest: "{{ temp_script4145 }}"
         content: |
@@ -104,7 +104,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.5 | run script"
+    - name: "4.1.4.5 |-> run script"
       command: "/bin/bash {{ temp_script4145 }}"
   when: level2|bool
   tags:
@@ -118,7 +118,7 @@
   vars: 
     temp_script4146: "/tmp/4.1.4.6.sh"
   block:
-    - name: "4.1.4.6 | create script"
+    - name: "4.1.4.6 |-> create script"
       copy:
         dest: "{{ temp_script4146 }}"
         content: |
@@ -127,7 +127,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.6 | run script"
+    - name: "4.1.4.6 |-> run script"
       command: "/bin/bash {{ temp_script4146 }}"
   when: level2|bool
   tags:
@@ -141,7 +141,7 @@
   vars: 
     temp_script4147: "/tmp/4.1.4.7.sh"
   block:
-    - name: "4.1.4.7 | create script"
+    - name: "4.1.4.7 |-> create script"
       copy:
         dest: "{{ temp_script4147 }}"
         content: |
@@ -150,7 +150,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.7 | run script"
+    - name: "4.1.4.7 |-> run script"
       command: "/bin/bash {{ temp_script4147 }}"
   when: level2|bool
   tags:
@@ -164,7 +164,7 @@
   vars: 
     temp_script4148: "/tmp/4.1.4.8.sh"
   block:
-    - name: "4.1.4.8 | create script"
+    - name: "4.1.4.8 |-> create script"
       copy:
         dest: "{{ temp_script4148 }}"
         content: |
@@ -173,7 +173,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.8 | run script"
+    - name: "4.1.4.8 |-> run script"
       command: "/bin/bash {{ temp_script4148 }}"
   when: level2|bool
   tags:
@@ -187,7 +187,7 @@
   vars: 
     temp_script4149: "/tmp/4.1.4.9.sh"
   block:
-    - name: "4.1.4.9 | create script"
+    - name: "4.1.4.9 |-> create script"
       copy:
         dest: "{{ temp_script4149 }}"
         content: |
@@ -196,7 +196,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.9 | run script"
+    - name: "4.1.4.9 |-> run script"
       command: "/bin/bash {{ temp_script4149 }}"
   when: level2|bool
   tags:
@@ -210,7 +210,7 @@
   vars: 
     temp_script41410: "/tmp/4.1.4.10.sh"
   block:
-    - name: "4.1.4.10 | create script"
+    - name: "4.1.4.10 |-> create script"
       copy:
         dest: "{{ temp_script41410 }}"
         content: |
@@ -220,7 +220,7 @@
         owner: root
         group: root
         mode: 0750
-    - name: "4.1.4.10 | run script"
+    - name: "4.1.4.10 |-> run script"
       command: "/bin/bash {{ temp_script41410 }}"
   when: level2|bool
   tags:

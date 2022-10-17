@@ -20,6 +20,16 @@ enable_apparmor: True
 enable_apparmor_complain: False   # only possible for Level 1
 enable_apparmor_enforce: True     # forced for Level 2
 
+enable_logging_journald_remote: False # True or False
+enable_logging_journald_remote_server: 192.168.1.1 # journald remote server address
+enable_logging_journald_remote_ServerKeyFilePath: /etc/ssl/private/journal-upload.pem
+enable_logging_journald_remote_ServerCertPath: /etc/ssl/certs/journal-upload.pem
+enable_logging_journald_remote_TrustCertPath: /etc/ssl/ca/trusted.pem
+enable_logging_jounrald_remote_ServerKey: 
+enable_logging_jounrald_remote_ServerCert: 
+enable_logging_jounrald_remote_TrustCert: 
+
+
 content_login_banner: |
   ############################>>>>>#############################
   ###            This system is private property of          ###
@@ -47,6 +57,8 @@ ansible_become_method: su
 ansible_become_password: deb11_root
 hardening_header: |
   # {{ ansible_os_family }}-Linux Hardening {{ hardening_version }}
+  #
+  # Ansible managed: modified on {{ ansible_date_time }}
   #
   # Date {{ hardening_date }}
 

@@ -1,0 +1,7 @@
+- name: "4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)"
+  become: yes
+  when: level1|bool
+  tags:
+    - section4
+    - section4.2
+    - section4.2.3

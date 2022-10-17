@@ -1,0 +1,11 @@
+# /etc/rsyslog.d/remote.conf
+#
+# {{ ansible_managed }}
+#
+# {{ hardening_header }}
+
+*.* action(type="omfwd" target="{{ SyslogServerPrimary }}" port="{{ SyslogServerPrimaryPort }}" protocol="{{ SyslogServerPrimaryProto }}" action.resumeRetryCount="{{ SyslogServerPrimaryRetryCount }}" queue.type="linkedList" queue.size="{{ SyslogServerPrimaryQueueSize }}")
+*.* action(type="omfwd" target="{{ SyslogServerSecondary }}" port="{{ SyslogServerSecondaryPort }}" protocol="{{ SyslogServerSecondaryProto }}" action.resumeRetryCount="{{ SyslogServerSecondaryRetryCount }}" queue.type="linkedList" queue.size="{{ SyslogServerSecondaryQueueSize }}")
+
+if $programname == 'audisp-syslog' then stop
+

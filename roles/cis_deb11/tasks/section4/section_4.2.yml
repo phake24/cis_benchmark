@@ -1,0 +1,5 @@
+- name: "4.2.1 Configure journald"
+  include_tasks: section_4.2.1.yml
+
+- name: "4.2.2 Configure rsyslog"
+  include_tasks: section_4.2.2.yml

@@ -9,5 +9,9 @@
         group: root
         mode: 0644
   when: level1|bool
+  tags:
+    - section1
+    - section1.2
+    - section1.2.1
     
 

@@ -32,6 +32,11 @@
     - copy:
         dest: "{{ aidecheck_service_file }}"
         content: |
+          # {{ aidecheck_service_file }}
+          #
+          # {{ ansible_managed }}
+          #
+          # {{ hardening_header }}
           [Unit]
           Description=Aide Check
           [Service]
@@ -46,6 +51,11 @@
     - copy:
         dest: "{{ aidecheck_timer_file }}"
         content: |
+          # {{ aidecheck_timer_file }}
+          #
+          # {{ ansible_managed }}
+          #
+          # {{ hardening_header }}
           [Unit]
           Description=Aide check every day at 5AM
           [Timer]

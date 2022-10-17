@@ -63,6 +63,8 @@
               content: |
                   # {{ systemd_coredump_config_file }}
                   # 
+                  # {{ ansible_managed }}
+                  #
                   {{ hardening_header }}
                   [Coredump]
                   Storage=none
@@ -105,6 +107,8 @@
               content: |
                   # {{ security_hardlimits_config_file }}
                   # 
+                  # {{ ansible_managed }}
+                  #
                   {{ hardening_header }}
                   * hard core 0
               owner: root

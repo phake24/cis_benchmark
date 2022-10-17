@@ -63,6 +63,10 @@
 
 - name: restart auditd
   become: yes
-  command: service restart auditd
+  command: service auditd restart
 
-
+- name: restart journald
+  become: yes
+  systemd:
+    name: systemd-journald
+    state: restarted

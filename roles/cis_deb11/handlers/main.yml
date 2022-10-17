@@ -65,4 +65,8 @@
   become: yes
   command: service auditd restart
 
-
+- name: restart journald
+  become: yes
+  systemd:
+    name: systemd-journald
+    state: restarted

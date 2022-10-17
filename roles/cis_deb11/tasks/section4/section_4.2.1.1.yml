@@ -1,0 +1,77 @@
+- name: "4.2.1.1.1 Ensure systemd-journal-remote is installed (Automated)"
+  become: yes
+  apt:
+    name: systemd-journal-remote
+    state: present
+    update_cache: yes
+  when: level1 == True and enable_logging_journald_remote == True
+  tags: 
+    - section4
+    - section4.2
+    - section4.2.1
+    - section4.2.1.1
+    - section4.2.1.1.1
+
+- name: "4.2.1.1.2 Ensure systemd-journal-remote is configured (Manual)"
+  become: yes
+  block:
+    - template:
+        src: "etc/systemd/journal-upload.conf.j2"
+        dest: "/etc/systemd/journal-upload.conf"
+        owner: root
+        group: root
+        mode: 0644
+    - copy:
+        dest: "{{ enable_logging_journald_remote_ServerKeyFilePath }}"
+        content: "{{ enable_logging_jounrald_remote_ServerKey }}"
+        owner: root
+        group: root
+        mode: 0644
+    - copy:
+        dest: "{{ enable_logging_journald_remote_ServerCertPath }}"
+        content: "{{ enable_logging_jounrald_remote_ServerCert }}"
+        owner: root
+        group: root
+        mode: 0644
+    - copy:
+        dest: "{{ enable_logging_journald_remote_TrustCertPath }}"
+        content: "{{ enable_logging_jounrald_remote_TrustCert }}"
+        owner: root
+        group: root
+        mode: 0644
+  when: level1 == True and enable_logging_journald_remote == True
+  tags: 
+    - section4
+    - section4.2
+    - section4.2.1
+    - section4.2.1.1
+    - section4.2.1.1.2
+
+- name: "4.2.1.1.3 Ensure systemd-journal-remote is enabled (Manual)"
+  become: yes
+  systemd:
+    name: systemd-journal-upload
+    state: started
+    enabled: yes
+  when: level1 == True and enable_logging_journald_remote == True
+  tags: 
+    - section4
+    - section4.2
+    - section4.2.1
+    - section4.2.1.1
+    - section4.2.1.1.3
+
+- name: "4.2.1.1.4 Ensure journald is not configured to recieve logs from a remote client (Automated)"
+  become: yes
+  systemd:
+    name: systemd-journal-remote.socket
+    state: stopped
+    enabled: False
+  when: level1 == True and enable_logging_journald_remote == True
+  tags: 
+    - section4
+    - section4.2
+    - section4.2.1
+    - section4.2.1.1
+    - section4.2.1.1.4
+

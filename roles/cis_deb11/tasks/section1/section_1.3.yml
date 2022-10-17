@@ -34,8 +34,6 @@
         content: |
           # {{ aidecheck_service_file }}
           #
-          # {{ ansible_managed }}
-          #
           # {{ hardening_header }}
           [Unit]
           Description=Aide Check
@@ -52,8 +50,6 @@
         dest: "{{ aidecheck_timer_file }}"
         content: |
           # {{ aidecheck_timer_file }}
-          #
-          # {{ ansible_managed }}
           #
           # {{ hardening_header }}
           [Unit]

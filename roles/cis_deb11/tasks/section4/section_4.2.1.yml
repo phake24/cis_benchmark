@@ -117,8 +117,6 @@
 
 - name: "4.2.1.7 Ensure journald default file permissions configured (Manual)"
   become: yes
-  vars:
-    journal_systemd: "/lib/tmpfiles.d/systemd.conf"
   copy:
     src: etc/tmpfiles.d/systemd.conf
     dest: /etc/tmpfiles.d/systemd.conf

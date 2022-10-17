@@ -7,6 +7,17 @@ ntp_fallback_server_list: 1.50.1.68 1.50.1.69 # seperated by spaces
 level1: True
 level2: True
 
+SyslogServerPrimary: 1.50.1.108
+SyslogServerPrimaryPort: 514
+SyslogServerPrimaryProto: tcp
+SyslogServerPrimaryRetryCount: 100
+SyslogServerPrimaryQueueSize: 1000
+SyslogServerSecondary: 1.50.2.212
+SyslogServerSecondaryPort: 514
+SyslogServerSecondaryProto: tcp
+SyslogServerSecondaryRetryCount: 100
+SyslogServerSecondaryQueueSize: 1000
+
 debian_repository_hostname: de-vpc-fravc-spm-001
 debian_repository_port: 8443
 

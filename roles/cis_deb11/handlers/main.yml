@@ -63,7 +63,7 @@
 
 - name: restart auditd
   become: yes
-  command: service auditd restart
+  command: /usr/sbin/service auditd restart
 
 - name: restart journald
   become: yes

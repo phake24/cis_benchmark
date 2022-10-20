@@ -1,13 +1,11 @@
 - name: "1.2.1 Ensure package manager repositories are configured (Manual)"
   become: yes
-  block:
-    - name: "Configuring /etc/apt/sources.list"
-      template:
-        src: etc/apt/sources.list.j2
-        dest: /etc/apt/sources.list
-        owner: root
-        group: root
-        mode: 0644
+  template:
+    src: etc/apt/sources.list.j2
+    dest: /etc/apt/sources.list
+    owner: root
+    group: root
+    mode: 0644
   when: level1|bool
   tags:
     - section1

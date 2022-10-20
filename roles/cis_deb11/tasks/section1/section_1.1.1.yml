@@ -3,12 +3,12 @@
   vars:
       cramfs_config: "/etc/modprobe.d/cramfs.conf"
   block:
-    - name: "Disabling cramfs"
+    - name: "1.1.1.1 |-> Disabling cramfs"
       modprobe: 
         name: cramfs
         state: absent
   
-    - name: "Writing {{ cramfs_config }}"
+    - name: "1.1.1.1 |-> Writing {{ cramfs_config }}"
       copy:
         dest: "{{ cramfs_config }}"
         content: |
@@ -33,12 +33,12 @@
   vars:
       squashfs_config: "/etc/modprobe.d/squashfs.conf"
   block:
-    - name: "Disabling squashfs"
+    - name: "1.1.1.2 |-> Disabling squashfs"
       modprobe: 
         name: squashfs
         state: absent
   
-    - name: "Writing {{ squashfs_config }}"
+    - name: "1.1.1.2 |-> Writing {{ squashfs_config }}"
       copy:
         dest: "{{ squashfs_config }}"
         content: |
@@ -62,12 +62,12 @@
   vars:
       udf_config: "/etc/modprobe.d/udf.conf"
   block:
-    - name: "Disabling udf"
+    - name: "1.1.1.3 |-> Disabling udf"
       modprobe: 
         name: udf
         state: absent
   
-    - name: "Writing {{ udf_config }}"
+    - name: "1.1.1.3 |-> Writing {{ udf_config }}"
       copy:
         dest: "{{ udf_config }}"
         content: |

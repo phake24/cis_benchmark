@@ -1,17 +1,15 @@
 - name: "1.4.1 Ensure bootloader password is set (Automated)"
   become: yes
   block:
-    - name: "check if {{ debian_grub_file_user_config }} exists"
-      stat: 
+    - stat: 
         path: "{{ debian_grub_file_user_config }}"
       register: debian_grub_file_user_config_exists
-    - name: "Create {{ debian_grub_file_user_config }} if not exist"
-      file:
+    - file:
         path: "{{ debian_grub_file_user_config }}"
         state: touch
       when: not debian_grub_file_user_config_exists.stat.exists
-    - name: "1.4.1 | configure grubv2 user {{ grub_v2_user }} to {{ debian_grub_file_user_config }}"
-      lineinfile: 
+    - name: "1.4.1 |-> configure grubv2 user {{ grub_v2_user }} to {{ debian_grub_file_user_config }}"
+    - lineinfile: 
         dest: "{{ debian_grub_file_user_config }}"
         regexp: "^set superusers=" 
         state: present
@@ -21,10 +19,9 @@
         group: root
         mode: 0400
 
-    - name: "1.4.1 | generate vault of grub password" 
+    - name: "1.4.1 |-> generate vault of grub password" 
       block:
-          - name: "1.4.1 | create grubv2 password generation script"
-            copy:
+          - copy:
               dest: "{{ grub_v2_password_script }}"
               content: |
                   # {{ grub_v2_password_script }}

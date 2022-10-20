@@ -3,16 +3,16 @@
     "1.3.1 Ensure AIDE is installed (Automated)"
   become: yes
   block:
-    - name: "1.3.1 | Installing aide"
+    - name: "1.3.1 |-> Installing aide"
       apt:
         name: ["aide", "aide-common"]
         state: present
         update_cache: yes
       register: result
-    - name: "1.3.1 | Initializing AIDE"
+    - name: "1.3.1 |-> Initializing AIDE"
       command: /usr/sbin/aideinit
       when: result.changed
-    - name: "1.3.1 | Creating AIDE Database"
+    - name: "1.3.1 |-> Creating AIDE Database"
       command: mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
       when: result.changed
   when: 

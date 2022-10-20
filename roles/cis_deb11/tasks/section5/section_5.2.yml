@@ -163,7 +163,7 @@
   tags:
     - section5
     - section5.2
-    - section5.2.9
+    - section5.2.11
 
 - name: "5.2.12 Ensure SSH X11 forwarding is disabled (Automated)"
   become: yes
@@ -179,7 +179,7 @@
   tags:
     - section5
     - section5.2
-    - section5.2.9
+    - section5.2.12
 
 - name: |
     "5.2.13 Ensure only strong Ciphers are used (Automated)"
@@ -197,7 +197,9 @@
   tags:
     - section5
     - section5.2
-    - section5.2.9
+    - section5.2.13
+    - section5.2.14
+    - section5.2.15
 
 - name: "5.2.16 Ensure SSH AllowTcpForwarding is disabled (Automated)"
   become: yes
@@ -213,7 +215,7 @@
   tags:
     - section5
     - section5.2
-    - section5.2.9
+    - section5.2.16
 
 - name: "5.2.17 Ensure SSH warning banner is configured (Automated)"
   become: yes
@@ -229,7 +231,7 @@
   tags:
     - section5
     - section5.2
-    - section5.2.9
+    - section5.2.17
 
 - name: "5.2.18 Ensure SSH MaxAuthTries is set to 4 or less (Automated)"
   become: yes
@@ -245,6 +247,78 @@
   tags:
     - section5
     - section5.2
-    - section5.2.9
+    - section5.2.18
 
+- name: "5.2.19 Ensure SSH MaxStartups is configured (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regexp: '(?i).*MaxStartups.*'
+    line: "MaxStartups 10:30:60"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.19
+
+- name: "5.2.20 Ensure SSH MaxSessions is set to 10 or less (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regexp: '(?i).*MaxSessions.*'
+    line: "MaxSessions 10"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.20
+
+
+- name: "5.2.21 Ensure SSH LoginGraceTime is set to one minute or less (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regexp: '(?i).*LoginGraceTime.*'
+    line: "LoginGraceTime 60"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.21
+
+- name: "5.2.22 Ensure SSH Idle Timeout Interval is configured (Automated)"
+  become: yes
+  block:
+    - lineinfile:
+      path: "/etc/ssh/sshd_config"
+      regexp: '(?i).*ClientAliveInterval.*'
+      line: "ClientAliveInterval 15"
+      owner: root
+      group: root
+      mode: 0640
+    - lineinfile:
+      path: "/etc/ssh/sshd_config"
+      regexp: '(?i).*ClientAliveCountMax.*'
+      line: "ClientAliveCountMax 3"
+      owner: root
+      group: root
+      mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.22
 

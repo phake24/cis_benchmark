@@ -1,6 +1,9 @@
 ---
 # need to be adjusted:
 
+root_password: root_pass2022!
+povadmin_password: povadmin_pass2022!
+
 ntp_server_list: 1.11.5.37 1.11.5.36 # seperated by spaces
 ntp_fallback_server_list: 1.50.1.68 1.50.1.69 # seperated by spaces
 

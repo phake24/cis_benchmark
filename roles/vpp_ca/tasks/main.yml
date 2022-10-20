@@ -34,3 +34,6 @@
   notify: updateca {{ ansible_os_family }}
   when: labor|bool == False
 
+
+- name: flush handlers
+  meta: flush_handlers

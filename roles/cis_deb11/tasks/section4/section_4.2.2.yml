@@ -74,7 +74,7 @@
     - section4.2.2
     - section4.2.2.5
  
- - name: "4.2.2.6 Ensure rsyslog is configured to send logs to a remote log host (Manual)"
+- name: "4.2.2.6 Ensure rsyslog is configured to send logs to a remote log host (Manual)"
   become: yes
   template:
     src: etc/rsyslog.d/remote.conf.j2
@@ -90,7 +90,7 @@
     - section4.2.2
     - section4.2.2.6
 
- - name: "4.2.2.7 Ensure rsyslog is not configured to receive logs from a remote client (Automated)"
+- name: "4.2.2.7 Ensure rsyslog is not configured to receive logs from a remote client (Automated)"
   become: yes
   lineinfile:
     path: /etc/rsyslog.conf

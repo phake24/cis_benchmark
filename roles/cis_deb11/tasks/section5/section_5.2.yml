@@ -302,20 +302,20 @@
   become: yes
   block:
     - lineinfile:
-      path: "/etc/ssh/sshd_config"
-      regexp: '(?i).*ClientAliveInterval.*'
-      line: "ClientAliveInterval 15"
-      owner: root
-      group: root
-      mode: 0640
+        path: "/etc/ssh/sshd_config"
+        regexp: '(?i).*ClientAliveInterval.*'
+        line: "ClientAliveInterval 15"
+        owner: root
+        group: root
+        mode: 0640
     - lineinfile:
-      path: "/etc/ssh/sshd_config"
-      regexp: '(?i).*ClientAliveCountMax.*'
-      line: "ClientAliveCountMax 3"
-      owner: root
-      group: root
-      mode: 0640
-  notify: restart sshd
+        path: "/etc/ssh/sshd_config"
+        regexp: '(?i).*ClientAliveCountMax.*'
+        line: "ClientAliveCountMax 3"
+        owner: root
+        group: root
+        mode: 0640
+      notify: restart sshd
   when: level1|bool
   tags:
     - section5

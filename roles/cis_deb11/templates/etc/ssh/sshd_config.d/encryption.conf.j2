@@ -1,0 +1,8 @@
+# /etc/ssh/sshd_config.d/encryption.conf
+# {{ ansible_managed }}
+#
+# {{ hardening_header }}
+
+Ciphers {{ sshd_allowed_ciphers }}
+MACs {{ sshd_allowed_macs }}
+KexAlgorithms {{ sshd_allowed_kexalgorithm }}

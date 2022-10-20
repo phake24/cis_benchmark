@@ -32,3 +32,219 @@
     - section5.2
     - section5.2.2
 
+- name: "5.2.3 Ensure permissions on SSH public host key files are configured (Automated)"
+  become: yes
+  block:
+    - command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chmod u-x,gowx {} \;
+    - command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chown root:root {} \;
+
+- name: "5.2.4 Ensure SSH access is limited (Automated)"
+  become: yes
+  file:
+    dest: /etc/ssh/sshd_config.d/allow_groups.conf
+    content: {{ sshd_allow_groups }} 
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.4
+
+- name: "5.2.5 Ensure SSH LogLevel is appropriate (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*LogLevel.*'
+    line: "LogLevel INFO"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.5
+
+- name: "5.2.6 Ensure SSH PAM is enabled (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*UsePAM.*'
+    line: "UsePAM yes"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.6
+  
+- name: "5.2.7 Ensure SSH root login is disabled (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*PermitRootLogin.*'
+    line: "UsePAM yes"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.7
+
+- name: "5.2.8 Ensure SSH HostbasedAuthentication is disabled (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*HostbasedAuthentication.*'
+    line: "HostbasedAuthentication no"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.8
+
+- name: "5.2.9 Ensure SSH PermitEmptyPasswords is disabled (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*PermitEmptyPasswords.*'
+    line: "PermitEmptyPasswords no"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.9
+
+- name: "5.2.10 Ensure SSH PermitUserEnvironment is disabled (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*PermitUserEnvironment.*'
+    line: "PermitUserEnvironment no"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.9
+
+- name: "5.2.11 Ensure SSH IgnoreRhosts is enabled (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*IgnoreRhosts.*'
+    line: "IgnoreRhosts yes"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.9
+
+- name: "5.2.12 Ensure SSH X11 forwarding is disabled (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*x11forwarding.*'
+    line: "x11forwarding no"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level2|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.9
+
+- name: |
+    "5.2.13 Ensure only strong Ciphers are used (Automated)"
+    "5.2.14 Ensure only strong MAC algorithms are used (Automated)"
+    "5.2.15 Ensure only strong Key Exchange algorithms are used (Automated)"
+  become: yes
+  template:
+    src: etc/ssh/sshd_config.d/encryption.conf.j2
+    dest: /etc/ssh/sshd_config.d/encryption.conf
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.9
+
+- name: "5.2.16 Ensure SSH AllowTcpForwarding is disabled (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*AllowTcpForwarding.*'
+    line: "AllowTcpForwarding no"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level2|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.9
+
+- name: "5.2.17 Ensure SSH warning banner is configured (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*Banner.*'
+    line: "Banner /etc/issue.net"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.9
+
+- name: "5.2.18 Ensure SSH MaxAuthTries is set to 4 or less (Automated)"
+  become: yes
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '(?-i).*MaxAuthTries.*'
+    line: "MaxAuthTries 3"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart sshd
+  when: level1|bool
+  tags:
+    - section5
+    - section5.2
+    - section5.2.9
+
+

@@ -4,8 +4,7 @@
 - name: "4.2.2 Configure rsyslog"
   include_tasks: section_4.2.2.yml
 
-- name: "4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)"
-  # only temporary solution!
+- name: "4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)"   # only temporary solution!
   become: yes
   block:
     - copy:
@@ -14,9 +13,9 @@
         owner: root
         group: root
         mode: 0750
-    - command: /bin/bash /etc/cron.daily/var_log_perm.sh
+    - command: /etc/cron.daily/var_log_perm.sh
   when: level1|bool
   tags:
-    - section4
-    - section4.2
-    - section4.2.3
+  - section4
+  - section4.2
+  - section4.2.3

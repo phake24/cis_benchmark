@@ -23,7 +23,6 @@
         group: root
         mode: 0750
     - command: /bin/bash {{ path }}
-      ignore_errors: True
     - file:
         path: {{ path }}
         state: absent

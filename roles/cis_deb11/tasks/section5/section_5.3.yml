@@ -74,10 +74,17 @@
 
 - name: "5.3.7 Ensure access to the su command is restricted (Automated)"
   become: yes
-  lineinfile:
-    path: "/etc/pam.d/su"
-    regexp: "(?i)auth required pam_wheel.so use_uid group=suusers"
-    line: "auth required pam_wheel.so use_uid group=suusers"
+  block:
+    - group:
+        name: suusers
+        state: present
+    - user:
+        name: povadmin
+        group: suusers
+    - lineinfile:
+        path: "/etc/pam.d/su"
+        regexp: "(?i)auth required pam_wheel.so use_uid group=suusers"
+        line: "auth required pam_wheel.so use_uid group=suusers"
   when: level1|bool
   tags:
     - section5

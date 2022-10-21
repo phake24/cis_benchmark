@@ -94,8 +94,8 @@
   become: yes
   block:
     - copy: 
-        src: tmp/5.4.5.sh
-        dest: /tmp/5.4.5.sh
+        src: "tmp/5.4.5.sh"
+        dest: "/tmp/5.4.5.sh"
         owner: root
         group: root
         mode: 0750

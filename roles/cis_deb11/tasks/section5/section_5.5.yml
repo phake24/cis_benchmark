@@ -1,0 +1,90 @@
+- name: "5.5.1 Set Shadow Password Suite Parameters"
+  include_tasks: section_5.5.1.yml
+
+- name: "5.5.2 Ensure system accounts are secured (Automated)"
+  msg: "WARNING! NOT RELEVANT FOR NEW VMs"
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.2
+
+- name: "5.5.3 Ensure default group for the root account is GID 0 (Automated)"
+  become: yes
+  group: 
+    name: root
+    gid: 0
+
+- name: "5.5.4 Ensure default user umask is 027 or more restrictive (Automated)"
+  become: yes
+  block:
+    - name: "5.5.4 |-> write /etc/bash.bashrc"
+      copy:
+        src: "etc/bash.bashrc"
+        dest: "/etc/bash.bashrc"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "5.5.4 |-> set umask to /root/.bashrc"
+      lineinfile:
+        path: "/root/.bashrc"
+        regexp: '(?i)unmask'
+        line: 'umask 027'
+    - name: "5.5.4 |-> write /etc/skel/.bashrc"
+      copy:
+        src: "etc/skel/.bashrc"
+        dst: "/etc/skel/.bashrc"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "5.5.4 |-> write /etc/profile"
+      copy:
+        src: "etc/profile"
+        dest: "/etc/profile"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "5.5.4 |-> write /etc/skel/.bash_aliases"
+      copy:
+        src: "etc/skel/.bash_aliases"
+        dest: "/etc/skel/.bash_aliases"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "5.5.4 |-> write /root/.bash_aliases"
+      copy:
+        src: "etc/skel/.bash_aliases"
+        dest: "/root/.bash_aliases"
+        owner: root
+        group: root
+        mode: 0640
+    - name: "5.5.4 |-> write /skel/.profile"
+      copy:
+        src: "etc/skel/.profile"
+        dest: "/etc/skel/.profile"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "5.5.4 |-> write /etc/profile.d/set_umask.sh"
+      copy:
+        dest: "/etc/profile.d/set_umask.sh"
+        content: "umask 027"
+        owner: root
+        group: root
+        mode: 0644
+    #- name: "5.5.4 |-> adjust /etc/login.def"
+    #  block:
+    #    - lineinfile:
+    #        path: "/etc/login.defs"
+    #        regexp: '(?i)UMASK'
+    #        line: 'UMASK      027'
+    #    - lineinfile:
+    #        path: "/etc/login.defs"
+    #        regexp: '(?i)USERGROUPS_ENAB'
+    #        line: 'USERGROUPS_ENAB no'
+    #- name: "5.5.4 |-> adjust /etc/pam.d/common-session"
+    #  lineinfile:
+    #    path: "/etc/pam.d/common-session"
+    #    regexp: '(?i)session *optional *pam_umask.so'
+    #    line: 'session    optional   pam_umask.so'
+    

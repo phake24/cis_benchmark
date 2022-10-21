@@ -1,0 +1,59 @@
+- name: "5.5.1.1 Ensure minimum days between password changes is configured (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/login.defs"
+    regexp: '(?i)PASS_MIN_DAYS'
+    line: 'PASS_MIN_DAYS 1'
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.1
+    - section5.5.1.1
+
+
+- name: "5.5.1.2 Ensure password expiration is 365 days or less (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/login.defs"
+    regexp: '(?i)PASS_MAX_DAYS'
+    line: 'PASS_MAX_DAYS 365'
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.1
+    - section5.5.1.2
+
+- name: "5.5.1.3 Ensure password expiration warning days is 7 or more (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/login.defs"
+    regexp: '(?i)PASS_WARN_AGE'
+    line: 'PASS_WARN_AGE 7'
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.1
+    - section5.5.1.2
+
+- name: "5.5.1.4 Ensure inactive password lock is 30 days or less (Automated)"
+  become: yes
+  block:
+    - lineinfile:
+        path: "/etc/login.defs"
+        regexp: '(?i)INACTIVE'
+        line: 'INACTIVE=30'
+    - command: /usr/sbin/useradd -D -f 30
+    
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.1
+    - section5.5.1.2
+
+- name: "5.5.1.5 Ensure all users last password change date is in the past (Automated)"
+  msg: "WARNING! NOT RELEVANT FOR NEW VMS"
+

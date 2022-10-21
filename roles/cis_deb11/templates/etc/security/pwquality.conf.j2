@@ -1,0 +1,15 @@
+ # /etc/security/pwquality.conf
+ #
+ # {{ ansible_managed }}
+ # {{ hardening_header }}
+
+difok = 15
+dictcheck = 1
+enforcing = 1
+maxrepeat = 3
+minclass = 4
+minlen = {{ minimum_password_length }}
+dcredit = -1
+lcredit = -1
+ocredit = -1
+ucredit = -1

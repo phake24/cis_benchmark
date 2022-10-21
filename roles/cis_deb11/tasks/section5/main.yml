@@ -10,3 +10,6 @@
 - name: "5.4 Configure PAM"
   include_tasks: section_5.4.yml
 
+- name: "5.5 User Accounts and Environment"
+  include_tasks: section_5.5.yml
+

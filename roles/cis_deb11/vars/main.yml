@@ -49,6 +49,11 @@ enable_logging_jounrald_remote_ServerKey:
 enable_logging_jounrald_remote_ServerCert: 
 enable_logging_jounrald_remote_TrustCert: 
 
+minimum_password_length: 14
+maximum_allowed_false_logins: 4 # not greater than4! Deny access if the number of consecutive authentication failures for this user during "maximum_allowed_false_logins" n tries
+false_login_fail_interval: 900 # not greather tha 900
+false_login_unlock_time: 600 # not greater than 600
+
 
 content_login_banner: |
   ############################>>>>>#############################

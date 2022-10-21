@@ -88,3 +88,5 @@
     #    regexp: '(?i)session *optional *pam_umask.so'
     #    line: 'session    optional   pam_umask.so'
     
+- name: "5.5.5 Ensure default user shell timeout is 900 seconds or less (Automated)"
+  msg: "already done by writing /etc/profile"

@@ -29,8 +29,8 @@
         line: "fail_interval = {{ false_login_fail_interval }}"
     - lineinfile:
         path: "/etc/security/faillock.conf"
-        regexp: '(?i)unlock time'
-        line: "unlock time = {{ false_login_unlock_time }}"
+        regexp: '(?i)unlock_time'
+        line: "unlock_time = {{ false_login_unlock_time }}"
     #common-auth
     - lineinfile:
         path: "/etc/pam.d/common-auth"

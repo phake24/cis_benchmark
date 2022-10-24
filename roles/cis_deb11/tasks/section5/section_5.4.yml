@@ -39,14 +39,14 @@
         insertbefore: '(?i)auth\s*.success=1 default=ignore.\s*pam_unix[.]so'
     - lineinfile:
         path: "/etc/pam.d/common-auth"
-        regexp: '(?i)auth *[default=die] *pam_faillock.so authfail'
-        line: 'auth     [default=die]     pam_faillock.so authfail'
-        insertafter: '(?i)auth\s*required\s*pam_faillock[.]so.preauth'
-    - lineinfile:
-        path: "/etc/pam.d/common-auth"
         regexp: '(?i)auth *sufficient *pam_faillock.so authsucc'
         line: 'auth     sufficient    pam_faillock.so authsucc'
-        insertafter: '(?i)auth\s*.default=die.\s*pam_faillock[.]so.authfail'
+        insertafter: '(?i)auth\s*.success=1 default=ignore.\s*pam_unix[.]so'
+    - lineinfile:
+        path: "/etc/pam.d/common-auth"
+        regexp: '(?i)auth *[default=die] *pam_faillock.so authfail'
+        line: 'auth     [default=die]     pam_faillock.so authfail'
+        insertafter: '(?i)auth\s*.success=1 default=ignore.\s*pam_unix[.]so'
     #common-account
     - lineinfile:
         path: "/etc/pam.d/common-account"

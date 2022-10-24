@@ -36,17 +36,17 @@
         path: "/etc/pam.d/common-auth"
         regexp: '(?i)auth *required *pam_faillock.so preauth'
         line: 'auth     required    pam_faillock.so preauth'
-        insertbefore: '(?i)auth *[success=1 default=ignore] *pam_unix.so'
+        insertbefore: '(?i)auth\s*.success=1 default=ignore.\s*pam_unix[.]so'
     - lineinfile:
         path: "/etc/pam.d/common-auth"
         regexp: '(?i)auth *[default=die] *pam_faillock.so authfail'
         line: 'auth     [default=die]     pam_faillock.so authfail'
-        insertafter: '(?i)auth *required *pam_faillock.so preauth'
+        insertafter: '(?i)auth\s*required\s*pam_faillock[.]so.preauth'
     - lineinfile:
         path: "/etc/pam.d/common-auth"
         regexp: '(?i)auth *sufficient *pam_faillock.so authsucc'
         line: 'auth     sufficient    pam_faillock.so authsucc'
-        insertafter: '(?i)auth *[default=die] *pam_faillock.so authfail'
+        insertafter: '(?i)auth\s*.default=die.\s*pam_faillock[.]so.authfail'
     #common-account
     - lineinfile:
         path: "/etc/pam.d/common-account"
@@ -64,7 +64,7 @@
     path: "/etc/pam.d/common-password"
     regexp: '(?i)password *required *pam_pwhistory.so'
     line: 'password     required      pam_pwhistory.so use_authtok remember=5'
-    insertbefore: '(?i)password *[success=1 default=ignore] *pam_unix.so'
+    insertbefore: '(?i)password\s*.success=1 default=ignore.\s*pam_unix[.]so'
   when: level1|bool
   tags:
     - section5

@@ -1,0 +1,167 @@
+- name: "6.1.1 Ensure permissions on /etc/passwd are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/passwd"
+    owner: root
+    group: root
+    mode: 0644
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.1
+
+- name: "6.1.2 Ensure permissions on /etc/passwd- are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/passwd-"
+    owner: root
+    group: root
+    mode: 0644
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.2
+    
+- name: "6.1.3 Ensure permissions on /etc/group are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/group"
+    owner: root
+    group: root
+    mode: 0644
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.3
+
+- name: "6.1.4 Ensure permissions on /etc/group- are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/group-"
+    owner: root
+    group: root
+    mode: 0644
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.4
+
+- name: "6.1.5 Ensure permissions on /etc/shadow are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/shadow"
+    owner: root
+    group: shadow
+    mode: 0640
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.5
+
+- name: "6.1.6 Ensure permissions on /etc/shadow- are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/shadow-"
+    owner: root
+    group: shadow
+    mode: 0640
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.6
+
+- name: "6.1.7 Ensure permissions on /etc/gshadow are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/gshadow"
+    owner: root
+    group: shadow
+    mode: 0640
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.7
+
+- name: "6.1.8 Ensure permissions on /etc/gshadow- are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/gshadow-"
+    owner: root
+    group: shadow
+    mode: 0640
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.8
+
+- name: "6.1.8 Ensure permissions on /etc/gshadow- are configured (Automated)"
+  become: yes
+  file:
+    path: "/etc/gshadow-"
+    owner: root
+    group: shadow
+    mode: 0640
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.8
+
+- name: "6.1.9 Ensure no world writable files exist (Automated)"
+  become: yes
+  command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002"
+  register: result
+  - debug:
+    msg: |
+      "no output should come: 
+      {{ result }} 
+      WARNING! not ready yet, as not necessary on new VMs"
+
+- name: "6.1.10 Ensure no unowned files or directories exist (Automated)"
+  become: yes
+  command: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser"
+  register: result
+  debug:
+    msg: |
+      "no output should come:
+      {{ result }}
+      WARNING! not ready yet, as not necessary on new VMs"
+
+- name: "6.1.11 Ensure no ungrouped files or directories exist (Automated)"
+  become: yes
+  command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -nogroup"
+  register: result
+  debug:
+    msg: |
+      "no output should come:
+      {{ result }}
+      WARNING! not ready yet, as not necessary on new VMs"
+
+- name: "6.1.12 Audit SUID executables (Manual)"
+  become: yes
+  command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -4000"
+  register: result
+  debug:
+    msg: |
+      "check if following SUID executables are legitimated:
+      {{ result }}
+      WARNING! not ready yet, as not necessary on new VMs"
+
+- name: "6.1.13 Audit SGID executables (Manual)"
+  become: yes
+  command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -2000"
+  register: result
+  debug:
+    msg: |
+      "check if following SUID executables are legitimated:
+      {{ result }}
+      WARNING! not ready yet, as not necessary on new VMs"
+

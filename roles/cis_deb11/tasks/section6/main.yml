@@ -1,2 +1,5 @@
 - name: "6.1 System File Permissions"
-  include_tasks: section6.1yml
+  include_tasks: section6.1.yml
+
+- name: "6.2 Local User and Group Settings"
+  include_tasks: section_6.2.yml

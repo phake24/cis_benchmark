@@ -1,0 +1,110 @@
+- name: "6.2.1 Ensure accounts in /etc/passwd use shadowed passwords (Automated)"
+  block:
+    - command: awk -F':' '($2 != "x" ) { print $1 " is not set to shadowed passwords "}' /etc/passwd
+      register: result
+    - debug:
+        msg: |
+          No result should come:
+          {{ result }}
+          WARNING! not ready yet, as not necessary on new VMs"
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.2
+
+
+  
+- name: "6.2.2 Ensure /etc/shadow password fields are not empty (Automated)"
+  become: yes
+  block:
+    - command: awk -F':'' '($2 == "" ) { print $1 " does not have a password "}' /etc/shadow
+      register: result
+    - debug:
+        msg: |
+          No Result should come:
+          {{ result }}
+          WARNING! not ready yet, as not necessary on new VMs"
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.2
+
+
+
+- name: "6.2.3 Ensure all groups in /etc/passwd exist in /etc/group (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.3.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.3.sh"
+        dest: {{ temp_script }}
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.3
+
+- name: "6.2.4 Ensure shadow group is empty (Automated)"
+  become: yes
+  command: "sed -ri 's/(^shadow:[^:]*:[^:]*:)([^:]+$)/\1/' /etc/group"
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.4
+
+- name: "6.2.5 Ensure no duplicate UIDs exist (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.5.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.5.sh"
+        dest: {{ temp_script }}
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.5
+
+- name: "6.2.6 Ensure no duplicate GIDs exist (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.6.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.6.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.6
+
+- name: "6.2.7 Ensure no duplicate user names exist (Automated)"
+  become: yes
+  

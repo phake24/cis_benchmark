@@ -7,7 +7,6 @@
       modprobe: 
         name: cramfs
         state: absent
-  
     - name: "1.1.1.1 |-> Writing {{ cramfs_config }}"
       copy:
         dest: "{{ cramfs_config }}"

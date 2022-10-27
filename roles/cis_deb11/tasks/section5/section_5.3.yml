@@ -1,16 +1,16 @@
 - name: "5.3.1 Ensure sudo is installed (Automated)"
-  become: ye
+  become: yes
   block:
     - apt:
         name: sudo
         state: present
     - lineinfile:
-      path: "/etc/sudoers"
-      regexp: "(?i)%sudo"
-      state: absent
-      owner: root
-      group: root
-      mode: 0640
+        path: "/etc/sudoers"
+        regexp: "(?i)%sudo"
+        state: absent
+        owner: root
+        group: root
+        mode: 0640
   when: level1|bool
   tags:
     - section5
@@ -34,7 +34,7 @@
   lineinfile:
     path: "/etc/sudoers"
     regexp: "(?i)Defaults logfile"
-    line: "Defaults logfile="/var/log/sudo.log""
+    line: 'Defaults logfile="/var/log/sudo.log"'
   when: level1|bool
   tags:
     - section5
@@ -54,6 +54,8 @@
     - section5.3.4
 
 - name: "5.3.5 Ensure re-authentication for privilege escalation is not disabled globally (Automated)"
+  debug:
+    msg: "WARNING! not finished yet"
 
 - name: "5.3.6 Ensure sudo authentication timeout is configured correctly (Automated)"
   become: yes

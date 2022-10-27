@@ -8,7 +8,6 @@
         path: "{{ debian_grub_file_user_config }}"
         state: touch
       when: not debian_grub_file_user_config_exists.stat.exists
-    - name: "1.4.1 |-> configure grubv2 user {{ grub_v2_user }} to {{ debian_grub_file_user_config }}"
     - lineinfile: 
         dest: "{{ debian_grub_file_user_config }}"
         regexp: "^set superusers=" 

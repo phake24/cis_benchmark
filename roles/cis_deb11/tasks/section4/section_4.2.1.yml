@@ -18,7 +18,7 @@
   become: yes
   lineinfile:
     path: "/etc/systemd/journald.conf"
-    regexp: "[cC]ompress="
+    regexp: "(?i)Compress="
     line: "Compress=yes"
     owner: root
     group: root
@@ -35,7 +35,7 @@
   become: yes
   lineinfile:
     path: "/etc/systemd/journald.conf"
-    regexp: "[sS]torage="
+    regexp: "(?i)Storage="
     line: "Storage=persistent"
     owner: root
     group: root
@@ -52,7 +52,7 @@
   become: yes
   lineinfile:
     path: "/etc/systemd/journald.conf"
-    regexp: "[Ff]orward[Tt]o[Ss]yslog="
+    regexp: "(?i)ForwardToSyslog="
     line: "ForwardToSyslog=yes"
     owner: root
     group: root
@@ -71,7 +71,7 @@
     - name: "4.2.1.6 | SystemMaxUse"
       lineinfile:
         path: "/etc/systemd/journald.conf"
-        regexp: ""
+        regexp: "(?i)SystemMaxUse"
         line: "SystemMaxUse=2G"
         owner: root
         group: root
@@ -79,7 +79,7 @@
     - name: "4.2.1.6 | SystemKeepFree"
       lineinfile:
         path: "/etc/systemd/journald.conf"
-        regexp: ""
+        regexp: "(?i)SystemKeepFree"
         line: "SystemKeepFree=10%"
         owner: root
         group: root
@@ -87,7 +87,7 @@
     - name: "4.2.1.6 | RunTimeMaxUse"
       lineinfile:
         path: "/etc/systemd/journald.conf"
-        regexp: ""
+        regexp: "(?i)RunTimeMaxUse"
         line: "RunTimeMaxUse=1G"
         owner: root
         group: root
@@ -95,7 +95,7 @@
     - name: "4.2.1.6 | RuntimeKeepFree"
       lineinfile:
         path: "/etc/systemd/journald.conf"
-        regexp: ""
+        regexp: "(?i)RuntimeKeepFree"
         line: "RuntimeKeepFree=10%"
         owner: root
         group: root
@@ -103,7 +103,7 @@
     - name: "4.2.1.6 | MaxFileSec"
       lineinfile:
         path: "/etc/systemd/journald.conf"
-        regexp: ""
+        regexp: "(?i)MaxFileSec"
         line: "MaxFileSec=1d"
         owner: root
         group: root

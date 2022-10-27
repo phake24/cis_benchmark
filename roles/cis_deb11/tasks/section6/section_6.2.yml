@@ -106,5 +106,228 @@
     - section6.2.6
 
 - name: "6.2.7 Ensure no duplicate user names exist (Automated)"
+  vars:
+    temp_script: "/tmp/6.2.7.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.7.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.7
+
+- name: "6.2.8 Ensure no duplicate group names exist (Automated)"
+  vars:
+    temp_script: "/tmp/6.2.8.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.8.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.8
+
+- name: "6.2.9 Ensure root PATH Integrity (Automated)"
   become: yes
-  
+  vars:
+    temp_script: "/tmp/6.2.9.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.9.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.9
+
+- name: "6.2.10 Ensure root is the only UID 0 account (Automated)"
+  become: yes
+  command: awk -F: '($3 == 0) { print $1 }' /etc/passwd
+  register: result
+  debug:
+    msg: |
+      Nothing should be retourned:
+      {{ result }}
+      END
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.10
+
+- name: "6.2.11 Ensure local interactive user home directories exist (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.11.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.11.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.11
+
+- name: "6.2.12 Ensure local interactive users own their home directories (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.12.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.12.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.12
+
+- name: "6.2.13 Ensure local interactive user home directories are mode 750 or more restrictive (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.13.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.13.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.13
+
+- name: "6.2.14 Ensure no local interactive user has .netrc files (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.14.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.14.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.14
+
+- name: "6.2.15 Ensure no local interactive user has .forward files (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.15.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.15.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.15
+
+
+- name: "6.2.16 Ensure no local interactive user has .rhosts files (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.16.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.16.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.16
+
+
+- name: "6.2.17 Ensure local interactive user dot files are not group or world writable (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.17.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.17.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.17
+
+798+-

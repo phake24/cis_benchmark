@@ -9,20 +9,20 @@
 - name: "initial parameters"
   include_tasks: init.yml
 
-- name: "CIS Section 1"
-  include_tasks: section1/main.yml
+  #- name: "CIS Section 1"
+  #include_tasks: section1/main.yml
 
-- name: "CIS Section 2"
-  include_tasks: section2/main.yml
+  #- name: "CIS Section 2"
+  #include_tasks: section2/main.yml
 
-- name: "CIS Section 3 Network Configuration"
-  include_tasks: section3/main.yml
+  #- name: "CIS Section 3 Network Configuration"
+  #include_tasks: section3/main.yml
 
-- name: "CIS Section 4 Logging and Auditing"
-  include_tasks: section4/main.yml
+  #- name: "CIS Section 4 Logging and Auditing"
+  #include_tasks: section4/main.yml
 
-- name: "CIS Section 5 Access, Authentication and Authorization"
-  include_tasks: section5/main.yml
+  #- name: "CIS Section 5 Access, Authentication and Authorization"
+  #include_tasks: section5/main.yml
 
 - name: "CIS Section 6 System Maintenance"
   include_tasks: section6/main.yml

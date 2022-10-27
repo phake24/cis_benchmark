@@ -87,7 +87,7 @@
         owner: root
         group: root
         mode: 0750
-  notify: force change passwords
+  #notify: force change passwords
   when: level1|bool
   tags:
     - section5

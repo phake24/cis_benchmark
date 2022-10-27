@@ -55,5 +55,6 @@
     - section5.5.1.2
 
 - name: "5.5.1.5 Ensure all users last password change date is in the past (Automated)"
-  msg: "WARNING! NOT RELEVANT FOR NEW VMS"
+  debug: 
+    msg: "WARNING! NOT RELEVANT FOR NEW VMS"
 

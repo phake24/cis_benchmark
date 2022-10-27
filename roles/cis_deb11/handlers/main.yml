@@ -83,4 +83,12 @@
     name: ssh
     state: restarted
 
+- name: force change passwords
+  become: yes
+  block:
+    - command: "/bin/bash /tmp/5.4.5.sh"
+    - file:
+        path: "/tmp/5.4.5.sh"
+        state: absent
+
 

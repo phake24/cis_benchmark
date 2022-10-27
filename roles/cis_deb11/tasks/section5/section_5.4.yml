@@ -87,12 +87,10 @@
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash /tmp/5.4.5.sh"
-    - file:
-        path: "/tmp/5.4.5.sh"
-        state: absent
+  notify: force change passwords
   when: level1|bool
   tags:
     - section5
     - section5.4
     - section5.4.5
+

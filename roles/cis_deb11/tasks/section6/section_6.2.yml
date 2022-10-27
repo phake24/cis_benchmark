@@ -5,7 +5,7 @@
     - debug:
         msg: |
           No result should come:
-          {{ result }}
+          {{ result.stdout }}
           WARNING! not ready yet, as not necessary on new VMs"
   when: level1|bool
   tags:
@@ -18,12 +18,12 @@
 - name: "6.2.2 Ensure /etc/shadow password fields are not empty (Automated)"
   become: yes
   block:
-    - command: awk -F':'' '($2 == "" ) { print $1 " does not have a password "}' /etc/shadow
+    - command: awk -F':' '($2 == "" ) { print $1 " does not have a password "}' /etc/shadow
       register: result
     - debug:
         msg: |
           No Result should come:
-          {{ result }}
+          {{ result.stdout }}
           WARNING! not ready yet, as not necessary on new VMs"
   when: level1|bool
   tags:
@@ -40,7 +40,7 @@
   block:
     - copy:
         src: "tmp/6.2.3.sh"
-        dest: {{ temp_script }}
+        dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
@@ -56,7 +56,7 @@
 
 - name: "6.2.4 Ensure shadow group is empty (Automated)"
   become: yes
-  command: "sed -ri 's/(^shadow:[^:]*:[^:]*:)([^:]+$)/\1/' /etc/group"
+  shell: sed -ri 's/(^shadow:[^:]*:[^:]*:)([^:]+$)/\1/' /etc/group
   when: level1|bool
   tags:
     - section6
@@ -70,7 +70,7 @@
   block:
     - copy:
         src: "tmp/6.2.5.sh"
-        dest: {{ temp_script }}
+        dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
@@ -106,6 +106,7 @@
     - section6.2.6
 
 - name: "6.2.7 Ensure no duplicate user names exist (Automated)"
+  become: yes
   vars:
     temp_script: "/tmp/6.2.7.sh"
   block:
@@ -126,6 +127,7 @@
     - section6.2.7
 
 - name: "6.2.8 Ensure no duplicate group names exist (Automated)"
+  become: yes
   vars:
     temp_script: "/tmp/6.2.8.sh"
   block:
@@ -168,13 +170,14 @@
 
 - name: "6.2.10 Ensure root is the only UID 0 account (Automated)"
   become: yes
-  command: awk -F: '($3 == 0) { print $1 }' /etc/passwd
-  register: result
-  debug:
-    msg: |
-      Nothing should be retourned:
-      {{ result }}
-      END
+  block:
+        - command: "awk -F: '($3 == 0) { print $1 }' /etc/passwd"
+          register: result
+        - debug:
+            msg: |
+                Nothing should be retourned:
+                {{ result.stdout }}
+                END
   when: level1|bool
   tags:
     - section6

@@ -2,7 +2,7 @@
 - name: "Debian 11 VPP hardening v2.0"
   hosts: all
   roles:
-      #- vpp_ca
+    - vpp_ca
     - cis_deb11
       # - iads_deb11
       # - psa_deb11

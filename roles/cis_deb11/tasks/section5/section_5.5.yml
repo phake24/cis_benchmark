@@ -2,7 +2,8 @@
   include_tasks: section_5.5.1.yml
 
 - name: "5.5.2 Ensure system accounts are secured (Automated)"
-  msg: "WARNING! NOT RELEVANT FOR NEW VMs"
+  debug:
+    msg: "WARNING! NOT RELEVANT FOR NEW VMs"
   when: level1|bool
   tags:
     - section5
@@ -33,7 +34,7 @@
     - name: "5.5.4 |-> write /etc/skel/.bashrc"
       copy:
         src: "etc/skel/.bashrc"
-        dst: "/etc/skel/.bashrc"
+        dest: "/etc/skel/.bashrc"
         owner: root
         group: root
         mode: 0644

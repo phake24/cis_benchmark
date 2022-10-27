@@ -7,6 +7,9 @@ povadmin_password: povadmin_pass2022!
 ntp_server_list: 1.11.5.37 1.11.5.36 # seperated by spaces
 ntp_fallback_server_list: 1.50.1.68 1.50.1.69 # seperated by spaces
 
+ntp_server_primary: 1.11.5.37
+ntp_server_secondary: 1.11.5.36
+
 level1: True
 level2: True
 
@@ -93,6 +96,7 @@ grub_password_v2_unrestricted: True
 grub_password_unrestricted_files: 
   - /etc/grub.d/10_linux
 grub_v2_password_script: "/tmp/grub_v2_passwd.sh"
+
 systemd_coredump_config_file: /etc/systemd/coredump.conf
 security_hardlimits_config_file: /etc/security/limits.d/hardlimits.conf
 
@@ -112,3 +116,37 @@ debian_grub_file_user_config: "/etc/grub.d/40_custom"
 
 ## Oracle specific
 
+selinux_mode: enforcing # enforcing OR permissive allowed in level1, level2 is forced to enforcing.
+
+
+dnf_delete_repos: 1
+dnf_nagios_enabled: 0
+dnf_nagios_repo: https://de-vpc-fravc-spm-007:8443/repo/Nagios/VPP_ol8_nagios/
+dnf_nagios_deps_enabled: 0
+dnf_nagios_deps_repo: https://de-vpc-fravc-spm-007:8443/repo/Nagios/VPP_ol8_nagiosxi-deps/
+dnf_nagios_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_GPG-KEY-NAGIOS-V2
+dnf_postgresql10_enabled: 0
+dnf_postgresql10_repo: https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg10/
+dnf_postgresql10_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+dnf_postgresql11_enabled: 0
+dnf_postgresql11_repo: https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg11/
+dnf_postgresql11_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+dnf_postgresql12_enabled: 0
+dnf_postgresql12_repo: https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg12/
+dnf_postgresql12_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+dnf_postgresql13_enabled: 0
+dnf_postgresql13_repo: https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg13/
+dnf_postgresql13_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+dnf_postgresql14_enabled: 0
+dnf_postgresql14_repo: https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg14/
+dnf_postgresql14_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+dnf_postgresql_common_repo: https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg-common/
+dnf_postgresql_common_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+dnf_shibboleth_enabled: 0
+dnf_icinga_enabled: 0
+dnf_shibboleth_enabled: 0
+dnf_shibboleth_repo: https://de-vpc-fravc-spm-007:8443/repo/Shibboleth/VPP_ol8_shibboleth
+dnf_shibboleth_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-Shibboleth
+dnf_icinga_enabled: 0
+dnf_icinga_repo: https://de-vpc-fravc-spm-007:8443/repo/icinga2/VPP_ol8_icinga2
+dnf_icinga_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-ICINGA2

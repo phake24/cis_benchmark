@@ -1,3 +1,4 @@
+
 - name: "read mounts"
   set_fact:
     mounts: "{{ ansible_mounts | map(attribute='mount') | list }}"

@@ -1,0 +1,23 @@
+- name: "2.1.1 Ensure time synchronization is in use (Automated)"
+  become: yes
+  dnf:
+    name: chrony
+    state: present
+  when: level1|bool
+  tags:
+    - section2
+    - section2.1
+    - section2.1.1
+
+- name: "2.1.2 Ensure chrony is configured (Automated)"
+  become: yes
+  lineinfile: 
+    path: "/etc/sysconfig/chronyd"
+    regexp: "(?i)OPTIONS"
+    line: 'OPTIONS="-u chrony"'
+  when: level1|bool
+  tags:
+    - section2
+    - section2.1
+    - section2.1.2
+

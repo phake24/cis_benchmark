@@ -21,7 +21,9 @@
     update_cache: yes
     autoremove: yes
     cache_valid_time: 3600
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags:
     - section2
     - section2.2
@@ -38,6 +40,53 @@
     - section2.2.12
     - section2.2.13
     - section2.2.14
+    - section2.2.16
+
+- name: |
+    "2.2.1 Ensure xinetd is not installed (Automated)"
+    "2.2.1 Ensure xorg-x11-server-common is not installed (Automated)"
+    "2.2.3 Ensure Avahi Server is not installed (Automated)"
+    "2.2.4 Ensure CUPS is not installed (Automated)"
+    "2.2.5 Ensure DHCP Server is not installed (Automated)"
+    "2.2.6 Ensure DNS Server is not installed (Automated)"
+    "2.2.7 Ensure FTP Server is not installed (Automated)"
+    "2.2.8 Ensure VSFTP Server is not installed (Automated)"
+    "2.2.9 Ensure TFTP Server is not installed (Automated)"
+    "2.2.10 Ensure a web server is not installed (Automated)"
+    "2.2.11 Ensure IMAP and POP3 server is not installed (Automated)"
+    "2.2.12 Ensure Samba is not installed (Automated)"
+    "2.2.13 Ensure HTTP Proxy Server is not installed (Automated)"
+    "2.2.14 Ensure net-snmp is not installed (Automated)"
+    "2.2.15 Ensure NIS server is not installed (Automated)"
+    "2.2.16 Ensure telnet-server is not installed (Automated)"
+    "2.2.18 Ensure nfs-utils is not installed or the nfs-server service is masked (Automated)"
+    "2.2.19 Ensure rpcbind is not installed or the rpcbind services are masked (Automated)"
+    "2.2.20 Ensure rsync is not installed or the rsyncd service is masked (Automated)"
+  become: yes
+  dnf:
+    name: ["xinetd", "xorg-x11-server-common", "avahi-autoipd", "avahi", "cups", "dhcp-server", "bind", "ftp", "vsftpd", "tftp-server", "httpd", "nginx", "dovecot", "cyrus-imapd", "samba", "squid", "net-snmp", "ypserv", "telnet-server", "nfs-utils", "rpcbind", "rsyncd"]
+    state: absent
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+  tags:
+    - section2
+    - section2.2
+    - section2.2.1
+    - section2.2.2
+    - section2.2.3
+    - section2.2.4
+    - section2.2.5
+    - section2.2.6
+    - section2.2.7
+    - section2.2.8
+    - section2.2.9
+    - section2.2.10
+    - section2.2.11
+    - section2.2.12
+    - section2.2.13
+    - section2.2.14
+    - section2.2.15
     - section2.2.16
 
 - name: "2.2.15 Ensure mail transfer agent is configured for local-only mode (Automated)"
@@ -66,11 +115,38 @@
         name: postfix
         state: restarted
         enabled: yes
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags: 
     - section2
     - section2.2
     - section2.2.15
 
 
+- name: "2.2.17 Ensure mail transfer agent is configured for local-only mode (Automated)"
+  become: yes
+  block:
+      - name: "2.2.17 Ensure mail transfer agent is configured for local-only mode (Automated) |-> install postfix as MTA"
+        dnf:
+          name: postfix
+          state: present
+      - name: "2.2.17 Ensure mail transfer agent is configured for local-only mode (Automated) |-> configure postfix"
+        lineinfile:
+          path: "/etc/postfix/main.cf"
+          regexp: "(?i)^inet_interfaces"
+          line: "inet_interfaces = loopback-only"
+      - name: "2.2.17 Ensure mail transfer agent is configured for local-only mode (Automated) |-> restart postfix"
+        systemd:
+          name: postfix
+          state: restarted
+          enabled: yes
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+  tags:
+    - section2
+    - section2.2
+    - section2.2.17
   
+

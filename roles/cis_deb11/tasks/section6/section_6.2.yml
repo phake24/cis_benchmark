@@ -1,8 +1,10 @@
 - name: "6.2.1 Ensure accounts in /etc/passwd use shadowed passwords (Automated)"
   block:
-    - command: awk -F':' '($2 != "x" ) { print $1 " is not set to shadowed passwords "}' /etc/passwd
+    - name: "6.2.1 Ensure accounts in /etc/passwd use shadowed passwords (Automated) | run command"
+      command: awk -F':' '($2 != "x" ) { print $1 " is not set to shadowed passwords "}' /etc/passwd
       register: result
-    - debug:
+    - name: "6.2.1 Ensure accounts in /etc/passwd use shadowed passwords (Automated) | print stdout"
+      debug:
         msg: |
           No result should come:
           {{ result.stdout }}
@@ -12,15 +14,15 @@
     - section6
     - section6.2
     - section6.2.2
-
-
   
 - name: "6.2.2 Ensure /etc/shadow password fields are not empty (Automated)"
   become: yes
   block:
-    - command: awk -F':' '($2 == "" ) { print $1 " does not have a password "}' /etc/shadow
+    - name: "6.2.2 Ensure /etc/shadow password fields are not empty (Automated) | run command"
+      command: awk -F':' '($2 == "" ) { print $1 " does not have a password "}' /etc/shadow
       register: result
-    - debug:
+    - name: "6.2.2 Ensure /etc/shadow password fields are not empty (Automated) | print stdout"
+      debug:
         msg: |
           No Result should come:
           {{ result.stdout }}
@@ -31,21 +33,22 @@
     - section6.2
     - section6.2.2
 
-
-
 - name: "6.2.3 Ensure all groups in /etc/passwd exist in /etc/group (Automated)"
   become: yes
   vars:
     temp_script: "/tmp/6.2.3.sh"
   block:
-    - copy:
+    - name: "6.2.3 Ensure all groups in /etc/passwd exist in /etc/group (Automated) | create script"
+      copy:
         src: "tmp/6.2.3.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
-    - file:
+    - name: "6.2.3 Ensure all groups in /etc/passwd exist in /etc/group (Automated) | run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.3 Ensure all groups in /etc/passwd exist in /etc/group (Automated) | delete script"
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool
@@ -68,13 +71,16 @@
   vars:
     temp_script: "/tmp/6.2.5.sh"
   block:
-    - copy:
+    - name: "6.2.5 Ensure no duplicate UIDs exist (Automated) |-> write script"
+      copy:
         src: "tmp/6.2.5.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.5 Ensure no duplicate UIDs exist (Automated) |-> run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.5 Ensure no duplicate UIDs exist (Automated) |-> remove script"
     - file:
         path: "{{ temp_script }}"
         state: absent
@@ -89,14 +95,17 @@
   vars:
     temp_script: "/tmp/6.2.6.sh"
   block:
-    - copy:
+    - name: "6.2.6 Ensure no duplicate GIDs exist (Automated) |-> write script"
+      copy:
         src: "tmp/6.2.6.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
-    - file:
+    - name: "6.2.6 Ensure no duplicate GIDs exist (Automated) |-> run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.6 Ensure no duplicate GIDs exist (Automated) |-> remove script"
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool

@@ -29,6 +29,38 @@
   when:
     - item.mount == '/home'
     - level1|bool == True
+    - ansible_os_family == 'Debian'
+  tags:
+    - section1
+    - section1.1
+    - section1.1.7
+
+- name: |
+    1.1.7.2 | Ensure nodev option set on /home partition
+    1.1.7.3 | Ensure nosuid option set on /home partition
+    1.1.7.4 | Ensure usrquota option set on /home partition
+    1.1.7.5 | Ensure grpquota option set on /home partition (Automated)
+  become: yes
+  block:
+    - mount:
+        name: /home
+        src: "{{ item.device }}"
+        fstype: "{{ item.fstype }}"
+        state: present
+        opts: defaults,nodev,nosuid,quota,usrquota,grpquota
+    - command: restorecon /home/aquota.user
+    - command: quotaon -vug /home
+    - command: restorecon /home/aquota.group
+    - command: quotaon -vug /home
+  notify: 
+    - remount home
+  loop: "{{ ansible_mounts }}"
+  loop_control:
+    label: "{{ item.mount }}"
+  when:
+    - item.mount == '/home'
+    - level1|bool == True
+    - ansible_os_family == 'RedHat'
   tags:
     - section1
     - section1.1

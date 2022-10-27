@@ -29,6 +29,32 @@
   when:
     - item.mount == '/var'
     - level1|bool == True
+    - ansible_os_family == 'Debian'
+  tags:
+    - section1
+    - section1.1
+    - section1.1.3
+
+- name: |
+    1.1.3.2 | Ensure nodev option set on /var partition
+    1.1.3.3 | Ensure nosuid option set on /var partition
+    1.1.3.4 | Ensure noexec option set on /var partition
+  become: yes
+  mount:
+      name: /var
+      src: "{{ item.device }}"
+      fstype: "{{ item.fstype }}"
+      state: present
+      opts: defaults,nodev,nosuid,noexec
+  notify: 
+    - remount var
+  loop: "{{ ansible_mounts }}"
+  loop_control:
+    label: "{{ item.mount }}"
+  when:
+    - item.mount == '/var'
+    - level1|bool == True
+    -  ansible_os_family == 'RedHat'
   tags:
     - section1
     - section1.1

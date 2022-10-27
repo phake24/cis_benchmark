@@ -107,10 +107,10 @@
   command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002"
   register: result
   debug:
-    msg: |
-      "no output should come: 
-      {{ result }} 
-      WARNING! not ready yet, as not necessary on new VMs"
+    msg: 
+      - "no output should come: "
+      - "{{ result }} "
+      - "WARNING! not ready yet, as not necessary on new VMs"
   when: level1|bool
   tags:
     - section6
@@ -122,10 +122,10 @@
   command: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser"
   register: result
   debug:
-    msg: |
-      "no output should come:
-      {{ result }}
-      WARNING! not ready yet, as not necessary on new VMs"
+    msg: 
+      - "no output should come:"
+      - "{{ result }}"
+      - "WARNING! not ready yet, as not necessary on new VMs"
   when: level1|bool
   tags:
     - section6
@@ -137,10 +137,10 @@
   command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -nogroup"
   register: result
   debug:
-    msg: |
-      "no output should come:
-      {{ result }}
-      WARNING! not ready yet, as not necessary on new VMs"
+    msg: 
+      - "no output should come:"
+      - "{{ result }}"
+      - "WARNING! not ready yet, as not necessary on new VMs"
   when: level1|bool
   tags:
     - section6
@@ -152,10 +152,10 @@
   command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -4000"
   register: result
   debug:
-    msg: |
-      "check if following SUID executables are legitimated:
-      {{ result }}
-      WARNING! not ready yet, as not necessary on new VMs"
+    msg: 
+      - "check if following SUID executables are legitimated:"
+      - "{{ result }}"
+      - "WARNING! not ready yet, as not necessary on new VMs"
   when: level1|bool
   tags:
     - section6
@@ -167,10 +167,10 @@
   command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -2000"
   register: result
   debug:
-    msg: |
-      "check if following SUID executables are legitimated:
-      {{ result }}
-      WARNING! not ready yet, as not necessary on new VMs"
+    msg: 
+      - "check if following SUID executables are legitimated:"
+      - "{{ result }}"
+      - "WARNING! not ready yet, as not necessary on new VMs"
   when: level1|bool
   tags:
     - section6

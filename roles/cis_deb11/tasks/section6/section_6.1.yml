@@ -119,7 +119,7 @@
   become: yes
   command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002"
   register: result
-  - debug:
+  debug:
     msg: |
       "no output should come: 
       {{ result }} 

@@ -102,19 +102,6 @@
     - section6.1
     - section6.1.8
 
-- name: "6.1.8 Ensure permissions on /etc/gshadow- are configured (Automated)"
-  become: yes
-  file:
-    path: "/etc/gshadow-"
-    owner: root
-    group: shadow
-    mode: 0640
-  when: level1|bool
-  tags:
-    - section6
-    - section6.1
-    - section6.1.8
-
 - name: "6.1.9 Ensure no world writable files exist (Automated)"
   become: yes
   command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002"
@@ -124,6 +111,11 @@
       "no output should come: 
       {{ result }} 
       WARNING! not ready yet, as not necessary on new VMs"
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.9
 
 - name: "6.1.10 Ensure no unowned files or directories exist (Automated)"
   become: yes
@@ -134,6 +126,11 @@
       "no output should come:
       {{ result }}
       WARNING! not ready yet, as not necessary on new VMs"
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.10
 
 - name: "6.1.11 Ensure no ungrouped files or directories exist (Automated)"
   become: yes
@@ -144,6 +141,11 @@
       "no output should come:
       {{ result }}
       WARNING! not ready yet, as not necessary on new VMs"
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.11
 
 - name: "6.1.12 Audit SUID executables (Manual)"
   become: yes
@@ -154,6 +156,11 @@
       "check if following SUID executables are legitimated:
       {{ result }}
       WARNING! not ready yet, as not necessary on new VMs"
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.12
 
 - name: "6.1.13 Audit SGID executables (Manual)"
   become: yes
@@ -164,4 +171,9 @@
       "check if following SUID executables are legitimated:
       {{ result }}
       WARNING! not ready yet, as not necessary on new VMs"
+  when: level1|bool
+  tags:
+    - section6
+    - section6.1
+    - section6.1.13
 

@@ -3,12 +3,11 @@
   vars:
       usb_storage_config: "/etc/modprobe.d/usb-storage.conf"
   block:
-    - name: "1.1.10 |-> Disabling usb-storage"
+    - name: "1.1.10 Disable USB Storage (Automated) |-> Disabling usb-storage"
       modprobe: 
         name: usb-storage
         state: absent
-  
-    - name: "1.1.10 |-> Writing {{ usb_storage_config }}"
+    - name: "1.1.10 Disable USB Storage (Automated) |-> Writing {{ usb_storage_config }}"
       copy:
         dest: "{{ usb_storage_config }}"
         content: |
@@ -17,12 +16,9 @@
              # {{ hardening_header }}
              install usb-storage /bin/true
              blacklist usb-storage
- 
-    - name: "1.1.10 |-> Setting ownership + permissions to {{ usb_storage_config }}"
-      file: 
-        path: "{{ usb_storage_config }}"
         mode: 0644
         owner: root
+        group: root
   when: level1|bool == True
   tags:
     - section1

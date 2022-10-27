@@ -1,0 +1,19 @@
+# /etc/yum.repos.d/nagios.repo
+#
+# {{ ansible_managed }}
+#
+# {{ hardening_header }}
+
+[VPP_ol8_nagios]
+name=VPP: Oracle Linux 8: Nagios
+baseurl={{ dnf_nagios_repo }}
+gpgkey={{ dnf_nagios_gpg }}
+gpgcheck=1
+enabled={{ dnf_nagios_enabled }}
+
+[VPP_ol8_nagiosxi-deps]
+name=VPP: Oracle Linux 8: Nagiosxi Deps
+baseurl={{ dnf_nagios_deps_repo }}
+gpgkey={{ dnf_nagios_gpg }}
+gpgcheck=1
+enabled={{ dnf_nagios_deps_enabled }}

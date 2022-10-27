@@ -4,6 +4,23 @@
     name: gdm3
     state: absent
     update_cache: yes
+  when: 
+    - level2|bool
+    - ansible_os_family == "Debian"
+  tags:
+    section1
+    section1.8
+    section1.8.1
+
+- name: "1.8.1 Ensure GNOME Display Manager is removed (Automated)"
+  become: yes
+  dnf:
+    name: gdm
+    state: absent
+    update_cache: yes
+  when: 
+    - level2|bool
+    - ansible_os_family == "RedHat"
   tags:
     section1
     section1.8

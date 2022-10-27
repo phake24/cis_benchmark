@@ -1,0 +1,30 @@
+- name: "1.5 Additional Process Hardening"
+  become: yes
+  block:
+      - name: "1.5.1 Ensure core dump storage is disabled (Automated)"
+        lineinfile:
+          path: "{{ systemd_coredump_config_file }}"
+          regexp: 'Storage='
+          line: 'Storage=none'
+          owner: root
+          group: root
+          mode: 0644
+        notify: "reload systemd"
+      - name: "1.5.2 Ensure core dump backtraces are disabled (Automated)"
+        lineinfile:
+          path: "{{ systemd_coredump_config_file }}"
+          regexp: 'ProcessSizeMax='
+          line: 'ProcessSizeMax=0'
+          owner: root
+          group: root
+          mode: 0644
+        notify: "reload systemd"
+      - name: "1.5.3 Ensure address space layout randomization (ASLR) is enabled (Automated)"
+        sysctl:
+          name: kernel.randomize_va_space
+          value: '2'
+          state: present
+          reload: true
+          sysctl_set: true
+          ignoreerrors: true
+  when: level1|bool

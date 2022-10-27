@@ -5,8 +5,36 @@
     owner: root
     group: root
     mode: 0400
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags:
     - section1
     - section1.4
     - section1.4.2
+
+- name: "1.4.2 Ensure permissions on bootloader config are configured (Automated)"
+  become: yes
+  block: 
+    - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated) |-> /boot/grub2/grub.cfg"
+      file:
+        path: "/boot/grub2/grub.cfg"
+        owner: root
+        group: root
+        mode: 0600
+    - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated) |-> /boot/grub2/grubenv"
+      file:
+        path: "/boot/grub2/grubenv"
+        owner: root
+        group: root
+        mode: 0600
+    - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated) |-> /boot/grub2/user.cfg"
+      file:
+        path: "/boot/grub2/user.cfg"
+        owner: root
+        group: root
+        mode: 0600
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+

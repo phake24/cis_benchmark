@@ -1,0 +1,82 @@
+# /etc/yum.repos.d/postgresql.repo
+#
+# {{ ansible_managed }}
+#
+# {{ hardening_header }}
+
+[VPP_ol8_pgdg10]
+name=VPP: Oracle Linux 8: PostgreSQL 10 for RHEL/CentOS 8 - x86_64
+baseurl={{ dnf_postgresql10_repo }}
+enabled=1
+gpgcheck=1
+gpgkey={{ dnf_postgresql10_gpg }}
+
+#[VPP_ol8_pgdg10-source]
+#name=VPP: Oracle Linux 8: PostgreSQL 10 - Source - for RHEL/CentOS 8 - x86_64
+#baseurl=https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg10-source/
+#enabled=1
+#gpgcheck=1
+#gpgkey=https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+
+[VPP_ol8_pgdg11]
+name=VPP: Oracle Linux 8: PostgreSQL 11 for RHEL/CentOS 8 - x86_64
+baseurl={{ dnf_postgresql11_repo }}
+enabled=1
+gpgcheck=1
+gpgkey={{ dnf_postgresql11_gpg }}
+
+#[VPP_ol8_pgdg11-source]
+#name=VPP: Oracle Linux 8: PostgreSQL 11 - Source - for RHEL/CentOS 8 - x86_64
+#baseurl=https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg11-source/
+#enabled=1
+#gpgcheck=1
+#gpgkey=https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+
+[VPP_ol8_pgdg12]
+name=VPP: Oracle Linux 8: PostgreSQL 12 for RHEL/CentOS 8 - x86_64
+baseurl={{ dnf_postgresql12_repo }}
+enabled=1
+gpgcheck=1
+gpgkey={{ dnf_postgresql12_gpg }}
+
+#[VPP_ol8_pgdg12-source]
+#name=VPP: Oracle Linux 8: PostgreSQL 12 - Source - for RHEL/CentOS 8 - x86_64
+#baseurl=https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg12-source/
+#enabled=1
+#gpgcheck=1
+#gpgkey=https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+
+[VPP_ol8_pgdg13]
+name=VPP: Oracle Linux 8: PostgreSQL 13 for RHEL/CentOS 8 - x86_64
+baseurl={{ dnf_postgresql13_repo }}
+enabled=1
+gpgcheck=1
+gpgkey={{ dnf_postgresql13_gpg }}
+
+#[VPP_ol8_pgdg13-source]
+#name=VPP: Oracle Linux 8: PostgreSQL 13 for RHEL/CentOS 8 - x86_64
+#baseurl=https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg13-source/
+#enabled=1
+#gpgcheck=1
+#gpgkey=https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+
+[VPP_ol8_pgdg14]
+name=VPP: Oracle Linux 8: PostgreSQL 14 for RHEL/CentOS 8 - x86_64
+baseurl={{ dnf_postgresql14_repo }}
+enabled=1
+gpgcheck=1
+gpgkey={{ dnf_postgresql14_gpg }}
+
+#[VPP_ol8_pgdg14-source]
+#name=VPP: Oracle Linux 8: PostgreSQL 14 - Source - for RHEL/CentOS 8 - x86_64
+#baseurl=https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg14-source/
+#enabled=1
+#gpgcheck=1
+#gpgkey=https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
+
+[VPP_ol8_pgdg-common]
+name=VPP: Oracle Linux 8: PostgreSQL common RPMs for RHEL/CentOS 8 - x86_64
+baseurl={{ dnf_postgresql_common_repo }}
+enabled=1
+gpgcheck=1
+gpgkey={{ dnf_postgresql_common_gpg }}

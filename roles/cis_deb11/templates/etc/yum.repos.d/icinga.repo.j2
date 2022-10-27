@@ -1,0 +1,12 @@
+# /etc/yum.repos.d/icinga.repo
+#
+# {{ ansible_managed }}
+#
+# {{ hardening_header }}
+
+[VPP_ol8_icinga2]
+name=VPP: Oracle Linux 8: Icinga2  (x86_64)
+baseurl={{ dnf_icinga_repo }}
+gpgkey={{ dnf_icinga_gpg }}
+gpgcheck=1
+enabled=1

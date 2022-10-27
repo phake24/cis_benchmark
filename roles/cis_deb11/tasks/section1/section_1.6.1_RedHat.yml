@@ -1,0 +1,105 @@
+- name: "1.6.1.1 Ensure SELinux is installed (Automated)"
+  become: yes
+  dnf:
+    name: libselinux
+    state: present
+  when: level1|bool
+  tags:
+    - section1
+    - section1.6
+    - section1.6.1
+    - section1.6.1.1
+
+- name: "1.6.1.2 Ensure SELinux is not disabled in bootloader configuration (Automated)"
+  become: yes
+  command: grubby --update-kernel ALL --remove-args 'selinux=0 enforcing=0' 
+  when: level1|bool
+  tags:
+    - section1
+    - section1.6
+    - section1.6.1
+    - section1.6.1.2
+
+- name: "1.6.1.3 Ensure SELinux policy is configured (Automated)"
+  become: yes
+  lineinfile: 
+    path: "/etc/selinux/config"
+    regexp: "(?i)SELINUXTYPE"
+    line: "SELINUXTYPE=targeted"
+  when: level1|bool
+  tags:
+    - section1
+    - section1.6
+    - section1.6.1
+    - section1.6.1.3
+
+- name: "1.6.1.4 Ensure the SELinux mode is not disabled (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/selinux/config"
+    regexp: "(?i)SELINUX"
+    line: "SELINUX={{ selinux_mode }}"
+  when: level1|bool
+  tags:
+    - section1
+    - section1.6
+    - section1.6.1
+    - section1.6.1.4
+
+- name: "1.6.1.5 Ensure the SELinux mode is enforcing (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/selinux/config"
+    regexp: "(?i)SELINUX"
+    line: "SELINUX=enforcing"
+  when: level2|bool
+  tags:
+    - section1
+    - section1.6
+    - section1.6.1
+    - section1.6.1.5
+
+- name: "1.6.1.6 Ensure no unconfined services exist (Automated)"
+  become: yes
+  block:
+    - name: "1.6.1.6 Ensure no unconfined services exist (Automated) |-> run check"
+      command: ps -eZ | grep unconfined_service_t
+      register: result
+    - name: "1.6.1.6 Ensure no unconfined services exist (Automated) |-> print result"
+      debug:
+        msg: |
+          "No output should come:"
+          "{{ result.stdout }}"
+          "END"
+  when: level1|bool
+  tags:
+    - section1
+    - section1.6
+    - section1.6.1
+    - section1.6.1.6
+
+- name: "1.6.1.7 Ensure SETroubleshoot is not installed (Automated)"
+  become: yes
+  dnf: 
+    name: setroubleshoot
+    state: absent
+  when: level1|bool
+  tags:
+    - section1
+    - section1.6
+    - section1.6.1
+    - section1.6.1.7
+
+- name: "1.6.1.8 Ensure the MCS Translation Service (mcstrans) is not installed (Automated)"
+  become: yes
+  dnf:
+    name: mcstrans
+    state: absent
+  when: level1|bool
+  tags:
+    - section1
+    - section1.6
+    - section1.6.1
+    - section1.6.1.8
+
+

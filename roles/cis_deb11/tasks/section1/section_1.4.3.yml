@@ -1,7 +1,23 @@
 - name: "1.4.3 Ensure authentication required for single user mode (Automated)"
-  command: 
-  when: level1|bool
+  debug:
+    msg: "WARNING! NOT configured yet"
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags:
     - section1
     - section1.4
     - section1.4.3
+
+
+- name: "1.4.3 Ensure authentication is required when booting into rescue mode (Automated)"
+  debug:
+    msg: "WARNING! NOT configured yet"
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+  tags:
+    - section1
+    - section1.4
+    - section1.4.3
+

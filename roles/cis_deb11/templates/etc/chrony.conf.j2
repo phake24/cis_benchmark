@@ -1,0 +1,21 @@
+# /etc/chrony.conf
+#
+# {{ ansible_managed }}
+#
+# {{ hardening_header }}
+
+bindacqaddress {{ ansible_eth0.ipv4.address }} 
+bindcmdaddress /var/run/chrony/chronyd.sock
+
+server {{ ntp_server_primary }} iburst
+server {{ ntp_server_secondary }} iburst
+
+driftfile /var/lib/chrony/drift
+makestep 1.0 3
+rtcsync
+local stratum 10
+logdir /var/log/chrony
+logchange 0.1
+log measurements statistics tracking
+
+

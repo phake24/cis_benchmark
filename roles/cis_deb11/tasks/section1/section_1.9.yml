@@ -6,7 +6,24 @@
     update_cache: yes
     cache_valid_time: 3600
     autoremove: yes
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
+  tags: 
+    - section1
+    - section1.9
+
+- name: "1.9 | patching system"
+  become: yes
+  dnf:
+    name: "*"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    autoremove: yes
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
   tags: 
     - section1
     - section1.9

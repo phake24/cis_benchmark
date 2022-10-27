@@ -6,10 +6,103 @@
     owner: root
     group: root
     mode: 0644
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags:
     - section1
     - section1.2
     - section1.2.1
+
+
+- name: "1.2.1 Ensure GPG keys are configured (Manual)"
+  become: yes
+  debug:
+    msg: "WARNING! you have to check by your own"
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+  tags:
+    - section1
+    - section1.2
+    - section1.2.1
+
+- name: "1.2.2 Ensure GPG keys are configured (Manual)"
+  become: yes
+  block:
+    - name: "1.2.2 Ensure GPG keys are configured (Manual) |-> read GPG keys"
+      command: apt-key list
+      register: result
+    - name: "1.2.2 Ensure GPG keys are configured (Manual) |-> listing keys"
+      debug:
+        msg: |
+          "Following GPG Keys are configured:"
+          {{ result.stdout }}
+          "END"
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
+  tags:
+    - section1
+    - section1.2
+    - section1.2.1
+
     
+- name: "1.2.2 Ensure gpgcheck is globally activated (Automated)"
+  become: yes
+  block:
+    - name: "1.2.2 Ensure gpgcheck is globally activated (Automated) |-> /etc/dnf/dnf.conf"
+      lineinfile:
+        path: "/etc/dnf/dnf.conf"
+        regexp: "(?i)gpgcheck"
+        line: "gpgcheck=1"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "1.2.2 Ensure gpgcheck is globally activated (Automated) |-> /etc/yum.repos.d/*.conf"
+      command: find /etc/yum.repos.d/ -name "*.repo" -exec echo "Checking:" {} \; -exec sed -i 's/^gpgcheck\s*=\s*.*/gpgcheck=1/' {} \;
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+  tags:
+    - section1
+    - section1.2
+    - section1.2.2
+
+- name: "1.2.3 Ensure package manager repositories are configured (Manual)"
+  become: yes
+  block:
+    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> delete preconfigured repository configurations"
+      shell: /bin/rm -rf /etc/yum.repos.d/*
+      when: dnf_delete_repos|bool
+    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> OL8 Repository"
+      template:
+        src: "etc/yum.repos.d/ol8.repo.j2"
+        dest: "/etc/yum.repos.d/ol8.repo"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> Nagios Repository"
+      template:
+        src: "etc/yum.repos.d/nagios.repo.j2"
+        dest: "/etc/yum.repos.d/nagios.repo"
+        owner: root
+        group: root
+        mode: 0644
+      when: dnf_nagios_enabled|bool
+    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> ICINGA Repository"
+      template:
+        src: "etc/yum.repos.d/icinga.repo.j2"
+        dest: "/etc/yum.repos.d/icinga.repo"
+        owner: root
+        group: root
+        mode: 0644
+      when: dnf_icinga_enabled|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+  tags:
+    - section1
+    - section1.2
+    - section1.2.3
 

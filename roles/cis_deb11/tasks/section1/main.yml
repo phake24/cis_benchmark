@@ -12,7 +12,7 @@
   include_tasks: section_1.4.yml
 
 - name: "CIS Section 1.5 Additional Process Hardening"
-  include_tasks: section_1.5.yml
+  include_tasks: section_1.5_{{ ansible_os_family }}.yml
 
 - name: "CIS Section 1.6 Mandatory Access Control"
   include_tasks: section_1.6.yml
@@ -25,3 +25,24 @@
 
 - name: "CIS Section 1.9 Ensure updates, patches, and additional security software are installed (Manual)"
   include_tasks: section_1.9.yml
+
+- name: "CIS Section 1.10 Ensure system-wide crypto policy is not legacy (Automated)"
+  become: yes
+  block:
+    - name: "1.10 Ensure system-wide crypto policy is not legacy (Automated) |-> configure crypto policy"
+      command: update-crypto-policies --set DEFAULT
+    - name: "1.10 Ensure system-wide crypto policy is not legacy (Automated) |-> update crypto policy"
+      command: update-crypto-policies
+    - name: "1.10 Ensure system-wide crypto policy is not legacy (Automated) |-> enable FIPS"
+      command: fips-mode-setup --enable
+      when: enable_fips_mode|bool
+  when: 
+    - level1|bool 
+    - ansible_os_family == "RedHat"
+  tags:
+    - section1
+    - section1.10
+
+
+
+

@@ -1,0 +1,12 @@
+# /etc/yum.repos.d/Shibboleth.repo
+#
+# {{ ansible_managed }}
+#
+# {{ hardening_header }}
+
+[VPP_ol8_shibboleth]
+name=VPP: Oracle Linux 8: Shibboleth (x86_64)
+baseurl={{ dnf_shibboleth_repo }}
+gpgkey={{ dnf_shibboleth_gpg }}
+gpgcheck=1
+enabled={{ dnf_shibboleth_enabled }}

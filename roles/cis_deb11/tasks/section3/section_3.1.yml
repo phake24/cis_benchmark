@@ -1,12 +1,11 @@
 - name: "3.1.1 Ensure system is checked to determine if IPv6 is enabled (Manual)"
   become: yes
   block:
-    - name: "3.1.1 | disable ipv6 in grub"
+    - name: "3.1.1 Ensure system is checked to determine if IPv6 is enabled (Manual) |-> disable ipv6 in grub"
       replace: dest="/etc/default/grub" regexp='^GRUB_CMDLINE_LINUX="(((?!ipv6.disable=).)*)"$' replace='GRUB_CMDLINE_LINUX="\1 ipv6.disable=1"'
       notify: "update grub"
       notify: "reboot"
-
-    - name: "3.1.1 | disable ipv6 in sysctl"
+    - name: "3.1.1 Ensure system is checked to determine if IPv6 is enabled (Manual) |-> disable ipv6 in sysctl"
       sysctl:
         name: "{{ item }}"
         value: '1'
@@ -18,14 +17,100 @@
         - net.ipv6.conf.all.disable_ipv6
         - net.ipv6.conf.default.disable_ipv6
         - net.ipv6.route.flush
-      notify: "reboot"
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags: 
     - section3
     - section3.1
     - section3.1.1
 
+- name: "3.1.1 Verify if IPv6 is enabled on the system (Manual)"
+  become: yes
+  block:
+    - name: "3.1.1 Verify if IPv6 is enabled on the system (Manual) |-> SSHD"
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "(?i)AddressFamily"
+        line: "AddressFamily inet"
+      notify: restart sshd
+    - name: "3.1.1 Verify if IPv6 is enabled on the system (Manual) |-> Kernel parameter"
+      sysctl:
+        name: "{{ item }}"
+        value: '1'
+        reload: true
+        sysctl_set: True
+        ignoreerrors: True
+      with_items:
+        - net.ipv6.conf.all.disable_ipv6
+        - net.ipv6.conf.default.disable_ipv6
+        - net.ipv6.route.flush
+    - name: "3.1.1 Verify if IPv6 is enabled on the system (Manual) |-> GRUB parameter"
+      command: grubby --update-kernel ALL --args 'ipv6.disable=1' 
+  when:
+    - level1|bool
+    - ansible_os_family == "RedHat"
 
+
+- name: |
+    "3.1.2 Ensure wireless interfaces are disabled (Automated)"
+    "3.1.4 Ensure wireless interfaces are disabled (Automated)"
+  become: yes
+  block:
+    - name: |
+        "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> transfer script"
+        "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> transfer script"
+      copy:
+        src: "tmp/3.1.wireless_{{ ansible_os_family }}.sh"
+        dest: "/tmp/3.1.wireless.sh"
+        owner: root
+        group: root
+        mode: 0750
+    - name: |
+        "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> check"
+        "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> check"
+      command: "/bin/bash /tmp/3.1.wireless.sh"
+      register: result
+    - block:
+        - name: |
+            "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> wireless interfaces available!"
+            "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> wireless interfaces available!"
+        - debug: 
+            msg: "WARNING: {{ result.stdout }}"
+        - name: |
+            "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> copy script to disable wireless interfaces"
+            "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> copy script to disable wireless interfaces"
+          copy:
+            src: "tmp/3.1.disable_wireless_{{ ansible_os_family }}.sh"
+            dest: "/tmp/3.1.disable_wireless.sh"
+            owner: root
+            group: root
+            mode: 0750
+        - name: |
+            "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> run script to disable wireless interfaces
+            "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> run script to disable wireless interfaces"
+        - command: "/bin/bash /tmp/3.1.disable_wireless.sh"
+          register: result_disable
+        - debug:
+            msg: {{ result.stdout }}
+        - name: |
+            "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> remove script"
+            "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> remove script"
+          file:
+            path: "/tmp/3.1.disable_wireless.sh"
+            state: absent
+      when: result.stdout != ""
+    - name: |
+        "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> remove script
+        "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> remove script"
+      file:
+        path: "/tmp/3.1.wireless.sh"
+        state: absent
+      
+    - name: 
+      command: "/bin/bash /tmp/3.1.disable_wireless.sh"
+  when: 
+    - level1|bool
 
 - name: "3.1.3 Ensure DCCP is disabled (Automated)"
   become: yes
@@ -51,16 +136,22 @@
     - section3.1
     - section3.1.3
 
-- name: "3.1.4 Ensure SCTP is disabled (Automated)"
+- name: |
+    "3.1.4 Ensure SCTP is disabled (Automated) (Debian)"
+    "3.1.2 Ensure SCTP is disabled (Automated) (RedHat)"
   become: yes
   vars: 
     sctp_config: "/etc/modprobe.d/sctp.conf"
   block:
-      - name: "3.1.4 | disabling sctp"
+      - name: |
+          "3.1.4 Ensure SCTP is disabled (Automated) (Debian) |-> disabling SCTP"
+          "3.1.2 Ensure SCTP is disabled (Automated) (RedHat) |-> disabling SCTP"
         modprobe: 
           name: sctp
           state: absent
-      - name: "3.1.4 | writing {{ sctp_config }}"
+      - name: |
+          "3.1.4 Ensure SCTP is disabled (Automated) (Debian) |-> writing {{ sctp_config }}"
+          "3.1.2 Ensure SCTP is disabled (Automated) (RedHat) |-> writing {{ sctp_config }}"
         copy:
           dest: "{{ sctp_config }}"
           content: |

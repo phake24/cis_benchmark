@@ -8,7 +8,15 @@
 - name: "CIS Section 3.3 Network Parameters (Host and Router)"
   include_tasks: section_3.3.yml
 
+- name: "CIS Section 3.4 Firewall Configuration"
+  include_tasks: section_3.4.yml
+  when:
+    - enable_firewall|bool
+    - ansible_os_family == "RedHat"
+
 - name: "CIS Section 3.5 Firewall Configuration"
   include_tasks: section_3.5.yml 
-  when: enable_firewall|bool 
+  when: 
+    - enable_firewall|bool 
+    - ansible_os_family == "Debian"
 

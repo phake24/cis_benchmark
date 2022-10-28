@@ -91,4 +91,8 @@
         path: "/tmp/5.4.5.sh"
         state: absent
 
-
+- name: restart nftables
+  become: yes
+  systemd:
+    name: nftables
+    state: restarted

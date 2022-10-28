@@ -1,0 +1,107 @@
+
+- name: "3.4.2.1 Ensure nftables is installed (Automated)"
+  become: yes
+  dnf:
+    name: nftables
+    state: present
+    update_cache: yes
+  when: level1|bool
+  tags:
+    - section3
+    - section3.4
+    - section3.4.2
+    - section3.4.2.1
+
+- name: "3.4.2.2 Ensure firewalld is either not installed or masked with nftables (Automated)"
+  become: yes
+  dnf: 
+    name: "firewalld"
+    state: absent
+    autoremove: yes
+  when: level1|bool
+  tags:
+    - section3
+    - section3.4
+    - section3.4.2
+    - section3.4.2.2
+
+- name: "3.4.2.3 Ensure iptables-services not installed with nftables (Automated)"
+  become: yes
+  dnf: 
+    name: "iptables-services"
+    state: absent
+    autoremove: yes
+  when: level1|bool
+  tags:
+    - section3
+    - section3.4
+    - section3.4.2
+    - section3.4.2.2
+
+- name: "3.4.2.4 Ensure iptables are flushed with nftables (Manual)"
+  become: yes
+  command: "iptables -F"
+  when: level1 == True and 'iptables' in ansible_facts.packages
+
+- name: "3.4.2.9 Ensure nftables service is enabled (Automated)"
+  systemd:
+    name: nftables
+    state: started
+    enabled: yes
+  when: level1|bool
+  tags:
+    - section3
+    - section3.5
+    - section3.5.2
+    - section 3.5.2.3
+
+- name: |
+    "3.4.2.5 Ensure an nftables table exists (Automated)"
+    "3.4.2.6 Ensure nftables base chains exist (Automated)"
+    "3.4.2.7 Ensure nftables loopback traffic is configured (Automated)"
+    "3.4.2.8 Ensure nftables outbound and established connections are configured (Manual)"
+    "3.4.2.9 Ensure nftables default deny firewall policy (Automated)"
+  copy:
+    dest: "/etc/nftables/nftables.rules"
+    src: "etc/nftables.rules"
+    owner: root
+    group: root
+    mode: 0640
+  when: level1|bool
+  tags:
+    - section3
+    - section3.4
+    - section3.4.5
+    - section3.4.6
+    - section3.4.7
+    - section3.4.8
+    - section3.4.9
+
+- name: "3.4.2.10 Ensure nftables service is enabled (Automated)"
+  become: yes
+  systemd:
+    name: nftables
+    state: started
+    enabled: yes
+  when: level1|bool
+  tags:
+    - section 3.5
+    - section 3.5.2
+    - section 3.5.10
+
+- name: "3.4.2.11 Ensure nftables rules are permanent (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/sysconfig/nftables.conf"
+    regedxp: '(?i)include "/etc/nftables/nftables.rules"'
+    line: 'include "/etc/nftables/nftables.rules"'
+  notify: restart nftables
+  when: level1|bool
+  tags:
+    - section3
+    - section3.4
+    - section3.4.2
+    - section3.4.2.11
+
+
+

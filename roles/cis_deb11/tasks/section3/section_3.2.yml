@@ -1,4 +1,6 @@
-- name: "3.2.1 Ensure packet redirect sending is disabled (Automated)"
+- name: |
+    "[Debian] 3.2.1 Ensure packet redirect sending is disabled (Automated)"
+    "[RedHat] 3.2.2 Ensure packet redirect sending is disabled (Automated)"
   become: yes
   sysctl:
     name: "{{ item }}"
@@ -17,7 +19,9 @@
     - section3.2.1
 
 
-- name: "3.2.2 Ensure IP forwarding is disabled (Automated)"
+- name: |
+    "[Debian] 3.2.2 Ensure IP forwarding is disabled (Automated)"
+    "[RedHat] 3.2.1 Ensure IP forwarding is disabled (Automated)"
   become: yes
   sysctl:
     name: "{{ item }}"
@@ -34,3 +38,5 @@
     - section3
     - section3.2
     - section3.2.2
+
+

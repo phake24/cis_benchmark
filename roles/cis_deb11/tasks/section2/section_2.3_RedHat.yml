@@ -4,13 +4,16 @@
     "2.3.3 Ensure talk client is not installed (Automated)"
     "2.3.4 Ensure telnet client is not installed (Automated)"
     "2.3.5 Ensure LDAP client is not installed (Automated)"
-    "2.3.6 Ensure RPC is not installed (Automated)"
-  apt:
-    name: ["nis", "rsh-client", "talk", "telnet", "ldap-utils", "rpcbind"]
+    "2.3.6 Ensure TFTP client is not installed (Automated)"
+  become: yes
+  dnf: 
+    name: ["ypbind", "rsh", "talk", "telnet", "openldap-clients", "tftp"]
     state: absent
     autoremove: yes
-  when: level1|bool
+  when: - level1|bool
   tags:
+    - section2
+    - section2.3
     - section2.3.1
     - section2.3.2
     - section2.3.3
@@ -18,4 +21,3 @@
     - section2.3.5
     - section2.3.6
 
-    

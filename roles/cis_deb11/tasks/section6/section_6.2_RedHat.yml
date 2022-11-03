@@ -1,0 +1,308 @@
+- name: "6.2.1 Ensure password fields are not empty (Automated)"
+  debug:
+    msg: "WARNIGN! not configured, not necessary for new VMs"
+
+
+- name: "6.2.2 Ensure all groups in /etc/passwd exist in /etc/group (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.3.sh"
+  block:
+    - name: "6.2.3 Ensure all groups in /etc/passwd exist in /etc/group (Automated) | create script"
+      copy:
+        src: "tmp/6.2.3.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - name: "6.2.3 Ensure all groups in /etc/passwd exist in /etc/group (Automated) | run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.3 Ensure all groups in /etc/passwd exist in /etc/group (Automated) | delete script"
+      file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.2
+
+
+- name: "6.2.3 Ensure no duplicate UIDs exist (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.5.sh"
+  block:
+    - name: "6.2.3 Ensure no duplicate UIDs exist (Automated) |-> write script"
+      copy:
+        src: "tmp/6.2.5.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - name: "6.2.3 Ensure no duplicate UIDs exist (Automated) |-> run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.3 Ensure no duplicate UIDs exist (Automated) |-> remove script"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.3
+
+- name: "6.2.4 Ensure no duplicate GIDs exist (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.6.sh"
+  block:
+    - name: "6.2.4 Ensure no duplicate GIDs exist (Automated) |-> write script"
+      copy:
+        src: "tmp/6.2.6.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - name: "6.2.4 Ensure no duplicate GIDs exist (Automated) |-> run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.4 Ensure no duplicate GIDs exist (Automated) |-> remove script"
+      file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.4
+
+
+- name: "6.2.5 Ensure no duplicate user names exist (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.7.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.7.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.5
+
+- name: "6.2.6 Ensure no duplicate group names exist (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.8.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.8.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.6
+
+- name: "6.2.7 Ensure root PATH Integrity (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.9.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.9.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.7
+
+- name: "6.2.8 Ensure root is the only UID 0 account (Automated)"
+  become: yes
+  block:
+        - command: "awk -F: '($3 == 0) { print $1 }' /etc/passwd"
+          register: result
+        - debug:
+            msg: |
+                Nothing should be retourned:
+                {{ result.stdout }}
+                END
+  when: level1|bool
+  tags:
+    - section6
+    - section6.2
+    - section6.2.8
+
+- name: "6.2.9 Ensure local interactive user home directories exist (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.11.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.11.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.9
+
+- name: "6.2.10 Ensure users own their home directories (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.12.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.12.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.10
+
+- name: "6.2.11 Ensure users' home directories permissions are 750 or more restrictive (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.13.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.13.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.11
+
+- name: "6.2.12 Ensure users' dot files are not group or world writable (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.17.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.17.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.12
+
+
+- name: "6.2.14 Ensure no users have .forward files (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.15.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.15.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.14
+
+
+- name: "6.2.15 Ensure no users have .netrc files (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.14.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.14.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.15
+
+
+- name: "6.2.16 Ensure no users have .rhosts files (Automated)"
+  become: yes
+  vars:
+    temp_script: "/tmp/6.2.16.sh"
+  block:
+    - copy:
+        src: "tmp/6.2.16.sh"
+        dest: "{{ temp_script }}"
+        owner: root
+        group: root
+        mode: 0750
+    - command: "/bin/bash {{ temp_script }}"
+    - file:
+        path: "{{ temp_script }}"
+        state: absent
+  when: level1|bool
+  tags: 
+    - section6
+    - section6.2
+    - section6.2.16
+

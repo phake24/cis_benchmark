@@ -143,8 +143,6 @@ dnf_postgresql14_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
 dnf_postgresql_common_repo: https://de-vpc-fravc-spm-007:8443/repo/postgreSQL/VPP_ol8_pgdg-common/
 dnf_postgresql_common_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-PGDG
 dnf_shibboleth_enabled: 0
-dnf_icinga_enabled: 0
-dnf_shibboleth_enabled: 0
 dnf_shibboleth_repo: https://de-vpc-fravc-spm-007:8443/repo/Shibboleth/VPP_ol8_shibboleth
 dnf_shibboleth_gpg: https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-Shibboleth
 dnf_icinga_enabled: 0

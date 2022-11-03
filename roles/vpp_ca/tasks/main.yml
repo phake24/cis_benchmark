@@ -7,31 +7,58 @@
 
 - name: copy VPP-ROOT-CA
   become: yes
-  copy: 
-    src: "{{ vpp_root_ca_file }}"
-    dest: "/usr/local/share/ca-certificates/{{ vpp_root_ca_file | basename }}.crt"
-    owner: root
-    group: root
-    mode: 0644
-  notify: updateca {{ ansible_os_family }}
+  block:
+    - copy: 
+        src: "{{ vpp_root_ca_file }}"
+        dest: "/usr/local/share/ca-certificates/{{ vpp_root_ca_file | basename }}.crt"
+        owner: root
+        group: root
+        mode: 0644
+      when: ansible_os_family == "Debian"
+      notify: updateca {{ ansible_os_family }}
+    - copy:
+        src: "{{ vpp_root_ca_file }}"
+        dest: "/etc/pki/ca-trust/source/anchors/{{ vpp_root_ca_file | basename }}.pem"
+        owner: root
+        group: root
+        mode: 0644
+      when: ansible_os_family == "RedHat"
+      notify: updateca {{ ansible_os_family }}
 
 - name: copy VPP-LAB-ROOT-CA
   become: yes
-  copy: 
-    src: "{{ vpp_lab_root_ca_file }}"
-    dest: "/usr/local/share/ca-certificates/{{ vpp_lab_root_ca_file | basename }}.crt"
-    owner: root
-    group: root
-    mode: 0644
-  notify: updateca {{ ansible_os_family }}
+  block:
+    - copy: 
+        src: "{{ vpp_lab_root_ca_file }}"
+        dest: "/usr/local/share/ca-certificates/{{ vpp_lab_root_ca_file | basename }}.crt"
+        owner: root
+        group: root
+        mode: 0644
+      when: ansible_os_family == "Debian"
+      notify: updateca {{ ansible_os_family }}
+    - copy:
+        src: "{{ vpp_lab_root_ca_file }}"
+        dest: "/etc/pki/ca-trust/source/anchors/{{ vpp_lab_root_ca_file | basename }}.pem"
+        owner: root
+        group: root
+        mode: 0644
+      when: ansible_os_family == "RedHat"
+      notify: updateca {{ ansible_os_family }}
   when: labor|bool
 
 - name: delete VPP-LAB-ROOT-CA
   become: yes
-  file: 
-    path: "/usr/local/share/ca-certificates/{{ vpp_lab_root_ca_file | basename }}.crt" 
-    state: absent
-  notify: updateca {{ ansible_os_family }}
+  bock:
+    - file: 
+        path: "/usr/local/share/ca-certificates/{{ vpp_lab_root_ca_file | basename }}.crt" 
+        state: absent
+      when: ansible_os_family == "Debian"
+      notify: updateca {{ ansible_os_family }}
+    - file:
+        path: "/etc/pki/ca-trust/source/anchors/{{ vpp_lab_root_ca_file | basename }}.pem"
+        state: absent
+      when: ansible_os_family == "RedHat"
+      notify: updateca {{ ansible_os_family }}
   when: labor|bool == False
 
 

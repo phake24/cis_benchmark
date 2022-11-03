@@ -1,8 +1,10 @@
 - name: "4.2.1 Configure journald"
   include_tasks: section_4.2.1.yml
+  # in Oracle: 4.2.2
 
 - name: "4.2.2 Configure rsyslog"
   include_tasks: section_4.2.2.yml
+  # in Oracle: 4.2.1
 
 - name: "4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)"   # only temporary solution!
   become: yes

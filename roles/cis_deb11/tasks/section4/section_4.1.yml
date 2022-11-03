@@ -1,5 +1,5 @@
 - name: "4.1.1 Ensure auditing is enabled"
-  include_tasks: section_4.1.1.yml
+  include_tasks: section_4.1.1_{{ ansible_os_family }}.yml
   when: level2|bool
 
 - name: "4.1.2 Configure Data Retention"
@@ -12,5 +12,9 @@
 
 - name: "4.1.4 Configure auditd file access"
   include_tasks: section_4.1.4.yml
+  when: 
+    - level2|bool
+    - ansible_os_family == "Debian"
+
 
 

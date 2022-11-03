@@ -4,7 +4,24 @@
     name: rsyslog
     state: present
     update_cache: yes
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
+  tags:
+    - section4
+    - section4.2
+    - section4.2.2
+    - section4.2.2.1
+
+- name: "4.2.2.1 Ensure rsyslog is installed (Automated)"
+  become: yes
+  dnf:
+    name: rsyslog
+    state: present
+    update_cache: yes
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
   tags:
     - section4
     - section4.2

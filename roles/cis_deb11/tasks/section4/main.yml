@@ -1,5 +1,21 @@
-#- name: "4.1 Configure System Accounting (auditd)"
-#  include_tasks: section_4.1.yml
+- name: "4.1 Configure System Accounting (auditd)"
+  include_tasks: section_4.1.yml
 
 - name: "4.2 Configure Logging"
   include_tasks: section_4.2.yml
+
+- name: "4.3 Ensure logrotate is configured (Manual)"
+  become: yes
+    - vars:
+        logrotate_config: "/etc/logrotate.conf"
+  block:
+    - name: "4.3 Ensure logrotate is configured (Manual) |-> install logrotate"
+      dnf:
+        name: logrotate
+        state: present
+    - name: "4.3 Ensure logrotate is configured (Manual) |-> Adjust {{ logrotate_config }}"
+      lineinfile:
+        path: "{{ logrotate_config }}"
+        regexp: "(?i)compress"
+        line: "compress"
+

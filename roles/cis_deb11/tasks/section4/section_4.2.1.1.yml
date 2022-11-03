@@ -4,7 +4,27 @@
     name: systemd-journal-remote
     state: present
     update_cache: yes
-  when: level1 == True and enable_logging_journald_remote == True
+  when: 
+    - level1 == True
+    - enable_logging_journald_remote == True
+    - ansible_os_family == "Debian"
+  tags: 
+    - section4
+    - section4.2
+    - section4.2.1
+    - section4.2.1.1
+    - section4.2.1.1.1
+
+- name: "4.2.1.1.1 Ensure systemd-journal-remote is installed (Automated)"
+  become: yes
+  apt:
+    name: systemd-journal-remote
+    state: present
+    update_cache: yes
+  when: 
+    - level1 == True
+    - enable_logging_journald_remote == True
+    - ansible_os_family == "RedHat"
   tags: 
     - section4
     - section4.2
@@ -51,7 +71,7 @@
   become: yes
   systemd:
     name: systemd-journal-upload
-    state: started
+    state: restarted # restart to load configuration of 4.2.1.1.2
     enabled: yes
   when: level1 == True and enable_logging_journald_remote == True
   tags: 

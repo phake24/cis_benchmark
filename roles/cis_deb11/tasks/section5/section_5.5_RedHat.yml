@@ -1,0 +1,114 @@
+- name: "5.5.1 Ensure password creation requirements are configured (Automated)"
+  become: yes
+  block:
+    - apt: 
+        name: libpwquality
+        state: present
+    - template:
+        src: "etc/security/pwquality.conf.j2"
+        dest: "/etc/security/pwquality.conf"
+        owner: root
+        group: root
+        mode: 0640
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.1
+
+- name: "5.5.2 Ensure lockout for failed password attempts is configured (Automated)"
+  become: yes
+  block:
+    - lineinfile:
+        path: "/etc/security/faillock.conf"
+        regexp: '(?i)deny'
+        line: "deny = {{ maximum_allowed_false_logins }}"
+    #- lineinfile:
+    #    path: "/etc/security/faillock.conf"
+    #    regexp: '(?i)fail_interval'
+    #    line: "fail_interval = {{ false_login_fail_interval }}"
+    - lineinfile:
+        path: "/etc/security/faillock.conf"
+        regexp: '(?i)unlock_time'
+        line: "unlock_time = {{ false_login_unlock_time }}"
+    #common-auth
+    - template:
+        src: "etc/pam.d/common-auth"
+        dest: "/etc/pam.d/common-auth"
+    #common-account
+    - lineinfile:
+        path: "/etc/pam.d/common-account"
+        regexp: '(?i)account *required *pam_faillock.so'
+        line: 'account    required    pam_faillock.so'
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.2
+
+- name: "5.5.3 Ensure password reuse is limited (Automated)"
+  become: yes
+  block:
+    - copy:
+      src: "tmp/5.5.3.sh"
+      dest: "/tmp/5.5.3.sh"
+      mode: 0750
+      owner: root
+      group: root
+
+    - command: "/bin/bash /tmp/5.5.3.sh"
+    - file:
+        path: "/tmp/5.5.3.sh"
+        state: absent
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.3
+
+
+
+- name: "5.5.4 Ensure password hashing algorithm is SHA-512 (Automated)"
+  become: yes
+  block:
+    - lineinfile:
+        path: "/etc/login.defs"
+        regexp: '(?i)ENCRYPT_METHOD'
+        line: 'ENCRYPT_METHOD SHA512'
+    - lineinfile:
+        path: "/etc/libuser.conf"
+        regexp: '(?i)crypt_style'
+        line: 'crypt_style = sha512'
+    - copy:
+      src: "tmp/5.5.4.sh"
+      dest: "/tmp/5.5.4.sh"
+      mode: 0750
+      owner: root
+      group: root
+
+    - command: "/bin/bash /tmp/5.5.4.sh"
+    - file:
+        path: "/tmp/5.5.4.sh"
+        state: absent
+  when: level1|bool
+  tags:
+    - section5
+    - section5.5
+    - section5.5.4
+
+#- name: "5.4.5 Ensure all current passwords uses the configured hashing algorithm (Manual)"
+#  become: yes
+#  block:
+#    - copy: 
+#        src: "tmp/5.4.5.sh"
+#        dest: "/tmp/5.4.5.sh"
+#        owner: root
+#        group: root
+#        mode: 0750
+#  #notify: force change passwords
+#  when: level1|bool
+#  tags:
+#    - section5
+#    - section5.4
+#    - section5.4.5
+

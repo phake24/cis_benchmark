@@ -1,4 +1,4 @@
-- name: "5 Access, Authentication and Authorization"
+- name: "5.1 Configure time-based job schedulers"
   include_tasks: section_5.1.yml
 
 - name: "5.2 Configure SSH Server"
@@ -7,9 +7,16 @@
 - name: "5.3 Configure privilege escalation"
   include_tasks: section_5.3.yml
 
-- name: "5.4 Configure PAM"
-  include_tasks: section_5.4.yml
+- name: |
+    "5.4 Configure PAM (Debian)"
+    "5.4 Configure authselect (Oracle)"
+  include_tasks: section_5.4_{{ ansible_os_family }}.yml
 
-- name: "5.5 User Accounts and Environment"
-  include_tasks: section_5.5.yml
+- name: |
+    "5.5 User Accounts and Environment (Debian)"
+    "5.5. Configure PAM (Oracle)"
+  include_tasks: section_5.5_{{ ansible_os_family }}.yml
 
+- name: "5.6 User Accounts and Environment"
+  include_tasks: section_5.6.yml
+  when: ansible_os_family == "RedHat"

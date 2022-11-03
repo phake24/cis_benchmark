@@ -26,7 +26,24 @@
     - file:
         path: "{{ path }}"
         state: absent
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
+  tags:
+    - section5
+    - section5.2
+    - section5.2.2
+
+- name: "5.2.2 Ensure permissions on SSH private host key files are configured (Automated)"
+  become: yes
+  vars:
+    path: "/tmp/5.2.2.sh"
+  block:
+    - command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod u-x,g-wx,orwx {} \;
+    - command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:ssh_keys {} \;
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
   tags:
     - section5
     - section5.2
@@ -40,12 +57,32 @@
 
 - name: "5.2.4 Ensure SSH access is limited (Automated)"
   become: yes
-  copy:
-    dest: "/etc/ssh/sshd_config.d/allow_groups.conf"
-    content: "AllowGroups {{ sshd_allow_groups }}"
-    owner: root
-    group: root
-    mode: 0640
+  block:
+    - name: "5.2.4 Ensure SSH access is limited (Automated) |-> check if sshd_config.d/ exists"
+      stat:
+        path: "/etc/ssh/sshd_config.d/"
+      register: sshd_config_d
+    - name: "5.2.4 Ensure SSH access is limited (Automated) |-> create sshd_config.d/ if not exists"
+      file:
+        path: "/etc/ssh/sshd_config.d/"
+        state: directory
+        mode: 0640
+        owner: root
+        group: root
+      when: sshd_config_d.stat.exists == false
+    - name: "5.2.4 Ensure SSH access is limited (Automated) |-> create allow_groups.conf"
+      copy:
+        dest: "/etc/ssh/sshd_config.d/allow_groups.conf"
+        content: "AllowGroups {{ sshd_allow_groups }}"
+        owner: root
+        group: root
+        mode: 0640
+    - name: "5.2.4 Ensure SSH access is limited (Automated) |-> config include_path"
+      lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: "(?i)Include"
+        line: "Include /etc/ssh/sshd_config.d/*.conf"
+        insertbefore: BOF
   notify: restart sshd
   when: level1|bool
   tags:
@@ -58,7 +95,7 @@
   lineinfile:
     path: "/etc/ssh/sshd_config"
     regexp: '(?i).*LogLevel.*'
-    line: "LogLevel INFO"
+    line: "LogLevel {{ sshd_loglevel }}"
     owner: root
     group: root
     mode: 0640
@@ -90,7 +127,7 @@
   lineinfile:
     path: "/etc/ssh/sshd_config"
     regexp: '(?i).*PermitRootLogin.*'
-    line: "UsePAM yes"
+    line: "PermitRootLogin no"
     owner: root
     group: root
     mode: 0640
@@ -193,13 +230,26 @@
     group: root
     mode: 0640
   notify: restart sshd
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags:
     - section5
     - section5.2
     - section5.2.13
     - section5.2.14
     - section5.2.15
+
+- name: "5.2.14 Ensure system-wide crypto policy is not over-ridden (Automated)"
+  become: yes
+  notify: restart sshd
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regexp: '^\s*(CRYPTO_POLICY=.*)'
+    replace: '#\1'
+  when:
+    - level1|bool
+    - ansible_os_family == "RedHat"
 
 - name: "5.2.16 Ensure SSH AllowTcpForwarding is disabled (Automated)"
   become: yes
@@ -211,13 +261,17 @@
     group: root
     mode: 0640
   notify: restart sshd
-  when: level2|bool
+  when: 
+    - level2|bool
+    - ansible_os_family == "Debian"
   tags:
     - section5
     - section5.2
     - section5.2.16
 
-- name: "5.2.17 Ensure SSH warning banner is configured (Automated)"
+- name: |
+    "5.2.17 Ensure SSH warning banner is configured (Automated) (Debian)"
+    "5.2.15 Ensure SSH warning banner is configured (Automated) (Oracle)"
   become: yes
   lineinfile:
     path: "/etc/ssh/sshd_config"
@@ -233,7 +287,9 @@
     - section5.2
     - section5.2.17
 
-- name: "5.2.18 Ensure SSH MaxAuthTries is set to 4 or less (Automated)"
+- name: |
+    "5.2.18 Ensure SSH MaxAuthTries is set to 4 or less (Automated) (Debian)"
+    "5.2.16 Ensure SSH MaxAuthTries is set to 4 or less (Automated) (Oracle)"
   become: yes
   lineinfile:
     path: "/etc/ssh/sshd_config"
@@ -249,7 +305,9 @@
     - section5.2
     - section5.2.18
 
-- name: "5.2.19 Ensure SSH MaxStartups is configured (Automated)"
+- name: | 
+    "5.2.19 Ensure SSH MaxStartups is configured (Automated) (Debian)"
+    "5.2.17 Ensure SSH MaxStartups is configured (Automated) (Oracle)"
   become: yes
   lineinfile:
     path: "/etc/ssh/sshd_config"
@@ -265,7 +323,9 @@
     - section5.2
     - section5.2.19
 
-- name: "5.2.20 Ensure SSH MaxSessions is set to 10 or less (Automated)"
+- name: |
+    "5.2.20 Ensure SSH MaxSessions is set to 10 or less (Automated) (Debian)"
+    "5.2.18 Ensure SSH MaxSessions is set to 10 or less (Automated) (Oracle)"
   become: yes
   lineinfile:
     path: "/etc/ssh/sshd_config"
@@ -282,7 +342,9 @@
     - section5.2.20
 
 
-- name: "5.2.21 Ensure SSH LoginGraceTime is set to one minute or less (Automated)"
+- name: |
+    "5.2.21 Ensure SSH LoginGraceTime is set to one minute or less (Automated) (Debian)"
+    "5.2.19 Ensure SSH LoginGraceTime is set to one minute or less (Automated) (Oracle)"
   become: yes
   lineinfile:
     path: "/etc/ssh/sshd_config"
@@ -316,9 +378,36 @@
         group: root
         mode: 0640
       notify: restart sshd
-  when: level1|bool
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags:
     - section5
     - section5.2
     - section5.2.22
 
+- name: "5.2.20 Ensure SSH Idle Timeout Interval is configured (Automated)"
+  become: yes
+  block:
+    - lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: '(?i).*ClientAliveInterval.*'
+        line: "ClientAliveInterval 900"
+        owner: root
+        group: root
+        mode: 0640
+    - lineinfile:
+        path: "/etc/ssh/sshd_config"
+        regexp: '(?i).*ClientAliveCountMax.*'
+        line: "ClientAliveCountMax 0"
+        owner: root
+        group: root
+        mode: 0640
+      notify: restart sshd
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+  tags:
+    - section5
+    - section5.2
+    - section5.2.22

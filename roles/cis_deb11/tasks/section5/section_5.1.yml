@@ -1,6 +1,4 @@
-- name: |
-    "5.1 Configure time-based job schedulers"
-    "5.1.1 Ensure cron daemon is enabled and running (Automated)"
+- name: "5.1.1 Ensure cron daemon is enabled and running (Automated)"
   become: yes
   systemd:
     name: cron
@@ -63,7 +61,7 @@
         state: touch
         owner: root
         group: root
-        mode: 0640
+        mode: 0600
   when: level1|bool
   tags:
     - section5
@@ -72,19 +70,39 @@
 
 - name: "5.1.9 Ensure at is restricted to authorized users (Automated)"
   become: yes
-  block:
-    - file:
-        path: "/etc/at.deny"
-        state: absent
-    - file:
-        path: "/etc/at.allow"
-        state: touch
-        owner: root
-        group: root
-        mode: 0640
-  when: level1|bool
+  apt: 
+    name: at
+    state: absent
+#    block:
+#      - file:
+#          path: "/etc/at.deny"
+#          state: absent
+#      - file:
+#          path: "/etc/at.allow"
+#          state: touch
+#          owner: root
+#          group: root
+#       ,   mode: 0640
+  when: 
+    - level1|bool
+    - ansible_os_family == "Debian"
   tags:
     - section5
     - section5.1
     - section5.1.9
 
+
+- name: "5.1.9 Ensure at is restricted to authorized users (Automated)"
+  become: yes
+  dnf: 
+    name: at
+    state: absent
+  when: 
+    - level1|bool
+    - ansible_os_family == "RedHat"
+  tags:
+    - section5
+    - section5.1
+    - section5.1.9
+
+    

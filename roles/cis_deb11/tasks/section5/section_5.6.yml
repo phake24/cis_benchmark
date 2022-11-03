@@ -1,0 +1,45 @@
+- name: "5.6.1 Set Shadow Password Suite Parameters"
+  include_tasks: section_5.5.1.yml
+
+- name: "5.6.2 Ensure system accounts are secured (Automated)"
+  debug:
+    msg: "WARNING! NOT RELEVANT FOR NEW VMs"
+  when: level1|bool
+  tags:
+    - section5
+    - section5.6
+    - section5.6.2
+
+- name: |
+    "5.6.3 Ensure default user shell timeout is 900 seconds or less (Automated)"
+    "5.6.4 Ensure default group for the root account is GID 0 (Automated)"
+    "5.6.5 Ensure default user umask is 027 or more restrictive (Automated)"
+  become: yes
+  block:
+    - name: "5.5.4 |-> write /etc/bash.bashrc"
+      copy:
+        src: "etc/bash.bashrc_oracle"
+        dest: "/etc/bash.bashrc"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "5.5.4 |-> set umask to /root/.bashrc"
+      lineinfile:
+        path: "/root/.bashrc"
+        regexp: '(?i)unmask'
+        line: 'umask 027'
+    - name: "5.5.4 |-> write /etc/profile"
+      copy:
+        src: "etc/profile_oracle"
+        dest: "/etc/profile"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "5.5.4 |-> write /etc/profile.d/set_umask.sh"
+      copy:
+        dest: "/etc/profile.d/set_umask.sh"
+        content: "umask 027"
+        owner: root
+        group: root
+        mode: 0644
+  

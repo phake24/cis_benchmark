@@ -1,0 +1,70 @@
+- name: "5.4.1 Ensure custom authselect profile is used (Manual)"
+  become: yes
+  block:
+    - command: authselect create-profile cis -b sssd --symlink-meta
+    - command: authselect select custom/cis with-sudo with-faillock without-nullok
+  when: level1|bool
+  tags:
+    - section5
+    - section5.4
+    - section5.4.1
+
+- name: "5.4.2 Ensure authselect includes with-faillock (Automated)"
+  become: yes
+  block:
+    - command: authselect enable-feature with-faillock
+    - command: authselect apply-changes
+  when: level1|bool
+  tags:
+    - section5
+    - section5.4
+    - section5.4.2
+
+- name: "5.4.3 Ensure password reuse is limited (Automated)"
+  become: yes
+  lineinfile:
+    path: "/etc/pam.d/common-password"
+    regexp: '(?i)password *required *pam_pwhistory.so'
+    line: 'password     required      pam_pwhistory.so use_authtok remember=5'
+    insertbefore: '(?i)password\s*.success=1 default=ignore.\s*pam_unix[.]so'
+  when: level1|bool
+  tags:
+    - section5
+    - section5.4
+    - section5.4.3
+
+
+
+- name: "5.4.4 Ensure password hashing algorithm is up to date with the latest standards (Automated)"
+  become: yes
+  block:
+    - lineinfile:
+        path: "/etc/login.defs"
+        regexp: '(?i)ENCRYPT_METHOD'
+        line: 'ENCRYPT_METHOD yescrypt'
+    - lineinfile:
+        path: "/etc/pam.d/common-password"
+        regexp: '(?i)password *[success=1 default=ignore] *pam_unix.so'
+        line: 'password [success=1 default=ignore] pam_unix.so obscure use_authtok try_first_pass remember=5'
+  when: level1|bool
+  tags:
+    - section5
+    - section5.4
+    - section5.4.4
+
+- name: "5.4.5 Ensure all current passwords uses the configured hashing algorithm (Manual)"
+  become: yes
+  block:
+    - copy: 
+        src: "tmp/5.4.5.sh"
+        dest: "/tmp/5.4.5.sh"
+        owner: root
+        group: root
+        mode: 0750
+  #notify: force change passwords
+  when: level1|bool
+  tags:
+    - section5
+    - section5.4
+    - section5.4.5
+

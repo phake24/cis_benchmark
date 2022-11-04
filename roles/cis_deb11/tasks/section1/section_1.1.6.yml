@@ -5,12 +5,18 @@
         - name: "1.1.6.1 |-> read /dev/sda partitiontable (Oracle)"
           parted: device=/dev/sda unit=MiB
           register: sda_info
-        - name: "1.1.6.1 |-> Creating new partition (Oracle)"
+#        - name: "1.1.6.1 |-> Creating new partition (Oracle)"
+#          parted:
+#            device: /dev/sda
+#            number: "{{ sda_info.partitions | length }}"
+#            part_end: "+2G"
+#            resize: true
+#            state: present
+        - name: "new partition"
           parted:
             device: /dev/sda
-            number: "{{ sda_info.partitions | length }}"
-            part_end: "+2G"
-            resize: true
+            number: "{{ sda_info.partitions | length }}" +1
+            part_end: "2GiB"
             state: present
         - name: "1.1.6.1 |-> resize partition table (Oracle)"
           command: partx -u /dev/sda

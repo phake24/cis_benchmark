@@ -3,7 +3,8 @@
 #
 #
 #
-# ansible-galaxy collection install ansible.poxis
+# ansible-galaxy collection install ansible.posix
+# ansible-galaxy collection install community.general
 
 
 - name: "initial parameters"

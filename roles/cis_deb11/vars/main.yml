@@ -79,12 +79,10 @@ content_login_banner: |
 hardening_version: v2.0
 hardening_date: 28.09.2022
 
-ansible_user: povadmin
-#ansible_password: deb11_povadmin
-ansible_password: ol8_povadmin
+ansible_user: ansible
+ansible_password: ansible
 ansible_become_method: su
-#ansible_become_password: deb11_root
-ansible_become_password: ol8_root
+ansible_become_password: ansible
 hardening_header: |
   # {{ ansible_os_family }}-Linux Hardening {{ hardening_version }}
   #

@@ -48,7 +48,7 @@
 
 - name: delete VPP-LAB-ROOT-CA
   become: yes
-  bock:
+  block:
     - file: 
         path: "/usr/local/share/ca-certificates/{{ vpp_lab_root_ca_file | basename }}.crt" 
         state: absent

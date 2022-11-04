@@ -3,11 +3,11 @@
   block:
     - name: "1.1.6.1 |-> Creating Logical Volume for /var/log/audit"
       lvol:
-        vg: {{ logical_volume_group }}
-        lv: var_log_audit
+        vg: "{{ logical_volume_group }}"
+        lv: "var_log_audit"
         size: 1g
         force: yes
-    - name: "1.1.6.1 |-> Formatting /dev/mapper/deb-var_log_audit"
+    - name: "1.1.6.1 |-> Formatting /dev/mapper/{{ logical_volume_group }}-var_log_audit"
       filesystem:
         fstype: xfs
         dev: "/dev/mapper/{{ logical_volume_group }}-var_log_audit"

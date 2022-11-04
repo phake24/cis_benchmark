@@ -10,11 +10,13 @@
 - name: Set facts for Oracle
   set_fact:
     logical_volume_group: ol
+  when: ansible_os_family == "RedHat"
     
 
 - name: Set facts for Debian
   set_fact:
     logical_volume_group: deb
+  when: ansible_os_family == "Debian"
 
   #- name: "get package_facts"
   #package_facts:

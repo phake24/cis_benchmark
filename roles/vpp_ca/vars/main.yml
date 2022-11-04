@@ -8,10 +8,8 @@ vpp_lab_root_ca_file: files/vpp-lab-root-ca.pem
 
 ## DO NOT TOUCH
 
-ansible_user: povadmin
-#ansible_password: deb11_povadmin
-ansible_password: ol8_povadmin
+ansible_user: admin
+ansible_password: admin
 ansible_become_method: su
-#ansible_become_password: deb11_root
-ansible_become_password: ol8_root
+ansible_become_password: root
 

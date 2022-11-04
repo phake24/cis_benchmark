@@ -15,7 +15,7 @@
         - name: "new partition"
           parted:
             device: /dev/sda
-            number: "{{ sda_info.partitions | length }}" +1
+            number: {{ sda_info.partitions | length }} +1
             part_end: "2GiB"
             state: present
         - name: "1.1.6.1 |-> resize partition table (Oracle)"

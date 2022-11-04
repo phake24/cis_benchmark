@@ -1,6 +1,22 @@
 - name: "1.1.6.1 Ensure /var/log/audit is a separate partition (Automated)"
   become: yes
   block:
+    - block:
+        - name: "1.1.6.1 |-> Creating new partition (Oracle)"
+          parted:
+            device: /dev/sda
+            number: "{{ sdb_info.partitions | length }}"
+            part_end: "+2G"
+            resize: true
+            state: present
+        - name: "1.1.6.1 |-> resize partition table (Oracle)"
+          command: partx -u /dev/sda
+        - name: "1.1.6.1 |-> resize Volume Group (Oracle)"
+          lvol:
+            vg: "{{ logical_volume_group }}"
+            resizefs: yes
+            pvs: /dev/sda3
+      when: ansible_os_family == "RedHat"
     - name: "1.1.6.1 |-> Creating Logical Volume for /var/log/audit"
       lvol:
         vg: "{{ logical_volume_group }}"

@@ -8,7 +8,7 @@
         - name: "1.1.6.1 |-> Creating new partition (Oracle)"
           parted:
             device: /dev/sda
-            number: "{{ sdb_info.partitions | length }}"
+            number: "{{ sda_info.partitions | length }}"
             part_end: "+2G"
             resize: true
             state: present

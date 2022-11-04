@@ -2,6 +2,9 @@
   become: yes
   block:
     - block:
+        - name: "1.1.6.1 |-> read /dev/sda partitiontable (Oracle)"
+          parted: device=/dev/sda unit=MiB
+          register: sda_info
         - name: "1.1.6.1 |-> Creating new partition (Oracle)"
           parted:
             device: /dev/sda

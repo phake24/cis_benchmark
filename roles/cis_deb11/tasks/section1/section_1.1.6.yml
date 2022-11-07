@@ -6,11 +6,11 @@
           parted: device=/dev/sda unit=MiB
           register: sda_info
         - name: "1.1.6.1 |-> Creating new partition (Oracle)"
-          parted:
-            device: /dev/sda
+          general.parted:
+            device: "/dev/sda"
             number: "{{ sda_info.partitions | length }}"
             part_end: "12GiB"
-            resize: true
+            resize: yes
             state: present
 #        - name: "new partition"
 #          parted:

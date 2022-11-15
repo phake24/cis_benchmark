@@ -1,0 +1,7 @@
+---
+- name: "VPP CA"
+  include_tasks: vpp_ca.yml
+
+- name: "VPP DNS configuration"
+  include_tasks: vpp_dns.yml
+

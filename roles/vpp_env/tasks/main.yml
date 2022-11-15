@@ -1,0 +1,3 @@
+
+- name: "VPP Environment |-> Software"
+  include_tasks: software.yml

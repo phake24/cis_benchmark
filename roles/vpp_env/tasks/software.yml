@@ -1,0 +1,27 @@
+
+- name: "VPP-ENV: Software |-> install stuff"
+  block:
+    - name: "Debian"
+      apt:
+        name: openvm-tools
+        state: present
+      when: ansible_os_family == "Debian"
+    - name: "RedHat"
+      apt:
+        name: openvom-tools
+        state: present
+      when: ansible_os_family == "RedHat"
+
+
+- name: "VPP-ENV: Software |-> remove unecessary stuff"
+  block:
+    - name: "Debian"
+      apt:
+        name: nano
+        state: present
+      when: ansible_os_family == "Debian"
+    - name: "RedHat"
+      apt:
+        name: nano
+        state: present
+      when: ansible_os_family == "RedHat"

@@ -6,8 +6,8 @@
 
 - name: "4.3 Ensure logrotate is configured (Manual)"
   become: yes
-    - vars:
-        logrotate_config: "/etc/logrotate.conf"
+  vars:
+    logrotate_config: "/etc/logrotate.conf"
   block:
     - name: "4.3 Ensure logrotate is configured (Manual) |-> install logrotate"
       dnf:

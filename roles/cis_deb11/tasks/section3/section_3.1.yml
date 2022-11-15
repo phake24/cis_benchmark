@@ -87,21 +87,21 @@
             group: root
             mode: 0750
         - name: |
-            "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> run script to disable wireless interfaces
+            "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> run script to disable wireless interfaces"
             "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> run script to disable wireless interfaces"
-        - command: "/bin/bash /tmp/3.1.disable_wireless.sh"
+          command: "/bin/bash /tmp/3.1.disable_wireless.sh"
           register: result_disable
-          debug:
+        - debug:
             msg: "{{ result.stdout }}"
         - name: |
             "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> remove script"
             "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> remove script"
           file:
-            path: "/tmp/3.1.disable_wireless.sh"
+            path: "/tmp/3.1.disable_wireless_{{ ansible_os_family }}.sh"
             state: absent
       when: result.stdout != ""
     - name: |
-        "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> remove script
+        "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> remove script"
         "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> remove script"
       file:
         path: "/tmp/3.1.wireless.sh"

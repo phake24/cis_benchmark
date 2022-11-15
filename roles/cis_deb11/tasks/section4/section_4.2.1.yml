@@ -76,6 +76,7 @@
         owner: root
         group: root
         mode: 0644
+      notify: restart journald
     - name: "4.2.1.6 | SystemKeepFree"
       lineinfile:
         path: "/etc/systemd/journald.conf"
@@ -84,6 +85,7 @@
         owner: root
         group: root
         mode: 0644
+      notify: restart journald
     - name: "4.2.1.6 | RunTimeMaxUse"
       lineinfile:
         path: "/etc/systemd/journald.conf"
@@ -92,6 +94,7 @@
         owner: root
         group: root
         mode: 0644
+      notify: restart journald
     - name: "4.2.1.6 | RuntimeKeepFree"
       lineinfile:
         path: "/etc/systemd/journald.conf"
@@ -100,6 +103,7 @@
         owner: root
         group: root
         mode: 0644
+      notify: restart journald
     - name: "4.2.1.6 | MaxFileSec"
       lineinfile:
         path: "/etc/systemd/journald.conf"
@@ -108,7 +112,7 @@
         owner: root
         group: root
         mode: 0644
-  notify: restart journald
+      notify: restart journald
   when: level1|bool
   tags: 
     - section4

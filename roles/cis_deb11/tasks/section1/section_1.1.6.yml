@@ -45,6 +45,8 @@
         src: "/dev/mapper/{{ logical_volume_group }}-var_log_audit"
         fstype: xfs
         state: mounted
+    - name: "1.1.6.1 |-> SELinux Policy"
+      command: "restorecon /var/log/audit"
   when:
     - "'/var/log/audit' not in mounts"
     - level2|bool == True

@@ -91,7 +91,7 @@
             "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> run script to disable wireless interfaces"
         - command: "/bin/bash /tmp/3.1.disable_wireless.sh"
           register: result_disable
-        - debug:
+          debug:
             msg: "{{ result.stdout }}"
         - name: |
             "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> remove script"

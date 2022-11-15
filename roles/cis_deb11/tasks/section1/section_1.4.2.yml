@@ -15,25 +15,30 @@
 
 - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated)"
   become: yes
-  block: 
-    - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated) |-> /boot/grub2/grub.cfg"
-      file:
-        path: "/boot/grub2/grub.cfg"
-        owner: root
-        group: root
-        mode: 0600
-    - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated) |-> /boot/grub2/grubenv"
-      file:
-        path: "/boot/grub2/grubenv"
-        owner: root
-        group: root
-        mode: 0600
-    - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated) |-> /boot/grub2/user.cfg"
-      file:
-        path: "/boot/grub2/user.cfg"
-        owner: root
-        group: root
-        mode: 0600
+  block:
+    - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated) |-> {{ item }}"
+        file:
+          path: "{{ item }}"
+          owner: root
+          group: root
+          mode: 0700
+      loop:
+        - "/boot/efi/EFI/redhat/grub.cfg"
+        - "/boot/efi/EFI/redhat/grubenv"
+        - "/boot/grub2/user.cfg"
+    - name: "1.4.2 Ensure permissions on bootloader config are configured (Automated) |-> Filesystem"
+      mount:
+        name: "{{ item.device }}" 
+        src: "{{ item.device }}"
+        fstype: "{{ item.fstype }}"
+        state: present
+        opts: umask=0027,fmask=0077,uid=0,gid=0
+      loop: "{{ ansible_mounts }}"
+      loop_control:
+        label: "{{ item.mount }}"
+      when:
+        - item.path == '/boot/efi'
+        - level1|bool == True  
   when: 
     - level1|bool
     - ansible_os_family == "RedHat"

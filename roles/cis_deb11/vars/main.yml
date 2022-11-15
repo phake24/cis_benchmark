@@ -116,6 +116,8 @@ debian_grub_file_user_config: "/etc/grub.d/40_custom"
 
 ## Oracle specific
 
+enable_fips_mode: yes # or no
+
 selinux_mode: enforcing # enforcing OR permissive allowed in level1, level2 is forced to enforcing.
 
 include_vars: dnf_repo.yml

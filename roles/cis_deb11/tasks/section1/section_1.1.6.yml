@@ -9,9 +9,9 @@
               device: /dev/sda 
               unit: MiB
           register: sda_info
-        - name: "asdasd"
-          debug:
-            msg: "{{ sda_info }}"
+          #    - name: "asdasd"
+          #debug:
+          #  msg: "{{ sda_info }}"
         - name: "1.1.6.1 |-> Creating new partition (Oracle)"
           community.general.parted:
               device: /dev/sda 

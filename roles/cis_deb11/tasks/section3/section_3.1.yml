@@ -75,7 +75,7 @@
         - name: |
             "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> wireless interfaces available!"
             "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> wireless interfaces available!"
-        - debug: 
+          debug: 
             msg: "WARNING: {{ result.stdout }}"
         - name: |
             "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> copy script to disable wireless interfaces"
@@ -92,7 +92,7 @@
         - command: "/bin/bash /tmp/3.1.disable_wireless.sh"
           register: result_disable
         - debug:
-            msg: {{ result.stdout }}
+            msg: "{{ result.stdout }}"
         - name: |
             "3.1.2 Ensure wireless interfaces are disabled (Automated) |-> remove script"
             "3.1.4 Ensure wireless interfaces are disabled (Automated) |-> remove script"

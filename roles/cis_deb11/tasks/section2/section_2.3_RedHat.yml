@@ -10,7 +10,7 @@
     name: ["ypbind", "rsh", "talk", "telnet", "openldap-clients", "tftp"]
     state: absent
     autoremove: yes
-  when: - level1|bool
+  when: level1|bool
   tags:
     - section2
     - section2.3

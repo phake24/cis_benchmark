@@ -1,6 +1,6 @@
 ---
-#- name: "CIS Section 1.1 Filesystem Configuration"
-#  include_tasks: section_1.1.yml
+- name: "CIS Section 1.1 Filesystem Configuration"
+  include_tasks: section_1.1.yml
 
 - name: "CIS Section 1.2 Configure Software Updates"
   include_tasks: section_1.2.yml
@@ -29,6 +29,9 @@
 - name: "CIS Section 1.10 Ensure system-wide crypto policy is not legacy (Automated)"
   become: yes
   block:
+    - dnf:
+        name: crypto-policies-scripts
+        state: present
     - name: "1.10 Ensure system-wide crypto policy is not legacy (Automated) |-> configure crypto policy"
       command: update-crypto-policies --set DEFAULT
     - name: "1.10 Ensure system-wide crypto policy is not legacy (Automated) |-> update crypto policy"

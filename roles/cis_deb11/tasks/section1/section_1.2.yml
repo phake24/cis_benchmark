@@ -5,13 +5,13 @@
     - file: path=/etc/apt/sources.list state=touch
     - template:
         src: etc/apt/sources.list.d/debian-update.j2
-        dest: /etc/apt/sources.list.d/debian-update
+        dest: /etc/apt/sources.list.d/debian-update.list
         owner: root
         group: root
         mode: 0644
     - template:
         src: etc/apt/sources.list.d/debian-security.j2
-        dest: /etc/apt/sources.list.d/debian-security
+        dest: /etc/apt/sources.list.d/debian-security.list
         owner: root
         group: root
         mode: 0644
@@ -39,6 +39,10 @@
 - name: "1.2.2 Ensure GPG keys are configured (Manual)"
   become: yes
   block:
+    - name: "1.2.2 Ensure GPG keys are configured (Manual) |-> install gnupg2"
+      apt: 
+        name: gnupg2
+        state: present
     - name: "1.2.2 Ensure GPG keys are configured (Manual) |-> read GPG keys"
       command: apt-key list
       register: result
@@ -46,7 +50,7 @@
       debug:
         msg: |
           "Following GPG Keys are configured:"
-          {{ result.stdout }}
+          {{ result.stdout_lines }}
           "END"
   when: 
     - level1|bool
@@ -233,6 +237,9 @@
     #         gpgcheck: "1", 
     #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
     #         }
+    - include_vars:
+        dir: vars
+        files_matching: dnf_repo.yml
     - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> delete preconfigured repository configurations"
       shell: /bin/rm -rf /etc/yum.repos.d/*
       when: dnf_delete_repos|bool

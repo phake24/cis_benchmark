@@ -4,7 +4,7 @@
       - community.general
   hosts: all
   roles:
-    - vpp_ca
+    - vpp_preperations 
     - cis_deb11
       # - iads_deb11
       # - psa_deb11

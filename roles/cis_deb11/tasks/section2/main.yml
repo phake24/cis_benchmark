@@ -9,14 +9,16 @@
   include_tasks: section_2.3_{{ ansible_os_family }}.yml
 
 - name: "CIS Section 2.4 nonessential services"
-  become: yes
-  block:
-    - name: "2.4 Ensure nonessential services are removed or masked (Manual)"
-      command: lsof -i -P -n | grep -v "(ESTABLISHED)"
-      when: ansible_os_family == "RedHat"
-    - name: "2.4 Ensure nonessential services are removed or masked (Manual)"
-      command: ss -plntu
-      when: ansible_os_family == "Debian"
+  debug:
+      msg: "MANUAL! Not configured for ansible"
+      #  become: yes
+      #  block:
+      #    - name: "2.4 Ensure nonessential services are removed or masked (Manual)"
+      #      command: 'lsof -i -P -n | grep -v "(ESTABLISHED)"'
+      #      when: ansible_os_family == "RedHat"
+      #    - name: "2.4 Ensure nonessential services are removed or masked (Manual)"
+      #      command: 'ss -plntu'
+      #      when: ansible_os_family == "Debian"
   when: level1|bool
   tags:
     - section2

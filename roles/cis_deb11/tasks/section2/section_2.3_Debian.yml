@@ -10,7 +10,7 @@
     name: ["nis", "rsh-client", "talk", "telnet", "ldap-utils", "rpcbind"]
     state: absent
     autoremove: yes
-  when: - level1|bool
+  when: level1|bool
   tags:
     - section2.3.1
     - section2.3.2

@@ -82,12 +82,16 @@
   become: yes
   block:
     - yum_repository:
-        name: "{{ item }}"
+        name: "{{ item.name }}"
+        file: "{{ item.file }}"
         state: absent
       loop:
-        - ol8_baseos_latest
-        - ol8_UEKR6
-        - ol8_appstream
+          - { name: "ol8_baseos_latest", file: "oracle-linux-ol8" }
+          - { name: "ol8_appstream", file: "oracle-linux-ol8" }
+          - { name: "ol8_codeready_builder", file: "oracle-linux-ol8" }
+          - { name: "ol8_u0_baseos_base", file: "oracle-linux-ol8" }
+          - { name: "ol8_u1_baseos_base", file: "oracle-linux-ol8" }
+          - { name: "ol8_addons", file: "oracle-linux-ol8" }
       notify: yum-clean-metadata
     - yum_repository:
         name: VPP_ol8_EPEL
@@ -95,7 +99,7 @@
         file: vpp
         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_EPEL/"
         enabled: yes
-        repo_gpgcheck: yes
+        gpgcheck: yes
         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
     # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> delete preconfigured repository configurations"
     #   shell: /bin/rm -rf /etc/yum.repos.d/*

@@ -96,3 +96,8 @@
   systemd:
     name: nftables
     state: restarted
+
+- name: yum-clean-metadata
+  command: yum clean metadata
+  args:
+    warn: no

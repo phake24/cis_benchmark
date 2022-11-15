@@ -1,0 +1,31 @@
+---
+- name: "1.1.7 |-> configure mount parameters"
+  become: yes
+  mount:
+    path: /home
+    src: "{{ item.device }}"
+    fstype: "{{ item.fstype }}"
+    opts: defaults,nodev,nosuid,uquota,gquota
+    state: mounted
+  register: test
+  notify: reboot
+
+- name: "1.1.7 |-> Reboot to become fstab active"
+  become: yes
+  reboot:
+
+- name: "1.17 |-> setting quota"
+  become: yes
+  community.general.xfs_quota:
+    type: user
+    mountpoint: "/home"
+    bsoft: 10m
+    bhard: 20m
+    state: present
+
+    #- name: "1.1.7 |-> enable SE Linux for Quota config"
+    #become: yes
+    #command: restorecon /home/aquota.group
+    #- name: "1.1.7 |-> Enable SELinux for quota config"
+    #become: yes
+    #command: restorecon /home/aquota.user

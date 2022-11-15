@@ -1,0 +1,8 @@
+# /etc/apt/sources.list.d/debian-security
+#
+# {{ ansible_managed }}
+#
+# VPP Debian Linux 11 Hardening v{{ hardening_version }} ({{ hardening_date }})
+
+deb [arch=amd64 signed-by=/usr/share/keyrings/debian-archive-bullseye-security-automatic.gpg] https://{{ debian_repository_hostname }}:{{ debian_repository_port }}/debian-security bullseye-security main
+deb-src [arch=amd64 signed-by=/usr/share/keyrings/debian-archive-bullseye-security-automatic.gpg] https://{{ debian_repository_hostname }}:{{ debian_repository_port }}/debian-security bullseye-security main

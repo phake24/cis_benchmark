@@ -1,11 +1,20 @@
 - name: "1.2.1 Ensure package manager repositories are configured (Manual)"
   become: yes
-  template:
-    src: etc/apt/sources.list.j2
-    dest: /etc/apt/sources.list
-    owner: root
-    group: root
-    mode: 0644
+  block:
+    - file: path=/etc/apt/sources.list state=absent
+    - file: path=/etc/apt/sources.list state=touch
+    - template:
+        src: etc/apt/sources.list.d/debian-update.j2
+        dest: /etc/apt/sources.list.d/debian-update
+        owner: root
+        group: root
+        mode: 0644
+    - template:
+        src: etc/apt/sources.list.d/debian-security.j2
+        dest: /etc/apt/sources.list.d/debian-security
+        owner: root
+        group: root
+        mode: 0644
   when: 
     - level1|bool
     - ansible_os_family == "Debian"

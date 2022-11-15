@@ -3,7 +3,7 @@
   become: yes
   mount:
     path: /home
-    src: "{{ item.device }}"
+    src: "UUID={{ item.uuid }}"
     fstype: "{{ item.fstype }}"
     opts: defaults,nodev,nosuid,uquota,gquota
     state: mounted

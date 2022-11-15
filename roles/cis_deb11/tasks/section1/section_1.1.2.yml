@@ -2,7 +2,7 @@
   become: yes
   assert:
     that: "'/tmp' in mounts"
-    fail_msg: "Failed! Mountpoint /tmp is mandatory and must be created during intitial setup"
+    fail_msg: "Failed! Mountpoint /tmp is mandatory and must be created. Not configured in Ansible yet."
     success_msg: "Success!"
   when:
     - level1|bool == True
@@ -18,7 +18,7 @@
   become: yes
   mount:
       name: /tmp
-      src: "{{ item.device }}"
+      src: "UUID={{ item.uuid }}"
       fstype: "{{ item.fstype }}"
       state: present
       opts: defaults,nodev,noexec,nosuid

@@ -15,12 +15,15 @@
 
 - name: "1.9 | patching system"
   become: yes
-  dnf:
-    name: "*"
-    state: latest
-    update_cache: yes
-    cache_valid_time: 3600
-    autoremove: yes
+  block: 
+    - name: "1.9 |-> Patching"
+      dnf:
+        name: "*"
+        state: latest
+        update_cache: yes
+    - name: "1.9 |-> Autoremove" 
+      dnf:
+        autoremove: yes
   when: 
     - level1|bool
     - ansible_os_family == "RedHat"

@@ -1,6 +1,8 @@
 - name: "1.6.1 Configure AppArmor"
   include_tasks: section_1.6.1_{{ ansible_os_family }}.yml
-  when: ansible_os_family == "Debian" OR ansible_os_family == "RedHat"
+  when: 
+    - ansible_os_family == "Debian" 
+    - ansible_os_family == "RedHat"
   tags:
     - section1
     - section1.6

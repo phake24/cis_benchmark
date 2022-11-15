@@ -18,7 +18,7 @@
   become: yes
   mount:
       name: /var/log
-      src: "{{ item.device }}"
+      src: "UUID={{ item.uuid }}"
       fstype: "{{ item.fstype }}"
       state: present
       opts: defaults,nodev,nosuid,noexec

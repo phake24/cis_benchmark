@@ -5,7 +5,7 @@
   become: yes
   mount:
       name: /dev/shm
-      src: "{{ item.device }}"
+      src: "UUID={{ item.uuid }}"
       fstype: "{{ item.fstype }}"
       state: present
       opts: defaults,nodev,nosuid,noexec

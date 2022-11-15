@@ -17,7 +17,7 @@
   become: yes
   mount:
       name: /home
-      src: "{{ item.device }}"
+      src: "UUID={{ item.uuid }}"
       fstype: "{{ item.fstype }}"
       state: present
       opts: defaults,nodev,nosuid

@@ -1,0 +1,9 @@
+- name: "configure resolv.conf"
+  become: yes
+  template:
+    src: "etc/resolv.conf"
+    dest: "/etc/resolv.conf"
+    mode: 06400
+    owner: root
+    group: root
+  

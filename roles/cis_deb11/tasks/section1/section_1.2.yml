@@ -80,7 +80,12 @@
 
 - name: "1.2.3 Ensure package manager repositories are configured (Manual)"
   become: yes
+  vars: 
+    
   block:
+    # - include_vars: 
+    #     dir: vars
+    #     files_matching: ol8_repo.yml
     - yum_repository:
         name: "{{ item.name }}"
         file: "{{ item.file }}"
@@ -93,40 +98,167 @@
           - { name: "ol8_u1_baseos_base", file: "oracle-linux-ol8" }
           - { name: "ol8_addons", file: "oracle-linux-ol8" }
       notify: yum-clean-metadata
-    - yum_repository:
-        name: VPP_ol8_EPEL
-        description: "VPP: Oracle Linux 8: EPEL Packages for Development (x86_64)"
-        file: vpp
-        baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_EPEL/"
-        enabled: yes
-        gpgcheck: yes
-        gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
-    # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> delete preconfigured repository configurations"
-    #   shell: /bin/rm -rf /etc/yum.repos.d/*
-    #   when: dnf_delete_repos|bool
-    # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> OL8 Repository"
-    #   template:
-    #     src: "etc/yum.repos.d/ol8.repo.j2"
-    #     dest: "/etc/yum.repos.d/ol8.repo"
-    #     owner: root
-    #     group: root
-    #     mode: 0644
-    # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> Nagios Repository"
-    #   template:
-    #     src: "etc/yum.repos.d/nagios.repo.j2"
-    #     dest: "/etc/yum.repos.d/nagios.repo"
-    #     owner: root
-    #     group: root
-    #     mode: 0644
-    #   when: dnf_nagios_enabled|bool
-    # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> ICINGA Repository"
-    #   template:
-    #     src: "etc/yum.repos.d/icinga.repo.j2"
-    #     dest: "/etc/yum.repos.d/icinga.repo"
-    #     owner: root
-    #     group: root
-    #     mode: 0644
-    #   when: dnf_icinga_enabled|bool
+    # - yum_repository:
+    #     name: "{{ item.name }}"
+    #     description: "{{ item.desc }}"
+    #     file: "{{ item.file }}"
+    #     baseurl: "{{ item.baseurl }}"
+    #     enabled: "{{ item.enabled }}"
+    #     gpgcheck: "{{ item.gpgcheck }}"
+    #     gpgkey: "{{ item.gpgkey }}"
+    #   loop:
+    #     - { 
+    #         name: "VPP_ol8_EPEL", 
+    #         desc: "VPP: Oracle Linux 8: EPEL Packages for Development (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_EPEL/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_developer_UEKR6", 
+    #         desc: "VPP: Oracle Linux 8: EPEL Packages for Development (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_developer_UEKR6/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_developer", 
+    #         desc: "VPP: Oracle Linux 8: Development Packages (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_developer/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_oraclelinuxmanager210_client", 
+    #         desc: "VPP: Oracle Linux 8: Manager Client 2.10 (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_oraclelinuxmanager210_client/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_baseos_latest", 
+    #         desc: "VPP: Oracle Linux 8: BaseOS Latest (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_baseos_latest/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_appstream", 
+    #         desc: "VPP: Oracle Linux 8: Application Stream (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_appstream/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_addons", 
+    #         desc: "VPP: Oracle Linux 8: Addons (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_addons/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_UEKR6", 
+    #         desc: "VPP: Oracle Linux 8: Unbreakable Enterprise Kernel Release 6 (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_UEKR6/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_UEKR6_RDMA", 
+    #         desc: "VPP: Oracle Linux 8: UEK Release 6 RDMA (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_UEKR6_RDMA/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_kvm_appstream", 
+    #         desc: "VPP: Oracle Linux 8: KVM Appstream (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_kvm_appstream/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - { 
+    #         name: "VPP_ol8_automation", 
+    #         desc: "VPP: Oracle Linux 8: Automation (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_automation/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - {
+    #         name: "VPP_ol8_MySQL8_community", 
+    #         desc: "VPP: Oracle Linux 8: MySQL 8.0 Community Server (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_MySQL8_community/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - {
+    #         name: "VPP_ol8_MySQL8_connectors_community", 
+    #         desc: "VPP: Oracle Linux 8: MySQL 8.0 Connectors Community (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_MySQL8_connectors_community/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    #     - {
+    #         name: "VPP_ol8_MySQL8_tools_community", 
+    #         desc: "VPP: Oracle Linux 8: MySQL 8.0 Tools Community (x86_64)", 
+    #         file: "vpp_ol8", 
+    #         baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_MySQL8_tools_community/", 
+    #         enabled: "1", 
+    #         gpgcheck: "1", 
+    #         gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    #         }
+    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> delete preconfigured repository configurations"
+      shell: /bin/rm -rf /etc/yum.repos.d/*
+      when: dnf_delete_repos|bool
+    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> OL8 Repository"
+      template:
+        src: "etc/yum.repos.d/ol8.repo.j2"
+        dest: "/etc/yum.repos.d/ol8.repo"
+        owner: root
+        group: root
+        mode: 0644
+    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> Nagios Repository"
+      template:
+        src: "etc/yum.repos.d/nagios.repo.j2"
+        dest: "/etc/yum.repos.d/nagios.repo"
+        owner: root
+        group: root
+        mode: 0644
+      when: dnf_nagios_enabled|bool
+    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> ICINGA Repository"
+      template:
+        src: "etc/yum.repos.d/icinga.repo.j2"
+        dest: "/etc/yum.repos.d/icinga.repo"
+        owner: root
+        group: root
+        mode: 0644
+      when: dnf_icinga_enabled|bool
   when: 
     - level1|bool
     - ansible_os_family == "RedHat"

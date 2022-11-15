@@ -1,0 +1,7 @@
+- name: updateca Debian
+  become: yes
+  command: /usr/sbin/update-ca-certificates
+
+- name: updateca RedHat
+  become: yes
+  command: update-ca-trust extract

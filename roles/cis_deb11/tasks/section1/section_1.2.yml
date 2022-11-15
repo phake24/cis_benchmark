@@ -81,32 +81,48 @@
 - name: "1.2.3 Ensure package manager repositories are configured (Manual)"
   become: yes
   block:
-    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> delete preconfigured repository configurations"
-      shell: /bin/rm -rf /etc/yum.repos.d/*
-      when: dnf_delete_repos|bool
-    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> OL8 Repository"
-      template:
-        src: "etc/yum.repos.d/ol8.repo.j2"
-        dest: "/etc/yum.repos.d/ol8.repo"
-        owner: root
-        group: root
-        mode: 0644
-    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> Nagios Repository"
-      template:
-        src: "etc/yum.repos.d/nagios.repo.j2"
-        dest: "/etc/yum.repos.d/nagios.repo"
-        owner: root
-        group: root
-        mode: 0644
-      when: dnf_nagios_enabled|bool
-    - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> ICINGA Repository"
-      template:
-        src: "etc/yum.repos.d/icinga.repo.j2"
-        dest: "/etc/yum.repos.d/icinga.repo"
-        owner: root
-        group: root
-        mode: 0644
-      when: dnf_icinga_enabled|bool
+    - yum_repository:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - ol8_baseos_latest
+        - ol8_UEKR6
+        - ol8_appstream
+      notify: yum-clean-metadata
+    - yum_repository:
+        name: VPP_ol8_EPEL
+        description: "VPP: Oracle Linux 8: EPEL Packages for Development (x86_64)"
+        file: vpp
+        baseurl: "https://de-vpc-fravc-spm-007:8443/repo/OracleLinux/OL8/VPP_ol8_EPEL/"
+        enabled: yes
+        repo_gpgcheck: yes
+        gpgkey: "https://de-vpc-fravc-spm-007:8443/gpg/ol8_RPM-GPG-KEY-oracle"
+    # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> delete preconfigured repository configurations"
+    #   shell: /bin/rm -rf /etc/yum.repos.d/*
+    #   when: dnf_delete_repos|bool
+    # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> OL8 Repository"
+    #   template:
+    #     src: "etc/yum.repos.d/ol8.repo.j2"
+    #     dest: "/etc/yum.repos.d/ol8.repo"
+    #     owner: root
+    #     group: root
+    #     mode: 0644
+    # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> Nagios Repository"
+    #   template:
+    #     src: "etc/yum.repos.d/nagios.repo.j2"
+    #     dest: "/etc/yum.repos.d/nagios.repo"
+    #     owner: root
+    #     group: root
+    #     mode: 0644
+    #   when: dnf_nagios_enabled|bool
+    # - name: "1.2.3 Ensure package manager repositories are configured (Manual) |-> ICINGA Repository"
+    #   template:
+    #     src: "etc/yum.repos.d/icinga.repo.j2"
+    #     dest: "/etc/yum.repos.d/icinga.repo"
+    #     owner: root
+    #     group: root
+    #     mode: 0644
+    #   when: dnf_icinga_enabled|bool
   when: 
     - level1|bool
     - ansible_os_family == "RedHat"

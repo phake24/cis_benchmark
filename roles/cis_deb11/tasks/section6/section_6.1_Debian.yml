@@ -158,14 +158,25 @@
 
 - name: "6.1.11 Ensure no ungrouped files or directories exist (Automated)"
   become: yes
+  vars:
+    - temp_script: "tmp/6.1.11.sh"
   block:
-    - command: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -nogroup"
-      register: result
-    - debug:
-        msg: 
-        - "no output should come:"
-        - "{{ result.stdout }}"
-        - "WARNING! not ready yet, as not necessary on new VMs"
+      - copy: 
+          src: "{{ temp_script }}"
+          dest: "/{{ temp_script }}"
+          owner: root
+          group: root
+          mode: 0750
+      - command: "/{{ temp_script }}"
+        register: result
+      - debug:
+            msg: 
+              - "no output should come: "
+              - "{{ result.stdout_lines }} "
+              - "WARNING! not ready yet, as not necessary on new VMs"
+      - file: 
+          path: "/{{ temp_script }}"
+          state: absent
   when: level1|bool
   tags:
     - section6
@@ -174,14 +185,25 @@
 
 - name: "6.1.12 Audit SUID executables (Manual)"
   become: yes
+  vars:
+    - temp_script: "tmp/6.1.12.sh"
   block:
-        - shell: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -4000"
-          register: result
-        - debug:
+      - copy: 
+          src: "{{ temp_script }}"
+          dest: "/{{ temp_script }}"
+          owner: root
+          group: root
+          mode: 0750
+      - command: "/{{ temp_script }}"
+        register: result
+      - debug:
             msg: 
-            - "check if following SUID executables are legitimated:"
-            - "{{ result.stdout }}"
-            - "WARNING! not ready yet, as not necessary on new VMs"
+              - "no output should come: "
+              - "{{ result.stdout_lines }} "
+              - "WARNING! not ready yet, as not necessary on new VMs"
+      - file: 
+          path: "/{{ temp_script }}"
+          state: absent
   when: level1|bool
   tags:
     - section6
@@ -190,14 +212,25 @@
 
 - name: "6.1.13 Audit SGID executables (Manual)"
   become: yes
+  vars:
+    - temp_script: "tmp/6.1.13.sh"
   block:
-    - shell: "df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -2000"
-      register: result
-    - debug:
-        msg: 
-         - "check if following SUID executables are legitimated:"
-         - "{{ result.stdout }}"
-         - "WARNING! not ready yet, as not necessary on new VMs"
+      - copy: 
+          src: "{{ temp_script }}"
+          dest: "/{{ temp_script }}"
+          owner: root
+          group: root
+          mode: 0750
+      - command: "/{{ temp_script }}"
+        register: result
+      - debug:
+            msg: 
+              - "no output should come: "
+              - "{{ result.stdout_lines }} "
+              - "WARNING! not ready yet, as not necessary on new VMs"
+      - file: 
+          path: "/{{ temp_script }}"
+          state: absent
   when: level1|bool
   tags:
     - section6

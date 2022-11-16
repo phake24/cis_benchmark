@@ -50,12 +50,11 @@
   become: yes
   block:
     - copy:
-      src: "tmp/5.5.3.sh"
-      dest: "/tmp/5.5.3.sh"
-      mode: 0750
-      owner: root
-      group: root
-
+        src: "tmp/5.5.3.sh"
+        dest: "/tmp/5.5.3.sh"
+        mode: 0750
+        owner: root
+        group: root
     - command: "/bin/bash /tmp/5.5.3.sh"
     - file:
         path: "/tmp/5.5.3.sh"

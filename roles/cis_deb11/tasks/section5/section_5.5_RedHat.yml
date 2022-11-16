@@ -1,15 +1,11 @@
 - name: "5.5.1 Ensure password creation requirements are configured (Automated)"
   become: yes
-  block:
-    - apt: 
-        name: libpwquality
-        state: present
-    - template:
-        src: "etc/security/pwquality.conf.j2"
-        dest: "/etc/security/pwquality.conf"
-        owner: root
-        group: root
-        mode: 0640
+  - template:
+      src: "etc/security/pwquality.conf.j2"
+      dest: "/etc/security/pwquality.conf"
+      owner: root
+      group: root
+      mode: 0640
   when: level1|bool
   tags:
     - section5

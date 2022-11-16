@@ -113,7 +113,7 @@
           owner: root
           group: root
           mode: 0750
-      - command: "/{{ temp_script }}"
+      - command: "bash /{{ temp_script }}"
         register: result
       - debug:
             msg: 
@@ -140,7 +140,7 @@
           owner: root
           group: root
           mode: 0750
-      - command: "/{{ temp_script }}"
+      - command: "bash /{{ temp_script }}"
         register: result
       - debug:
             msg: 
@@ -167,7 +167,7 @@
           owner: root
           group: root
           mode: 0750
-      - command: "/{{ temp_script }}"
+      - command: "bash /{{ temp_script }}"
         register: result
       - debug:
             msg: 
@@ -194,7 +194,7 @@
           owner: root
           group: root
           mode: 0750
-      - command: "/{{ temp_script }}"
+      - command: "bash /{{ temp_script }}"
         register: result
       - debug:
             msg: 
@@ -221,7 +221,7 @@
           owner: root
           group: root
           mode: 0750
-      - command: "/{{ temp_script }}"
+      - command: "bash /{{ temp_script }}"
         register: result
       - debug:
             msg: 

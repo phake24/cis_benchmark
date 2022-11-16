@@ -80,11 +80,11 @@
         regexp: '(?i)crypt_style'
         line: 'crypt_style = sha512'
     - copy:
-      src: "tmp/5.5.4.sh"
-      dest: "/tmp/5.5.4.sh"
-      mode: 0750
-      owner: root
-      group: root
+        src: "tmp/5.5.4.sh"
+        dest: "/tmp/5.5.4.sh"
+        mode: 0750
+        owner: root
+        group: root
 
     - command: "/bin/bash /tmp/5.5.4.sh"
     - file:

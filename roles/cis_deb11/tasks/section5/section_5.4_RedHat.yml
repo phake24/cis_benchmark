@@ -5,7 +5,7 @@
         path: "/etc/authselect/custom/cis/"
         state: absent
     - command: authselect create-profile cis -b sssd --symlink-meta
-    - command: authselect select custom/cis with-sudo with-faillock without-nullok
+    - command: authselect select custom/cis with-sudo with-faillock without-nullok --force
   when: level1|bool
   tags:
     - section5

@@ -104,14 +104,25 @@
 
 - name: "6.1.9 Ensure no world writable files exist (Automated)"
   become: yes
+  vars:
+    - temp_script: "/tmp/6.1.9.sh"
   block:
-      - command: "/usr/bin/df -l -P | /usr/bin/awk '{if (NR!=1) print $6}' | /usr/bin/xargs -I '{}' find '{}' -xdev -type f -perm -0002"
+      - copy: 
+          src: "tmp/6.1.9.sh"
+          dest: "{{ temp_script }}"
+          owner: root
+          group: root
+          mode: 0750
+      - command: "{{ temp_script }}"
         register: result
       - debug:
             msg: 
               - "no output should come: "
               - "{{ result.stdout }} "
               - "WARNING! not ready yet, as not necessary on new VMs"
+      - file: 
+          path: "{{ temp_script }}"
+          state: absent
   when: level1|bool
   tags:
     - section6

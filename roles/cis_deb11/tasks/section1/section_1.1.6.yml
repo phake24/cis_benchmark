@@ -47,6 +47,7 @@
         state: mounted
     - name: "1.1.6.1 |-> SELinux Policy"
       command: "restorecon /var/log/audit"
+      when: ansible_os_family == "RedHat"
   when:
     - "'/var/log/audit' not in mounts"
     - level2|bool == True

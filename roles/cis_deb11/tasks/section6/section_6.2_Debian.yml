@@ -119,14 +119,17 @@
   vars:
     temp_script: "/tmp/6.2.7.sh"
   block:
-    - copy:
+    - name: "6.2.7 Ensure no duplicate user names exist (Automated) |-> copy Script" 
+      copy:
         src: "tmp/6.2.7.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
-    - file:
+    - name: "6.2.7 Ensure no duplicate user names exist (Automated) |-> run Script" 
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.7 Ensure no duplicate user names exist (Automated) |-> remove Script" 
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool
@@ -140,14 +143,17 @@
   vars:
     temp_script: "/tmp/6.2.8.sh"
   block:
-    - copy:
+    - name: "6.2.8 Ensure no duplicate group names exist (Automated) |-> copy script"
+      copy:
         src: "tmp/6.2.8.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
-    - file:
+    - name: "6.2.8 Ensure no duplicate group names exist (Automated) |-> run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.8 Ensure no duplicate group names exist (Automated) |-> remove script"
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool
@@ -161,14 +167,17 @@
   vars:
     temp_script: "/tmp/6.2.9.sh"
   block:
-    - copy:
+    - name: "6.2.9 Ensure root PATH Integrity (Automated) |-> copy script"
+      copy:
         src: "tmp/6.2.9.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
-    - file:
+    - name: "6.2.9 Ensure root PATH Integrity (Automated) |-> run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.9 Ensure root PATH Integrity (Automated) |-> remove script"
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool
@@ -184,8 +193,8 @@
           register: result
         - debug:
             msg: |
-                Nothing should be retourned:
-                {{ result.stdout }}
+                only root should be retourned:
+                {{ result.stdout_lines }}
                 END
   when: level1|bool
   tags:
@@ -198,14 +207,17 @@
   vars:
     temp_script: "/tmp/6.2.11.sh"
   block:
-    - copy:
+    - name: "6.2.11 Ensure local interactive user home directories exist (Automated) |-> copy script"
+      copy:
         src: "tmp/6.2.11.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
-    - file:
+    - name: "6.2.11 Ensure local interactive user home directories exist (Automated) |-> run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.11 Ensure local interactive user home directories exist (Automated) |-> remove script"
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool
@@ -219,14 +231,17 @@
   vars:
     temp_script: "/tmp/6.2.12.sh"
   block:
-    - copy:
+    - name: "6.2.12 Ensure local interactive users own their home directories (Automated) |-> copy script"
+      copy:
         src: "tmp/6.2.12.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
-    - file:
+    - name: "6.2.12 Ensure local interactive users own their home directories (Automated) |-> run script"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.12 Ensure local interactive users own their home directories (Automated) |-> remove script"
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool
@@ -240,14 +255,17 @@
   vars:
     temp_script: "/tmp/6.2.13.sh"
   block:
-    - copy:
+    - name: "6.2.13 Ensure local interactive user home directories are mode 750 or more restrictive (Automated)"
+      copy:
         src: "tmp/6.2.13.sh"
         dest: "{{ temp_script }}"
         owner: root
         group: root
         mode: 0750
-    - command: "/bin/bash {{ temp_script }}"
-    - file:
+    - name: "6.2.13 Ensure local interactive user home directories are mode 750 or more restrictive (Automated)"
+      command: "/bin/bash {{ temp_script }}"
+    - name: "6.2.13 Ensure local interactive user home directories are mode 750 or more restrictive (Automated) |-> remove script"
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool

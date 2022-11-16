@@ -9,13 +9,15 @@
 - name: "4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)"   # only temporary solution!
   become: yes
   block:
-    - copy:
+    - name: "4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated) |-> create script"
+      copy:
         src: etc/cron.daily/var_log_perm.sh
         dest: /etc/cron.daily/var_log_perm.sh
         owner: root
         group: root
         mode: 0750
-    - command: /etc/cron.daily/var_log_perm.sh
+    - name: "4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated) |-> run script"
+      command: "/bin/bash /etc/cron.daily/var_log_perm.sh"
       ignore_errors: True
   when: level1|bool
   tags:

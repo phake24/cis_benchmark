@@ -48,7 +48,7 @@
 
 - name: "5.3.4 Ensure users must provide password for privilege escalation (Automated)"
   become: yes
-  lineinfile:
+  replace:
     path: "/etc/sudoers"
     regexp: '^\s*(.*NOPASSWD.*)'
     replace: '#\1'
@@ -60,7 +60,7 @@
 
 - name: "5.3.5 Ensure re-authentication for privilege escalation is not disabled globally (Automated)"  
   become: yes
-  lineinfile:
+  replace:
     path: "/etc/sudoers"
     regexp: '^\s*(.*!authenticate.*)'
     replace: '#\1'
@@ -89,8 +89,13 @@
         name: suusers
         state: present
     - user:
-        name: povadmin
-        group: povadmin
+        name: ansible
+        group: ansible
+        groups: suusers
+        append: yes
+    - user:
+        name: admin
+        group: admin
         groups: suusers
         append: yes
     - lineinfile:

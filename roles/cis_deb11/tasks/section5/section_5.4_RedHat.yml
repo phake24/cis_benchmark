@@ -1,6 +1,9 @@
 - name: "5.4.1 Ensure custom authselect profile is used (Manual)"
   become: yes
   block:
+    - file:
+        path: "/etc/authselect/custom/cis/"
+        state: absent
     - command: authselect create-profile cis -b sssd --symlink-meta
     - command: authselect select custom/cis with-sudo with-faillock without-nullok
   when: level1|bool

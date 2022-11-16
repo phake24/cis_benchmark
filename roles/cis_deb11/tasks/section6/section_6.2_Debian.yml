@@ -81,7 +81,7 @@
     - name: "6.2.5 Ensure no duplicate UIDs exist (Automated) |-> run script"
       command: "/bin/bash {{ temp_script }}"
     - name: "6.2.5 Ensure no duplicate UIDs exist (Automated) |-> remove script"
-    - file:
+      file:
         path: "{{ temp_script }}"
         state: absent
   when: level1|bool

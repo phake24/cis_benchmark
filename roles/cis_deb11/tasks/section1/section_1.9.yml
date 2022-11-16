@@ -29,6 +29,7 @@
           - "uek-ol8.repo"
           - "oracle-linux-ol8.repo"
           - "virt-ol8.repo"
+      ignore_errors: True
     - name: "1.9 |-> Autoremove" 
       dnf:
         autoremove: yes

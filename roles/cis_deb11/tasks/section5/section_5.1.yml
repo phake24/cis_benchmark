@@ -1,14 +1,23 @@
 - name: "5.1.1 Ensure cron daemon is enabled and running (Automated)"
   become: yes
-  systemd:
-    name: cron
-    state: started
-    enabled: yes
+  block:
+    - systemd:
+        name: crond
+        state: started
+        enabled: yes
+      when: ansible_os_family == "RedHat"
+    - systemd:
+        name: cron
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
   when: level1|bool
   tags:
     - section5
     - section5.1
     - section5.1.1
+
+
 
 - name: "5.1.2 Ensure permissions on /etc/crontab are configured (Automated)"
   become: yes

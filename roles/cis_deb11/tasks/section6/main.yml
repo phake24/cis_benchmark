@@ -2,4 +2,4 @@
   include_tasks: section_6.1_{{ ansible_os_family }}.yml
 
 - name: "6.2 Local User and Group Settings"
-  include_tasks: section_6.2__{{ ansible_os_family }}.yml
+  include_tasks: section_6.2_{{ ansible_os_family }}.yml

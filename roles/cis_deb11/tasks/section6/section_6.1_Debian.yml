@@ -105,7 +105,7 @@
 - name: "6.1.9 Ensure no world writable files exist (Automated)"
   become: yes
   block:
-      - shell: "/usr/bin/df -l -P | /usr/bin/awk '{if (NR!=1) print $6}' | /usr/bin/xargs -I '{}' find '{}' -xdev -type f -perm -0002"
+      - command: "/usr/bin/df -l -P | /usr/bin/awk '{if (NR!=1) print $6}' | /usr/bin/xargs -I '{}' find '{}' -xdev -type f -perm -0002"
         register: result
       - debug:
             msg: 

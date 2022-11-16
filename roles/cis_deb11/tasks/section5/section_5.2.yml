@@ -1,7 +1,7 @@
-- name: "5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Automated)"
+- name: "5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Automated) (Debian) (Debian) (Debian) (Debian) (Debian) (Debian) (Debian) (Debian)"
   become: yes
   file:
-    path: /etc/ssh/sshd_config
+    path: "/etc/ssh/sshd_config"
     owner: root
     group: root
     mode: 0600
@@ -11,7 +11,7 @@
     - section5.2
     - section5.2.1
 
-- name: "5.2.2 Ensure permissions on SSH private host key files are configured (Automated)"
+- name: "5.2.2 Ensure permissions on SSH private host key files are configured (Automated) (Oracle)"
   become: yes
   vars:
     path: "/tmp/5.2.2.sh"
@@ -34,12 +34,10 @@
     - section5.2
     - section5.2.2
 
-- name: "5.2.2 Ensure permissions on SSH private host key files are configured (Automated)"
+- name: "5.2.2 Ensure permissions on SSH private host key files are configured (Automated) (Oracle)"
   become: yes
-  vars:
-    path: "/tmp/5.2.2.sh"
   block:
-    - command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod u-x,g-wx,orwx {} \;
+    - command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod u-x,g-wx,o-rwx {} \;
     - command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:ssh_keys {} \;
   when: 
     - level1|bool
@@ -69,6 +67,7 @@
         mode: 0640
         owner: root
         group: root
+      notify: restart sshd
       when: sshd_config_d.stat.exists == false
     - name: "5.2.4 Ensure SSH access is limited (Automated) |-> create allow_groups.conf"
       copy:
@@ -77,13 +76,14 @@
         owner: root
         group: root
         mode: 0640
+      notify: restart sshd
     - name: "5.2.4 Ensure SSH access is limited (Automated) |-> config include_path"
       lineinfile:
         path: "/etc/ssh/sshd_config"
         regexp: "(?i)Include"
         line: "Include /etc/ssh/sshd_config.d/*.conf"
         insertbefore: BOF
-  notify: restart sshd
+      notify: restart sshd
   when: level1|bool
   tags:
     - section5
@@ -243,7 +243,7 @@
 - name: "5.2.14 Ensure system-wide crypto policy is not over-ridden (Automated)"
   become: yes
   notify: restart sshd
-  lineinfile:
+  replace:
     path: "/etc/ssh/sshd_config"
     regexp: '^\s*(CRYPTO_POLICY=.*)'
     replace: '#\1'
@@ -411,3 +411,7 @@
     - section5
     - section5.2
     - section5.2.22
+
+
+
+

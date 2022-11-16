@@ -13,6 +13,13 @@
       dnf:
         name: logrotate
         state: present
+      when: ansible_os_family == "RedHat"
+    - name: "4.3 Ensure logrotate is configured (Manual) |-> install logrotate"
+      apt:
+        name: logrotate
+        state: present
+      when: ansible_os_family == "Debian"
+
     - name: "4.3 Ensure logrotate is configured (Manual) |-> Adjust {{ logrotate_config }}"
       lineinfile:
         path: "{{ logrotate_config }}"

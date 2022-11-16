@@ -18,7 +18,6 @@
         mode: 0750
     - name: "4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated) |-> run script"
       command: "/bin/bash /etc/cron.daily/var_log_perm.sh"
-      ignore_errors: True
   when: level1|bool
   tags:
   - section4

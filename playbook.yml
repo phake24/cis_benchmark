@@ -5,6 +5,6 @@
   hosts: all
   roles:
     - vpp_preperations 
-    - cis_deb11
+    - cis_2022-11
       # - iads_deb11
       # - psa_deb11
